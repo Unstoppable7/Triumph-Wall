@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26cd7221b38b5f74ab4dbedc587e9726, type: 3}
-  m_Name: New Simple Audio Event
+  m_Name: example1_aue
   m_EditorClassIdentifier: 
   clips: []
   volume:

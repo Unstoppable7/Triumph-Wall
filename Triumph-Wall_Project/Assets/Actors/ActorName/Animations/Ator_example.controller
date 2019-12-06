@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ator_example
+  m_Name: ator_example
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
