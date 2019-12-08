@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class GameMaster : MonoBehaviour
 {
-	public enum GameStates { MANAGMENT, EDIT_PATH, CONSTRUCTION}
-	InputController inputControl = null;
+	[SerializeField][Required]
+	private GameState globalState = null;
+
+	private InputController inputControl = null;
     // Start is called before the first frame update
     void Start()
     {
