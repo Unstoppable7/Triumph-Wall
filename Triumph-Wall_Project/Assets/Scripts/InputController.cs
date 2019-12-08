@@ -7,14 +7,20 @@ public class InputController : MonoBehaviour
 {
 	Rewired.Player player = null;
 	public GameObject testObject = null;
-	private GameState currentState = null;
+	private GameState currentState;
 
 	private float borderThickness = 50.0f;
-	private Rewired.Mouse currentMouse = null;
 
-	public void SetUp ( )
+	//mose variables
+	private Rewired.Mouse currentMouse = null;
+	private Vector2 lmcClickPos;
+	private Vector2 lmcCurrentPos;
+
+	public void SetUp (ref GameState _currentState )
 	{
 		player = ReInput.players.GetPlayer( 0 );
+
+		currentState = _currentState;
 	}
 	public void Tick ( )
 	{
@@ -34,9 +40,10 @@ public class InputController : MonoBehaviour
 
 	private void ManagmentState ( )
 	{
+		//getMouse
 		currentMouse = player.controllers.Mouse;
-		if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold
-			&& player.GetButtonDown( Const.Input.Strings.selection ))
+
+		if (player.GetButtonDown( Const.Input.Strings.selection ))
 		{
 			//select object if colided with something
 			//RaycastHit hit;
@@ -44,35 +51,60 @@ public class InputController : MonoBehaviour
 
 			//if (Physics.Raycast( ray, out hit ))
 			//{
-			//	testObject.transform.position = new Vector3( hit.point.x, 2, hit.point.z );
+			//	lmcClickPos = new Vector2( hit.point.x, hit.point.z );
 			//}
 		}
 
 		//if button still down call drag events
 		if(player.GetButton( Const.Input.Strings.selection ))
 		{
+			//moving Camera with Raycasting to world coordinates its the best
+			//maybe we can gate same result with a cheaper method like 
+			// screenPoint to worldPoint from mainCamera
 
+			//RaycastHit hit;
+			//Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+
+			//if (Physics.Raycast( ray, out hit ))
+			//{
+			//	lmcCurrentPos = new Vector2( hit.point.x, hit.point.z );
+			//}
+
+			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
+			{
+				//Dragging
+				//Vector3 posD = lmcCurrentPos - lmcClickPos;
+				//Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
+				//testObject.transform.Translate( -move, Space.World );
+			}
+			else
+			{
+				//stoppped draggin
+				lmcClickPos = lmcCurrentPos;
+			}
 		}
 
 		/////////////////////////////ARROW INPUTS/////////////////////////
-		if(player.GetButton( Const.Input.Strings.CamUP ) || currentMouse.screenPosition.y >= Screen.height - borderThickness)
+		if (player.GetButton( Const.Input.Strings.CamUP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
+			&& currentMouse.screenPosition.y <= Screen.height + borderThickness))
 		{
 
 		}
-		else if(player.GetButton( Const.Input.Strings.CamDOWN ) || currentMouse.screenPosition.y <= 0 + borderThickness)
+		else if(player.GetButton( Const.Input.Strings.CamDOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
+			&& currentMouse.screenPosition.y >= 0- borderThickness))
 		{
 
 		}
-		if (player.GetButton( Const.Input.Strings.CamRIGHT) || currentMouse.screenPosition.x >= Screen.width - borderThickness)
+		if (player.GetButton( Const.Input.Strings.CamRIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
+			&& currentMouse.screenPosition.x <= Screen.width + borderThickness))
 		{
 
 		}
-		else if (player.GetButton( Const.Input.Strings.CamLEFT) || currentMouse.screenPosition.x <= 0 + borderThickness)
+		else if (player.GetButton( Const.Input.Strings.CamLEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
+			&& currentMouse.screenPosition.x >= 0 - borderThickness))
 		{
 
 		}
-
-
 
 	}
 }

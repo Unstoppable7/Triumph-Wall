@@ -14,7 +14,7 @@ public class GameMaster : MonoBehaviour
     void Start()
     {
 		inputControl = GetComponent<InputController>();
-		inputControl.SetUp();
+		inputControl.SetUp(ref globalState);
     }
 
     // Update is called once per frame
