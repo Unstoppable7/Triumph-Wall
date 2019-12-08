@@ -45,37 +45,21 @@ public class InputController : MonoBehaviour
 
 		if (player.GetButtonDown( Const.Input.Strings.selection ))
 		{
+			lmcClickPos = currentMouse.screenPosition;
 			//select object if colided with something
-			//RaycastHit hit;
-			//Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+				//show its UI
 
-			//if (Physics.Raycast( ray, out hit ))
-			//{
-			//	lmcClickPos = new Vector2( hit.point.x, hit.point.z );
-			//}
 		}
 
 		//if button still down call drag events
 		if(player.GetButton( Const.Input.Strings.selection ))
 		{
-			//moving Camera with Raycasting to world coordinates its the best
-			//maybe we can gate same result with a cheaper method like 
-			// screenPoint to worldPoint from mainCamera
-
-			//RaycastHit hit;
-			//Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
-
-			//if (Physics.Raycast( ray, out hit ))
-			//{
-			//	lmcCurrentPos = new Vector2( hit.point.x, hit.point.z );
-			//}
+			lmcCurrentPos = currentMouse.screenPosition;
 
 			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
 			{
 				//Dragging
-				//Vector3 posD = lmcCurrentPos - lmcClickPos;
-				//Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
-				//testObject.transform.Translate( -move, Space.World );
+
 			}
 			else
 			{
@@ -105,6 +89,15 @@ public class InputController : MonoBehaviour
 		{
 
 		}
+	}
+
+	private void ConstructionState ( )
+	{
+
+	}
+
+	private void EditPathState ( )
+	{
 
 	}
 }
