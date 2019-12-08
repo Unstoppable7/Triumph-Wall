@@ -25,19 +25,19 @@ public class SingletonComponent<T> : MonoBehaviour where T : Component
         }
     }
 
-    //Función a heredar para evitar su destrucción o la duplicidad del singletone.
-    public virtual void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this as T;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    ////Función a heredar para evitar su destrucción o la duplicidad del singletone.
+    //public virtual void Awake()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = this as T;
+    //        DontDestroyOnLoad(this.gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 }
 
 /*Ejemplo de implementación:
