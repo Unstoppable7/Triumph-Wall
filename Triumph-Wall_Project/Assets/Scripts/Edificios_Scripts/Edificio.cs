@@ -25,10 +25,11 @@ public abstract class Edificio : MonoBehaviour
 	protected int maxEmployeeNum;
 	protected int currentEmployeeNum;
 	//processing
+	protected bool canProcess;
 	protected float speedPerEmployee;
 	protected float processSpeed;
+	protected float currentProgress;
 
-	protected bool canProcess;
 	protected int maxInmigrantNum;
 	protected int currentInmigrantNum;
 
@@ -65,4 +66,20 @@ public abstract class Edificio : MonoBehaviour
 	//Uses instace of UIController
 	public abstract void ShowUI ( );
 
+	#region GETTERS
+	public int GetMaxUpgrades ( ) => maxOfUpgrades;
+	public int GetCurrentUpgrade ( ) => currentUpgrade;
+
+	public float GetCurrentDurability ( ) => durability/maxDurability;
+
+	public float GetPriceEmployee ( ) => pricePerEmployee;
+	public float GetMaxEmployee ( ) => maxEmployeeNum;
+	public float GetCurrentEmployee ( ) => currentEmployeeNum;
+
+	public float GetProcesSpeed ( ) => processSpeed;
+	public float GetProgress ( ) => currentProgress;
+
+	public int GetMaxInmigrants ( ) => maxInmigrantNum;
+	public int GetCurrentInmigrants ( ) => currentInmigrantNum;
+#endregion
 }
