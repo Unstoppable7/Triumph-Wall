@@ -22,6 +22,7 @@ public class InputController : MonoBehaviour
 
 		currentState = _currentState;
 	}
+
 	public void Tick ( )
 	{
 		switch (currentState.gameState)
@@ -43,9 +44,10 @@ public class InputController : MonoBehaviour
 		//getMouse
 		currentMouse = player.controllers.Mouse;
 
+		/////////////////////LEFT CLICK////////////////////////////////7
 		if (player.GetButtonDown( Const.Input.Strings.selection ))
 		{
-			lmcClickPos = currentMouse.screenPosition;
+			//lmcClickPos = currentMouse.screenPosition;
 			//select object if colided with something
 			//show its UI
 
@@ -54,6 +56,8 @@ public class InputController : MonoBehaviour
 
 			if (Physics.Raycast( ray, out hit ))
 			{
+				//CameraScript.StartDragMove()
+				lmcClickPos = new Vector2( hit.point.x, hit.point.z );
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
@@ -65,20 +69,32 @@ public class InputController : MonoBehaviour
 			}
 
 		}
-
 		//if button still down call drag events
 		if (player.GetButton( Const.Input.Strings.selection ))
 		{
 			lmcCurrentPos = currentMouse.screenPosition;
 
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+
+			if (Physics.Raycast( ray, out hit ))
+			{
+				lmcCurrentPos = new Vector2( hit.point.x, hit.point.z );
+			}
+
 			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
 			{
 				//Dragging
+				//CameraScript.OnDrag( PositionDelta );
+				Vector3 posD = lmcCurrentPos - lmcClickPos;
+				Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
+				testObject.transform.Translate( -move, Space.World );
 
 			}
 			else
 			{
 				//stoppped draggin
+				//CameraScript.StopDraggin();
 				lmcClickPos = lmcCurrentPos;
 			}
 		}
@@ -101,6 +117,15 @@ public class InputController : MonoBehaviour
 		}
 		else if (player.GetButton( Const.Input.Strings.CamLEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
 			&& currentMouse.screenPosition.x >= 0 - borderThickness))
+		{
+
+		}
+
+		///////////////////////////////////MOUSE WHEEL////////////////////
+		if (player.GetAxis( "Wheel" ) > 0)
+		{
+		}
+		else if(player.GetAxis( "Wheel" ) < 0)
 		{
 
 		}
