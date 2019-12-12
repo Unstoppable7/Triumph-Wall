@@ -3,28 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UIDataTypes.Buildings;
+
 public class UIController : SingletonComponent<UIController>
 {
-	bool showingBuilding = false;
+
 	EdificioUIController edificiosUi = null;
 	public void SetUP ( )
 	{
 		edificiosUi = GetComponentInChildren<EdificioUIController>();
-
 	}
 
-	public void Tick ( )
-	{
-		if (showingBuilding)
-		{
-			edificiosUi.ShowUI();
-		}
-	}
-
-	public void ShowEdificioUI (ref Edificio toShow )
+	public void ShowEdificioUI (CR_Data toShow )
 	{
 		//overlapping UI showing = false;
-		edificiosUi.StartShowing( ref toShow );
-		showingBuilding = true;
+		edificiosUi.StartShowUI(toShow );
+		edificiosUi.canvas.SetActive( true );
 	}
 }

@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class Edificio : MonoBehaviour
 {
+
 	public enum B_Actions { UPGRADE, BUY, FIRE, REPAIR} //used by buttons
-	
+
 	//setted from Factory and from Manager
-	protected int managerID; 
+	protected int managerID;
 	//Upgrading
 	protected bool canBeUpgraded;
 	protected int maxOfUpgrades;
-	protected int currentUpgrade;//variation of max Variable
-
+	protected int currentUpgrade;
 	//durability
-	protected float maxDurability;
-	protected float durability;
-	
+	protected float maxDurability = 100;
+	protected float currentDurability = 50;
 	//employee flags
 	protected bool canBuyEmployee;
 	protected bool canFireEmployee;
@@ -24,9 +24,9 @@ public abstract class Edificio : MonoBehaviour
 	protected float pricePerEmployee;
 	protected int maxEmployeeNum;
 	protected int currentEmployeeNum;
+	protected float speedPerEmployee;
 	//processing
 	protected bool canProcess;
-	protected float speedPerEmployee;
 	protected float processSpeed;
 	protected float currentProgress;
 
@@ -64,13 +64,14 @@ public abstract class Edificio : MonoBehaviour
 	}
 
 	//Uses instace of UIController
+	public abstract void UpdateUIData ( );
 	public abstract void ShowUI ( );
 
 	#region GETTERS
 	public int GetMaxUpgrades ( ) => maxOfUpgrades;
 	public int GetCurrentUpgrade ( ) => currentUpgrade;
 
-	public float GetCurrentDurability ( ) => durability/maxDurability;
+	public float GetDurability ( ) => currentDurability / maxDurability;
 
 	public float GetPriceEmployee ( ) => pricePerEmployee;
 	public float GetMaxEmployee ( ) => maxEmployeeNum;

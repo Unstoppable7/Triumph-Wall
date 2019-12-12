@@ -47,12 +47,27 @@ public class InputController : MonoBehaviour
 		{
 			lmcClickPos = currentMouse.screenPosition;
 			//select object if colided with something
-				//show its UI
+			//show its UI
+
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+
+			if (Physics.Raycast( ray, out hit ))
+			{
+				if (hit.collider.gameObject.GetComponent<Edificio>())
+				{
+					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
+				}
+				else
+				{
+					Debug.Log( "not FOund" );
+				}
+			}
 
 		}
 
 		//if button still down call drag events
-		if(player.GetButton( Const.Input.Strings.selection ))
+		if (player.GetButton( Const.Input.Strings.selection ))
 		{
 			lmcCurrentPos = currentMouse.screenPosition;
 
