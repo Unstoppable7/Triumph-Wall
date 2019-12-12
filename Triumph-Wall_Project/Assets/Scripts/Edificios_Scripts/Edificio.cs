@@ -10,6 +10,13 @@ public abstract class Edificio : MonoBehaviour
 
 	//setted from Factory and from Manager
 	protected int managerID;
+	
+	//globabl flags used to determine what functionalities a building has
+	protected bool useUpgrades;
+	protected bool usedurability;
+	protected bool useEmployee;
+	protected bool useProcess;
+	protected bool useInmigrants;
 	//Upgrading
 	protected bool canBeUpgraded;
 	protected int maxOfUpgrades;
@@ -44,18 +51,18 @@ public abstract class Edificio : MonoBehaviour
 	public abstract void Repair ( );
 
 	//employee its common for every Building
-	public float GetEmployeePrice ( )
+	public virtual float GetEmployeePrice ( )
 	{
 		return pricePerEmployee;
 	}
-	public void BuyEmployee ( )
+	public virtual void BuyEmployee ( )
 	{
 		if(currentEmployeeNum < maxEmployeeNum)
 		{
 			currentEmployeeNum++;
 		}
 	}
-	public void FireEmployee ( )
+	public virtual void FireEmployee ( )
 	{
 		if(currentEmployeeNum > 0)
 		{
