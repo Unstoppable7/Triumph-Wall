@@ -12,7 +12,7 @@ public class InputController : MonoBehaviour
 	private float borderThickness = 50.0f;
 
 	//mose variables
-	private Rewired.Mouse currentMouse = null;
+	private Mouse currentMouse = null;
 	private Vector2 lmcClickPos;
 	private Vector2 lmcCurrentPos;
 
@@ -46,9 +46,9 @@ public class InputController : MonoBehaviour
 		if (player.GetButtonDown( Const.Input.Strings.selection ))
 		{
 			lmcClickPos = currentMouse.screenPosition;
-			//select object if colided with something
-				//show its UI
-
+            //select object if colided with something
+            //show its UI
+            Utils.RayPicking(lmcClickPos);
 		}
 
 		//if button still down call drag events
@@ -72,23 +72,23 @@ public class InputController : MonoBehaviour
 		if (player.GetButton( Const.Input.Strings.CamUP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
 			&& currentMouse.screenPosition.y <= Screen.height + borderThickness))
 		{
-
+            Camera.main.GetComponent<CameraBehaviour>().MoveZ(1);
 		}
 		else if(player.GetButton( Const.Input.Strings.CamDOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
 			&& currentMouse.screenPosition.y >= 0- borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveZ(-1);
+        }
 		if (player.GetButton( Const.Input.Strings.CamRIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
 			&& currentMouse.screenPosition.x <= Screen.width + borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveX(1);
+        }
 		else if (player.GetButton( Const.Input.Strings.CamLEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
 			&& currentMouse.screenPosition.x >= 0 - borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveX(-1);
+        }
 	}
 
 	private void ConstructionState ( )
