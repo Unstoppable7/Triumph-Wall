@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class Edificio : MonoBehaviour
 {
+
 	public enum B_Actions { UPGRADE, BUY, FIRE, REPAIR} //used by buttons
-	
+
 	//setted from Factory and from Manager
-	protected int managerID; 
+	protected int managerID;
+	
+	//globabl flags used to determine what functionalities a building has
+	protected bool useUpgrades;
+	protected bool usedurability;
+	protected bool useEmployee;
+	protected bool useProcess;
+	protected bool useInmigrants;
 	//Upgrading
 	protected bool canBeUpgraded;
 	protected int maxOfUpgrades;
-	protected int currentUpgrade;//variation of max Variable
-
+	protected int currentUpgrade;
 	//durability
-	protected float maxDurability;
-	protected float durability;
-	
+	protected float maxDurability = 100;
+	protected float currentDurability = 50;
 	//employee flags
 	protected bool canBuyEmployee;
 	protected bool canFireEmployee;
@@ -24,11 +31,12 @@ public abstract class Edificio : MonoBehaviour
 	protected float pricePerEmployee;
 	protected int maxEmployeeNum;
 	protected int currentEmployeeNum;
-	//processing
 	protected float speedPerEmployee;
-	protected float processSpeed;
-
+	//processing
 	protected bool canProcess;
+	protected float processSpeed;
+	protected float currentProgress;
+
 	protected int maxInmigrantNum;
 	protected int currentInmigrantNum;
 
@@ -43,18 +51,18 @@ public abstract class Edificio : MonoBehaviour
 	public abstract void Repair ( );
 
 	//employee its common for every Building
-	public float GetEmployeePrice ( )
+	public virtual float GetEmployeePrice ( )
 	{
 		return pricePerEmployee;
 	}
-	public void BuyEmployee ( )
+	public virtual void BuyEmployee ( )
 	{
 		if(currentEmployeeNum < maxEmployeeNum)
 		{
 			currentEmployeeNum++;
 		}
 	}
-	public void FireEmployee ( )
+	public virtual void FireEmployee ( )
 	{
 		if(currentEmployeeNum > 0)
 		{
@@ -63,6 +71,23 @@ public abstract class Edificio : MonoBehaviour
 	}
 
 	//Uses instace of UIController
+	public abstract void UpdateUIData ( );
 	public abstract void ShowUI ( );
 
+	#region GETTERS
+	public int GetMaxUpgrades ( ) => maxOfUpgrades;
+	public int GetCurrentUpgrade ( ) => currentUpgrade;
+
+	public float GetDurability ( ) => currentDurability / maxDurability;
+
+	public float GetPriceEmployee ( ) => pricePerEmployee;
+	public float GetMaxEmployee ( ) => maxEmployeeNum;
+	public float GetCurrentEmployee ( ) => currentEmployeeNum;
+
+	public float GetProcesSpeed ( ) => processSpeed;
+	public float GetProgress ( ) => currentProgress;
+
+	public int GetMaxInmigrants ( ) => maxInmigrantNum;
+	public int GetCurrentInmigrants ( ) => currentInmigrantNum;
+#endregion
 }
