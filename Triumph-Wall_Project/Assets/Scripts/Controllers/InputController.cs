@@ -49,8 +49,8 @@ public class InputController : MonoBehaviour
 		//getMouse
 		currentMouse = player.controllers.Mouse;
 
-		/////////////////////LEFT CLICK////////////////////////////////7
-		if (player.GetButtonDown( Const.Input.Strings.selection ))
+		/////////////////////LEFT CLICK////////////////////////////////
+		if (player.GetButtonDown( Const.Input.Strings.LEFT_CLICK ))
 		{
 			//lmcClickPos = currentMouse.screenPosition;
 			//select object if colided with something
@@ -75,7 +75,7 @@ public class InputController : MonoBehaviour
 
 		}
 		//if button still down call drag events
-		if (player.GetButton( Const.Input.Strings.selection ))
+		if (player.GetButton( Const.Input.Strings.LEFT_CLICK ))
 		{
 			lmcCurrentPos = currentMouse.screenPosition;
 
@@ -104,33 +104,40 @@ public class InputController : MonoBehaviour
 			}
 		}
 
+		/////////////////////RIGHT CLICK////////////////////////////////
+		if (player.GetButtonDown( Const.Input.Strings.RIGHT_CLICK ))
+		{
+			UIController.Instance.HideUI();
+		}
+
+
 		/////////////////////////////ARROW INPUTS/////////////////////////
-		if (player.GetButton( Const.Input.Strings.CamUP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
+		if (player.GetButton( Const.Input.Strings.CAM_UP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
 			&& currentMouse.screenPosition.y <= Screen.height + borderThickness))
 		{
 
 		}
-		else if(player.GetButton( Const.Input.Strings.CamDOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
+		else if(player.GetButton( Const.Input.Strings.CAM_DOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
 			&& currentMouse.screenPosition.y >= 0- borderThickness))
 		{
 
 		}
-		if (player.GetButton( Const.Input.Strings.CamRIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
+		if (player.GetButton( Const.Input.Strings.CAM_RIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
 			&& currentMouse.screenPosition.x <= Screen.width + borderThickness))
 		{
 
 		}
-		else if (player.GetButton( Const.Input.Strings.CamLEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
+		else if (player.GetButton( Const.Input.Strings.CAM_LEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
 			&& currentMouse.screenPosition.x >= 0 - borderThickness))
 		{
 
 		}
 
 		///////////////////////////////////MOUSE WHEEL////////////////////
-		if (player.GetAxis( "Wheel" ) > 0)
+		if (player.GetAxis(Const.Input.Strings.WHEEL ) > 0)
 		{
 		}
-		else if(player.GetAxis( "Wheel" ) < 0)
+		else if(player.GetAxis( Const.Input.Strings.WHEEL ) < 0)
 		{
 
 		}

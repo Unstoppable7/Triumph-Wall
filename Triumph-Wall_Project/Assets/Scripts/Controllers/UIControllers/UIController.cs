@@ -20,4 +20,9 @@ public class UIController : SingletonComponent<UIController>
 		edificiosUi.StartShowUI(toShow );
 		edificiosUi.canvas.SetActive( true );
 	}
+
+	public void HideUI ( )
+	{
+		edificiosUi.Hide();
+	}
 }

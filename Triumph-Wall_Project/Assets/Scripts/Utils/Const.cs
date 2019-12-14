@@ -13,11 +13,13 @@ namespace Const
 		}
 		public static class Strings
 		{
-			public const string selection = "Selecction";
-			public const string CamUP = "CamUp";
-			public const string CamDOWN = "CamDown";
-			public const string CamRIGHT = "CamRight";
-			public const string CamLEFT = "CamLeft";
+			public const string LEFT_CLICK = "Selecction";
+			public const string RIGHT_CLICK = "RClick";
+			public const string CAM_UP = "CamUp";
+			public const string CAM_DOWN = "CamDown";
+			public const string CAM_RIGHT = "CamRight";
+			public const string CAM_LEFT = "CamLeft";
+			public const string WHEEL = "Wheel";
 		}
 	}
 }
