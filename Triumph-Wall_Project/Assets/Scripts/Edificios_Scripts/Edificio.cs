@@ -2,45 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public abstract class Edificio : MonoBehaviour
 {
 
 	public enum B_Actions { UPGRADE, BUY, FIRE, REPAIR} //used by buttons
 
 	//setted from Factory and from Manager
-	protected int managerID;
-	
-	//globabl flags used to determine what functionalities a building has
-	protected bool useUpgrades;
-	protected bool usedurability;
-	protected bool useEmployee;
-	protected bool useProcess;
-	protected bool useInmigrants;
+	protected int managerID = -1;
 	//Upgrading
-	protected bool canBeUpgraded;
-	protected int maxOfUpgrades;
-	protected int currentUpgrade;
-	//durability
+	protected bool canBeUpgraded = false;
+	protected int maxOfUpgrades = -1;
+	protected int currentUpgrade = -1;
+	//Durability
 	protected float maxDurability = 100;
 	protected float currentDurability = 50;
-	//employee flags
-	protected bool canBuyEmployee;
-	protected bool canFireEmployee;
-	//employees
-	protected float pricePerEmployee;
-	protected int maxEmployeeNum;
-	protected int currentEmployeeNum;
-	protected float speedPerEmployee;
+	//Employees Flags
+	protected bool canBuyEmployee = false;
+	protected bool canFireEmployee = false;
+	//Employees
+	protected float pricePerEmployee = -1;
+	protected int maxEmployeeNum = -1;
+	protected int currentEmployeeNum = -1;
 	//processing
-	protected bool canProcess;
-	protected float processSpeed;
-	protected float currentProgress;
+	protected bool canProcess = false;
+	protected float currentProgress = -1;
+	protected float processSpeed = -1;
+	//inmigrants
+	protected int maxInmigrantNum = -1;
+	protected int currentInmigrantNum = -1;
 
-	protected int maxInmigrantNum;
-	protected int currentInmigrantNum;
-
-	//used by ObjectFacotry to set the Values
 	public abstract void SetUP ( ); 
 	public abstract void Tick ( );
 	protected abstract void StartProcessInmigrant ( );

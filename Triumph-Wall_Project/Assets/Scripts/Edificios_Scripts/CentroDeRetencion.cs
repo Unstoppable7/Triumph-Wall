@@ -1,40 +1,77 @@
-﻿using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using UIDataTypes.Buildings;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CentroDeRetencion : Edificio
 {
+	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
 
-	private CR_Data myData;
+	public int maxEmployeeNumP { set { maxEmployeeNumP = value; } get { return maxEmployeeNum; } }
 
-	public override void Repair ( )
-	{
-		throw new System.NotImplementedException();
-	}
+	private UIDataTypes.Buildings.UICR_Data myUIData;
+
+	public float salubridad;
+	public float control = 0;
+	public float factorSuciedad = 1.0f;
+	public int inmigrantesPorGuardia = 5;
 
 	public override void SetUP ( )
 	{
-		myData = ScriptableObject.CreateInstance<CR_Data>();
-	}
+		myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
+		//TODO initialize buidlings
+		//Oficina
+		//Dorms
+		//Enfermeria
+		//Cocina
+		// las funciones de los empleados se usaran desde el editor de rutas
+		myUIData.showBuyEmployeeBtn = false;
+		myUIData.showFireEmployeeBtn = false;
+		myUIData.showEmployeeNum = true; 
+		//inmigrantes salubridad y control
+		myUIData.showInmigrantNum = true;
+		
+		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available
+		//getIT from Balance File
+		currentEmployeeNum = 0;
+		maxEmployeeNum = 10;
 
-	//after tick
-	public override void UpdateUIData ( )
-	{
-		myData.durability = currentDurability / maxDurability;
-		myData.progress = currentProgress;
-		myData.updatedValuesEvent.Invoke();
-	}
-
-	public override void ShowUI ( )
-	{
-		UIController.Instance.ShowEdificioUI(myData );
+		maxInmigrantNum = CalculateMaxIlegalsInFacility();
+		currentInmigrantNum = GetCurrentTotalOfIlegals();
 	}
 
 	public override void Tick ( )
 	{
+		foreach ( Edificio building in edificiosDelRecinto)
+		{
+			building.Tick();
+		}
+		salubridad = CalculateSalubrity();
+		control = CalculateControl();
 		UpdateUIData();
+	}  
+
+	//after tick
+	public override void UpdateUIData ( )
+	{
+		myUIData.maxEmployeeNum = maxEmployeeNum;
+		myUIData.currentEmployeeNum = currentInmigrantNum;
+
+		myUIData.maxInmigrantNum = maxInmigrantNum;
+		myUIData.currentInmigrantNum = currentInmigrantNum;
+
+		myUIData.salubrity = salubridad;
+		myUIData.control = control;
+
+		myUIData.updatedValuesEvent.Invoke();
+	}
+
+	public override void ShowUI ( )
+	{
+		UIController.Instance.ShowEdificioUI( myUIData );
+	}
+
+	public override void Repair ( )
+	{
+		throw new System.NotImplementedException();
 	}
 
 	public override void Upgrade ( )
@@ -45,5 +82,72 @@ public class CentroDeRetencion : Edificio
 	protected override void StartProcessInmigrant ( )
 	{
 		throw new System.NotImplementedException();
+	}
+
+	/// <summary>
+	/// En vez de calcular la salubridad desde aqui podriamos hacerlo desde los dormitorios
+	/// ya que solo afectan a la salubridad los inmigrantes de los dormitorios
+	/// </summary>
+	/// <returns></returns>
+	#region Salubrity
+
+	private float CalculateSalubrity ( )
+	{
+		float inmigrantesMaxDormitorios = GetMaxOfIlegalsInDorms();
+		float inmigrantesEnDormitorios = GetNumOfIlegalsInDorms();
+
+		float aforo = inmigrantesEnDormitorios / inmigrantesMaxDormitorios;
+		
+		//MIN -1 MAX 1
+		float result = 0;
+		if (aforo > 1)
+			result -= aforo * factorSuciedad * Time.deltaTime;
+		else
+			result += (1 + (1 - aforo * factorSuciedad * Time.deltaTime));
+
+		return result;
+	}
+
+	private float GetMaxOfIlegalsInDorms ( )
+	{
+		//TODO hacer dormitorios para poder completar esta funcion
+		return 10;
+	}
+	private float GetNumOfIlegalsInDorms ( )
+	{
+		//TODO hacer dormitorios para poder completar esta funcion
+		return 10;
+	}
+
+#endregion
+
+	private float CalculateControl ( )
+	{
+		float result = 0;
+		result = 1 - ((currentInmigrantNum - 
+			(currentEmployeeNum * inmigrantesPorGuardia)) /
+			maxInmigrantNum);
+
+		return result;
+	}
+
+	private int CalculateMaxIlegalsInFacility ( )
+	{
+		//TODO: en verdad esto deberia ser 0
+		int result = 1;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetMaxInmigrants();
+		}
+		return result;
+	}
+	private int GetCurrentTotalOfIlegals ( )
+	{
+		int result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetCurrentInmigrants();
+		}
+		return result;
 	}
 }
