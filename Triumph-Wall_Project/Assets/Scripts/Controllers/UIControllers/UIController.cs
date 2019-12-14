@@ -14,7 +14,7 @@ public class UIController : SingletonComponent<UIController>
 		edificiosUi = GetComponentInChildren<EdificioUIController>();
 	}
 
-	public void ShowEdificioUI (CR_Data toShow )
+	public void ShowEdificioUI (UICR_Data toShow )
 	{
 		//overlapping UI showing = false;
 		edificiosUi.StartShowUI(toShow );

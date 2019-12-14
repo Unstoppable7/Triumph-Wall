@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using UnityEngine.EventSystems;
 
 public class InputController : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class InputController : MonoBehaviour
 
 	public void Tick ( )
 	{
+		if (EventSystem.current.IsPointerOverGameObject( -1 ))    // is the touch on the GUI
+		{
+			return;
+		}
 		switch (currentState.gameState)
 		{
 		case GameState.GameStates.MANAGMENT:
@@ -64,7 +69,7 @@ public class InputController : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log( "not FOund" );
+					Debug.Log( hit.collider.gameObject.name );
 				}
 			}
 
@@ -75,7 +80,7 @@ public class InputController : MonoBehaviour
 			lmcCurrentPos = currentMouse.screenPosition;
 
 			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition);
 
 			if (Physics.Raycast( ray, out hit ))
 			{

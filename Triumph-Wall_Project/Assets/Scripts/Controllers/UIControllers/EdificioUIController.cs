@@ -5,59 +5,139 @@ using UnityEngine.UI;
 using TMPro;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
+using UIDataTypes.Buildings;
 
 public class EdificioUIController : MonoBehaviour
 {
 
 	[SceneObjectsOnly]
 	public GameObject canvas;
+	[Title( "Durability" )]
+	[SceneObjectsOnly]
+	public Slider durabilitySlider;
+
+	[Title("Upgrades")]
+	[SceneObjectsOnly]
+	public GameObject upgradesObject;
+	[SceneObjectsOnly]
+	public TextMeshProUGUI upgradesText;
+
+	[Title("Process")]
 	[SceneObjectsOnly]
 	public Slider progresSlider;
 	[SceneObjectsOnly]
-	public Slider durabilitySlider;
-	[SceneObjectsOnly]
-	public TextMeshProUGUI upgradesText;
+	public GameObject speedObject;
 	[SceneObjectsOnly]
 	public TextMeshProUGUI speedText;
+
+	[Title( "Emplyees" )]
+	[SceneObjectsOnly]
+	public GameObject emplyeeObject;
 	[SceneObjectsOnly]
 	public TextMeshProUGUI employeeText;
+
+	[Title( "Inmigrants" )]
+	[SceneObjectsOnly]
+	public GameObject inmigrantsObject;
 	[SceneObjectsOnly]
 	public TextMeshProUGUI inmigrantsText;
 
-	private UIDataTypes.Buildings.B_Data showingData;
+	[Title( "Parcela" )]
+	[SceneObjectsOnly]
+	public Slider salubritySlider;
+	[SceneObjectsOnly]
+	public Slider controlSlider;
+
 
 	private UnityEvent hideEvent = new UnityEvent();
 
-	public void ShowBaseUI ( UIDataTypes.Buildings.B_Data baseData )
+	public void ShowBaseUI (UIB_Data baseData)
 	{
-		durabilitySlider.value = baseData.durability;
+		if (baseData.showDurabilityBar)
+		{
+			durabilitySlider.value = baseData.currentDurability / baseData.maxDurability;
+		}
+		else
+		{
+			durabilitySlider.gameObject.SetActive( false );
+		}
 
-		upgradesText.text = string.Format( "{0:00}/{1:00}", baseData.currentUpgrade, baseData.maxOfUpgrades );
-		employeeText.text = string.Format( "{0:00}/{1:00}", baseData.currentEmployeeNum, baseData.maxEmployeeNum );
-		inmigrantsText.text = string.Format( "{0:00}/{1:00}", baseData.currentInmigrantNum, baseData.maxInmigrantNum );
-		speedText.text = string.Format( "{0:0}", baseData.processSpeed );
+		if (baseData.showUpgradeNum)
+		{
+			upgradesText.text = string.Format( "{0:00}/{1:00}", baseData.currentUpgrade, baseData.maxOfUpgrades );
+
+		}
+		else
+		{
+			upgradesObject.SetActive( false );
+		}
+
+		if (baseData.showEmployeeNum)
+		{
+			employeeText.text = string.Format( "{0:00}/{1:00}", baseData.currentEmployeeNum, baseData.maxEmployeeNum );
+		}
+		else
+		{
+			emplyeeObject.SetActive( false );
+		}
+
+		if (baseData.showInmigrantNum)
+		{
+
+			inmigrantsText.text = string.Format( "{0:00}/{1:00}", baseData.currentInmigrantNum, baseData.maxInmigrantNum );
+		}
+		else
+		{
+			inmigrantsObject.SetActive( false );
+		}
+
+		if (baseData.showProgress)
+		{
+			progresSlider.value = baseData.currentProgress;
+			speedText.text = string.Format( "{0:00}", baseData.processSpeed );
+		}
+		else
+		{
+			speedObject.SetActive( false );
+			progresSlider.gameObject.SetActive( false );
+		}
 	}
 
-	public void StartShowUI(UIDataTypes.Buildings.CR_Data data)
+	public void StartShowUI(UICR_Data data)
 	{
 		ShowBaseUI( data );
-		//TODO enseñar ui especifica
+		//enseñar Ui especifica
+		salubritySlider.gameObject.SetActive( true );
+		salubritySlider.value = data.salubrity;
+
+		controlSlider.gameObject.SetActive( true );
+		controlSlider.value = data.control;
+
 		//eventos de actualizaciond e la UI
 		UnityAction action = delegate { UpdateUI( data ); };
 		data.updatedValuesEvent.AddListener( action );
-
 		//evento  al esconderse esta UI
-		UnityAction action2 = delegate { data.updatedValuesEvent.RemoveListener( action ); };
+		UnityAction action2 = delegate 
+		{
+			data.updatedValuesEvent.RemoveListener( action );
+			salubritySlider.gameObject.SetActive( false );
+			controlSlider.gameObject.SetActive( false );
+		};
 		hideEvent.AddListener( action2 );
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
-	private void UpdateUI (UIDataTypes.Buildings.CR_Data data)
+
+	private void UpdateUI (UICR_Data data)
 	{
 		ShowBaseUI( data );
+		//enseñar Ui especifica
+		salubritySlider.value = data.salubrity;
+		controlSlider.value = data.control;
 	}
 
 	public void Hide ( )
 	{
+		canvas.SetActive( false );
 		hideEvent.Invoke();
 	}
 }
