@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour
 {
 	[SerializeField][Required]
 	private GameState globalState = null;
+    private CameraBehaviour cameraController = null;
 
 	public Edificio debug;
 
@@ -19,6 +20,7 @@ public class GameMaster : MonoBehaviour
 		inputControl = GetComponent<InputController>();
 		uiController = GetComponent<UIController>();
 		inputControl.SetUp(ref globalState);
+        cameraController = Camera.main.GetComponent<CameraBehaviour>();
 		uiController.SetUP();
 		debug.SetUP();
     }
@@ -27,6 +29,7 @@ public class GameMaster : MonoBehaviour
     void Update()
     {
 		inputControl.Tick();
+        cameraController.Tick();
 		debug.Tick();
     }
 }
