@@ -8,6 +8,7 @@ public class CameraBehaviour : MonoBehaviour
     private float lastSpeed, distance;
     public float minFOV, maxFOV, damping, sensitivityDistance;
     private bool doOnce;
+    Vector3 dragOrigin;
 
     void Start()
     {
@@ -18,10 +19,6 @@ public class CameraBehaviour : MonoBehaviour
 
     public void Tick()
     {
-        distance -= Input.GetAxis("Mouse ScrollWheel") * sensitivityDistance;
-        distance = Mathf.Clamp(distance, minFOV, maxFOV);
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, distance, Time.deltaTime * damping);
-
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) ||
             Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
         {
@@ -37,6 +34,10 @@ public class CameraBehaviour : MonoBehaviour
             speed = lastSpeed;
             doOnce = !doOnce;
         }
+
+        
+
+        MoveDrag();
     }
     void Update()
     {
@@ -53,5 +54,30 @@ public class CameraBehaviour : MonoBehaviour
         transform.Translate(Vector3.up* Time.deltaTime * speed * multiplier);
     }
 
+    public void ZoomInOut(float axis)
+    {
+        distance -= axis * sensitivityDistance;
+        distance = Mathf.Clamp(distance, minFOV, maxFOV);
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, distance, Time.deltaTime * damping);
+    }
+
+    public void MoveDrag()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            dragOrigin = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            //print("buttondown");
+            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+            Vector3 move = new Vector3(pos.x * speed/10,  pos.y * speed/10, pos.z * speed/10);
+
+            transform.Translate(move);
+        }
+            
+       
+    }
 
 }
