@@ -5,9 +5,9 @@ using UnityEngine;
 public abstract class Edificio : MonoBehaviour
 {
 
-	public enum B_Actions { UPGRADE, BUY, FIRE, REPAIR} //used by buttons
+	public enum B_Actions { UPGRADE, BUY_EMPLOYEE, FIRE_EMPLOYEE, REPAIR} //used by buttons
 
-	//setted from Factory and from Manager
+	//setted from Manager
 	protected int managerID = -1;
 	//Upgrading
 	protected bool canBeUpgraded = false;
@@ -41,10 +41,6 @@ public abstract class Edificio : MonoBehaviour
 	public abstract void Repair ( );
 
 	//employee its common for every Building
-	public virtual float GetEmployeePrice ( )
-	{
-		return pricePerEmployee;
-	}
 	public virtual void BuyEmployee ( )
 	{
 		if(currentEmployeeNum < maxEmployeeNum)
@@ -54,7 +50,7 @@ public abstract class Edificio : MonoBehaviour
 	}
 	public virtual void FireEmployee ( )
 	{
-		if(currentEmployeeNum > 0)
+		if (currentEmployeeNum > 0)
 		{
 			currentEmployeeNum--;
 		}
@@ -65,19 +61,28 @@ public abstract class Edificio : MonoBehaviour
 	public abstract void ShowUI ( );
 
 	#region GETTERS
-	public int GetMaxUpgrades ( ) => maxOfUpgrades;
-	public int GetCurrentUpgrade ( ) => currentUpgrade;
+	public virtual int GetID ( ) => managerID;
+	public virtual int GetMaxUpgrades ( ) => maxOfUpgrades;
+	public virtual int GetCurrentUpgrade ( ) => currentUpgrade;
 
-	public float GetDurability ( ) => currentDurability / maxDurability;
+	public virtual float GetDurability ( ) => currentDurability / maxDurability;
 
-	public float GetPriceEmployee ( ) => pricePerEmployee;
-	public float GetMaxEmployee ( ) => maxEmployeeNum;
-	public float GetCurrentEmployee ( ) => currentEmployeeNum;
+	public virtual float GetPriceEmployee ( )
+	{
+		return pricePerEmployee;
+	}
+	public virtual float GetTotalEmployeeCost ( ) => currentEmployeeNum * pricePerEmployee;
+	public virtual float GetMaxEmployee ( ) => maxEmployeeNum;
+	public virtual float GetCurrentEmployeeNum ( ) => currentEmployeeNum;
 
-	public float GetProcesSpeed ( ) => processSpeed;
-	public float GetProgress ( ) => currentProgress;
+	public virtual float GetProcesSpeed ( ) => processSpeed;
+	public virtual float GetProgress ( ) => currentProgress;
 
-	public int GetMaxInmigrants ( ) => maxInmigrantNum;
-	public int GetCurrentInmigrants ( ) => currentInmigrantNum;
+	public virtual int GetMaxInmigrants ( ) => maxInmigrantNum;
+	public virtual int GetCurrentInmigrants ( ) => currentInmigrantNum;
+	#endregion
+
+	#region SETTERS
+	public void SetID (int id) => managerID = id;
 #endregion
 }
