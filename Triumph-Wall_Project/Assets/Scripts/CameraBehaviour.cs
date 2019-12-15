@@ -8,7 +8,7 @@ public class CameraBehaviour : MonoBehaviour
     private float lastSpeed, distance;
     public float minFOV, maxFOV, damping, sensitivityDistance;
     private bool doOnce;
-    Vector3 dragOrigin;
+    Vector2 dragOrigin;
 
     void Start()
     {
@@ -19,7 +19,7 @@ public class CameraBehaviour : MonoBehaviour
 
     public void Tick()
     {
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) ||
+       /* if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) ||
             Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
         {
             if (doOnce) //se que esta condicion podria ir arriba, pero es mas limpio asi que no tenerla 40 veces
@@ -33,11 +33,11 @@ public class CameraBehaviour : MonoBehaviour
         {
             speed = lastSpeed;
             doOnce = !doOnce;
-        }
+        }*/
 
         
 
-        MoveDrag();
+        //MoveDrag();
     }
     void Update()
     {
@@ -61,23 +61,19 @@ public class CameraBehaviour : MonoBehaviour
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, distance, Time.deltaTime * damping);
     }
 
-    public void MoveDrag()
+    public void MoveDrag(Vector2 actualMousePos)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            dragOrigin = Input.mousePosition;
-        }
+     
+        Vector3 pos = Camera.main.ScreenToViewportPoint(actualMousePos - dragOrigin);
+        Vector3 move = new Vector3(pos.x * speed/10,  pos.y * speed/10, pos.z * speed/10);
 
-        if (Input.GetMouseButton(0))
-        {
-            //print("buttondown");
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-            Vector3 move = new Vector3(pos.x * speed/10,  pos.y * speed/10, pos.z * speed/10);
-
-            transform.Translate(move);
-        }
-            
+        transform.Translate(move);            
        
+    }
+
+    public void StartDrag(Vector2 origin)
+    {
+        dragOrigin = origin;
     }
 
 }

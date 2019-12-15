@@ -10,8 +10,6 @@ public class GameMaster : MonoBehaviour
 	private GameState globalState = null;
     private CameraBehaviour cameraController = null;
 
-	public Edificio debug;
-
 	private InputController inputControl = null;
 	private UIController uiController;
     // Start is called before the first frame update
@@ -22,7 +20,6 @@ public class GameMaster : MonoBehaviour
 		inputControl.SetUp(ref globalState);
         cameraController = Camera.main.GetComponent<CameraBehaviour>();
 		uiController.SetUP();
-		debug.SetUP();
     }
 
     // Update is called once per frame
@@ -30,6 +27,5 @@ public class GameMaster : MonoBehaviour
     {
 		inputControl.Tick();
         cameraController.Tick();
-		debug.Tick();
     }
 }

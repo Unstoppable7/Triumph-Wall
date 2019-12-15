@@ -52,7 +52,7 @@ public class InputController : MonoBehaviour
 		/////////////////////LEFT CLICK////////////////////////////////
 		if (player.GetButtonDown( Const.Input.Strings.LEFT_CLICK ))
 		{
-			//lmcClickPos = currentMouse.screenPosition;
+			lmcClickPos = currentMouse.screenPosition;
 			//select object if colided with something
 			//show its UI
 
@@ -62,18 +62,15 @@ public class InputController : MonoBehaviour
 			if (Physics.Raycast( ray, out hit ))
 			{
 				//CameraScript.StartDragMove()
-				lmcClickPos = new Vector2( hit.point.x, hit.point.z );
+				
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
-				}
-				else
-				{
-					Debug.Log( hit.collider.gameObject.name );
-				}
+				}				
 			}
+            Camera.main.GetComponent<CameraBehaviour>().StartDrag(lmcClickPos);
 
-		}
+        }
 		//if button still down call drag events
 		if (player.GetButton( Const.Input.Strings.LEFT_CLICK ))
 		{
@@ -82,18 +79,11 @@ public class InputController : MonoBehaviour
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition);
 
-			if (Physics.Raycast( ray, out hit ))
-			{
-				lmcCurrentPos = new Vector2( hit.point.x, hit.point.z );
-			}
-
 			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
 			{
-				//Dragging
-				//CameraScript.OnDrag( PositionDelta );
-				Vector3 posD = lmcCurrentPos - lmcClickPos;
-				Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
-				testObject.transform.Translate( -move, Space.World );
+                //Dragging
+
+                Camera.main.GetComponent<CameraBehaviour>().MoveDrag(lmcCurrentPos);
 
 			}
 			else
@@ -115,32 +105,33 @@ public class InputController : MonoBehaviour
 		if (player.GetButton( Const.Input.Strings.CAM_UP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
 			&& currentMouse.screenPosition.y <= Screen.height + borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveZ(1);
+        }
 		else if(player.GetButton( Const.Input.Strings.CAM_DOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
 			&& currentMouse.screenPosition.y >= 0- borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveZ(-1);
+        }
 		if (player.GetButton( Const.Input.Strings.CAM_RIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
 			&& currentMouse.screenPosition.x <= Screen.width + borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveX(1);
+        }
 		else if (player.GetButton( Const.Input.Strings.CAM_LEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
 			&& currentMouse.screenPosition.x >= 0 - borderThickness))
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().MoveX(-1);
+        }
 
 		///////////////////////////////////MOUSE WHEEL////////////////////
 		if (player.GetAxis(Const.Input.Strings.WHEEL ) > 0)
 		{
+            Camera.main.GetComponent<CameraBehaviour>().ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
 		}
 		else if(player.GetAxis( Const.Input.Strings.WHEEL ) < 0)
 		{
-
-		}
+            Camera.main.GetComponent<CameraBehaviour>().ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
+        }
 	}
 
 	private void ConstructionState ( )
