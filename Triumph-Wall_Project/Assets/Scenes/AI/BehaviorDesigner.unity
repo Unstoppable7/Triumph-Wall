@@ -544,20 +544,19 @@ Transform:
   m_Father: {fileID: 1112895244}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1013375343
-CapsuleCollider:
+--- !u!135 &1013375343
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013375341}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 5
-  m_Height: 20
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 5}
+  serializedVersion: 2
+  m_Radius: 15
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1112895240
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e0e8099ead95241aa663c601fa2482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider_SensorRange: {fileID: 1013375343}
+  Collider_SensorRange: {fileID: 0}
   FrontDistance_SensorRange: 20
   SideDistance_SensorRange: 5
 --- !u!114 &1112895243
@@ -739,7 +738,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 3.1415927
+  m_Intensity: 3
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -774,7 +773,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827477634}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 7.65, z: -6.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -848,7 +847,7 @@ MonoBehaviour:
   lightDimmer: 1
   m_VolumetricDimmer: 1
   lightUnit: 2
-  sunDiskSize: 1
+  sunDiskSize: 1.2
   sunHaloSize: 0.1
   fadeDistance: 10000
   affectDiffuse: 1
@@ -866,7 +865,7 @@ MonoBehaviour:
   useVolumetric: 1
   featuresFoldout: 1
   showAdditionalSettings: 0
-  displayLightIntensity: 3.1415927
+  displayLightIntensity: 3
   displayAreaLightEmissiveMesh: 0
   lightLayers: 1
   shadowNearPlane: 0.1
