@@ -19,6 +19,10 @@ public class InputController : MonoBehaviour
 	private Vector2 lmcClickPos;
 	private Vector2 lmcCurrentPos;
 
+	public GameObject CameraMovTest;
+	private Vector2 tClickPos;
+	private Vector2 tCurrentPos;
+
 	public void SetUp (ref GameState _currentState )
 	{
 		player = ReInput.players.GetPlayer( 0 );
@@ -40,8 +44,10 @@ public class InputController : MonoBehaviour
 			ManagmentState();
 			break;
 		case GameState.GameStates.EDIT_PATH:
+			EditPathState();
 			break;
 		case GameState.GameStates.CONSTRUCTION:
+			ConstructionState();
 			break;
 		default:
 			break;
@@ -66,6 +72,8 @@ public class InputController : MonoBehaviour
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					//show its UI
+					tClickPos = new Vector2( hit.point.x, hit.point.z );
+
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
 				}				
 			}
@@ -79,6 +87,16 @@ public class InputController : MonoBehaviour
 			{
 				//Dragging
 				cameraController.MoveDrag(lmcCurrentPos);
+				//Borrarlo y ponerlo en la camara
+				//RaycastHit hit;
+				//Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
+				//if (Physics.Raycast( ray, out hit ))
+				//{
+				//	tCurrentPos = new Vector2( hit.point.x, hit.point.z );
+				//	Vector3 posD = tCurrentPos - tClickPos;
+				//	Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
+				//	CameraMovTest.transform.Translate( -move, Space.World );
+				//}
 
 			}
 			else
