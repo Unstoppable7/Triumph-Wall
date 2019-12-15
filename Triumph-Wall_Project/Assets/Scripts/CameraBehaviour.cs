@@ -35,17 +35,27 @@ public class CameraBehaviour : MonoBehaviour
 
     public void MoveDrag(Vector2 actualMousePos)
     {
-     
-        Vector3 pos = Camera.main.ScreenToViewportPoint(actualMousePos - dragOrigin);
-        Vector3 move = new Vector3(pos.x * speed/10,  pos.y * speed/10, pos.z * speed/10);
-
-        transform.Translate(move);            
-       
+		//Borrarlo y ponerlo en la camara
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(actualMousePos);
+		if (Physics.Raycast( ray, out hit ))
+		{
+			actualMousePos = new Vector2( hit.point.x, hit.point.z );
+			Vector3 posD = actualMousePos - dragOrigin;
+			Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
+			transform.Translate( -move, Space.World );
+		}
     }
 
     public void StartDrag(Vector2 origin)
     {
-        dragOrigin = origin;
-    }
-
+        //dragOrigin = origin;
+		//Borrarlo y ponerlo en la camara
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay( origin );
+		if (Physics.Raycast( ray, out hit ))
+		{
+			dragOrigin = new Vector2( hit.point.x, hit.point.z );
+		}
+	}
 }

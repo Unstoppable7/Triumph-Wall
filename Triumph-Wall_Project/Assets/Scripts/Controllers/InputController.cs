@@ -63,7 +63,8 @@ public class InputController : MonoBehaviour
 		if (player.GetButtonDown( Const.Input.Strings.LEFT_CLICK ))
 		{
 			lmcClickPos = currentMouse.screenPosition;
-			cameraController.StartDrag(lmcClickPos);
+			//cameraController.StartDrag(lmcClickPos);
+
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
 			if (Physics.Raycast( ray, out hit ))
@@ -72,8 +73,6 @@ public class InputController : MonoBehaviour
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					//show its UI
-					tClickPos = new Vector2( hit.point.x, hit.point.z );
-
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
 				}				
 			}
@@ -86,18 +85,7 @@ public class InputController : MonoBehaviour
 			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
 			{
 				//Dragging
-				cameraController.MoveDrag(lmcCurrentPos);
-				//Borrarlo y ponerlo en la camara
-				//RaycastHit hit;
-				//Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
-				//if (Physics.Raycast( ray, out hit ))
-				//{
-				//	tCurrentPos = new Vector2( hit.point.x, hit.point.z );
-				//	Vector3 posD = tCurrentPos - tClickPos;
-				//	Vector3 move = new Vector3( posD.x * 1, 0, posD.y * 1 );
-				//	CameraMovTest.transform.Translate( -move, Space.World );
-				//}
-
+				//cameraController.MoveDrag(lmcCurrentPos);
 			}
 			else
 			{
