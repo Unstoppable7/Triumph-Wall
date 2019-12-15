@@ -17,41 +17,13 @@ public class CameraBehaviour : MonoBehaviour
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, distance, Time.deltaTime * damping);
     }
 
-    public void Tick()
-    {
-       /* if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) ||
-            Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
-        {
-            if (doOnce) //se que esta condicion podria ir arriba, pero es mas limpio asi que no tenerla 40 veces
-            {
-                speed /= 2f;
-                doOnce = !doOnce;
-            }
-
-        }
-        else
-        {
-            speed = lastSpeed;
-            doOnce = !doOnce;
-        }*/
-
-        
-
-        //MoveDrag();
-    }
-    void Update()
-    {
-       
-
-    }
-
     public void MoveX(float multiplier) //el multiplier controla la direccion de la camara
     {
-        transform.Translate(Vector3.right * Time.deltaTime * speed * multiplier);
+        transform.Translate(Vector3.right * Time.deltaTime * speed * multiplier, Space.World);
     }
     public void MoveZ(float multiplier)
     {
-        transform.Translate(Vector3.up* Time.deltaTime * speed * multiplier);
+        transform.Translate(Vector3.forward* Time.deltaTime * speed * multiplier, Space.World);
     }
 
     public void ZoomInOut(float axis)

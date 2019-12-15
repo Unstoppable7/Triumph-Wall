@@ -56,6 +56,9 @@ public abstract class Edificio : MonoBehaviour
 		}
 	}
 
+	public virtual void IncrementInmigrants ( ) => currentInmigrantNum++;
+	public virtual void DecrementInmigrants ( ) => currentInmigrantNum--;
+
 	//Uses instace of UIController
 	public abstract void UpdateUIData ( );
 	public abstract void ShowUI ( );

@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 public class InputController : MonoBehaviour
 {
 	Rewired.Player player = null;
-	public GameObject testObject = null;
+
 	private GameState currentState;
+
+	private CameraBehaviour cameraController = null;
 
 	private float borderThickness = 50.0f;
 
@@ -22,6 +24,8 @@ public class InputController : MonoBehaviour
 		player = ReInput.players.GetPlayer( 0 );
 
 		currentState = _currentState;
+
+		cameraController = Camera.main.GetComponent<CameraBehaviour>();
 	}
 
 	public void Tick ( )
@@ -53,43 +57,33 @@ public class InputController : MonoBehaviour
 		if (player.GetButtonDown( Const.Input.Strings.LEFT_CLICK ))
 		{
 			lmcClickPos = currentMouse.screenPosition;
-			//select object if colided with something
-			//show its UI
-
+			cameraController.StartDrag(lmcClickPos);
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition );
-
 			if (Physics.Raycast( ray, out hit ))
 			{
-				//CameraScript.StartDragMove()
-				
+				//select object if colided with something
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
+					//show its UI
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
 				}				
 			}
-            Camera.main.GetComponent<CameraBehaviour>().StartDrag(lmcClickPos);
-
         }
 		//if button still down call drag events
 		if (player.GetButton( Const.Input.Strings.LEFT_CLICK ))
 		{
 			lmcCurrentPos = currentMouse.screenPosition;
 
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay( player.controllers.Mouse.screenPosition);
-
 			if (currentMouse.screenPositionDelta.magnitude > Const.Input.Params.mouseThresHold)
 			{
-                //Dragging
-
-                Camera.main.GetComponent<CameraBehaviour>().MoveDrag(lmcCurrentPos);
+				//Dragging
+				cameraController.MoveDrag(lmcCurrentPos);
 
 			}
 			else
 			{
 				//stoppped draggin
-				//CameraScript.StopDraggin();
 				lmcClickPos = lmcCurrentPos;
 			}
 		}
@@ -105,32 +99,32 @@ public class InputController : MonoBehaviour
 		if (player.GetButton( Const.Input.Strings.CAM_UP ) || (currentMouse.screenPosition.y >= Screen.height - borderThickness 
 			&& currentMouse.screenPosition.y <= Screen.height + borderThickness))
 		{
-            Camera.main.GetComponent<CameraBehaviour>().MoveZ(1);
+			cameraController.MoveZ(1);
         }
 		else if(player.GetButton( Const.Input.Strings.CAM_DOWN ) || (currentMouse.screenPosition.y <= 0 + borderThickness 
 			&& currentMouse.screenPosition.y >= 0- borderThickness))
 		{
-            Camera.main.GetComponent<CameraBehaviour>().MoveZ(-1);
+			cameraController.MoveZ(-1);
         }
 		if (player.GetButton( Const.Input.Strings.CAM_RIGHT) || (currentMouse.screenPosition.x >= Screen.width - borderThickness
 			&& currentMouse.screenPosition.x <= Screen.width + borderThickness))
 		{
-            Camera.main.GetComponent<CameraBehaviour>().MoveX(1);
+			cameraController.MoveX(1);
         }
 		else if (player.GetButton( Const.Input.Strings.CAM_LEFT) || (currentMouse.screenPosition.x <= 0 + borderThickness
 			&& currentMouse.screenPosition.x >= 0 - borderThickness))
 		{
-            Camera.main.GetComponent<CameraBehaviour>().MoveX(-1);
+			cameraController.MoveX(-1);
         }
 
 		///////////////////////////////////MOUSE WHEEL////////////////////
 		if (player.GetAxis(Const.Input.Strings.WHEEL ) > 0)
 		{
-            Camera.main.GetComponent<CameraBehaviour>().ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
+			cameraController.ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
 		}
 		else if(player.GetAxis( Const.Input.Strings.WHEEL ) < 0)
 		{
-            Camera.main.GetComponent<CameraBehaviour>().ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
+			cameraController.ZoomInOut(player.GetAxis(Const.Input.Strings.WHEEL));
         }
 	}
 

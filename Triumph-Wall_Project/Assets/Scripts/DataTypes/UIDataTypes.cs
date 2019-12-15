@@ -72,6 +72,9 @@ namespace UIDataTypes
 			public float salubrity = 0;
 			public float control = 0;
 		}
-
+		public class UIDorm_Data : UIB_Data
+		{
+			public float hola = -1;
+		}
 	}
 }

@@ -9,23 +9,28 @@ public class GameMaster : MonoBehaviour
 	[SerializeField][Required]
 	private GameState globalState = null;
     private CameraBehaviour cameraController = null;
-
 	private InputController inputControl = null;
 	private UIController uiController;
-    // Start is called before the first frame update
+
+	[SceneObjectsOnly][SerializeField]
+	private CentroDeRetencion buildingsManager;
+
     void Start()
     {
+		//GET
 		inputControl = GetComponent<InputController>();
 		uiController = GetComponent<UIController>();
-		inputControl.SetUp(ref globalState);
         cameraController = Camera.main.GetComponent<CameraBehaviour>();
+		//SET
+		inputControl.SetUp(ref globalState);
 		uiController.SetUP();
+		buildingsManager.SetUP();
     }
 
     // Update is called once per frame
     void Update()
     {
 		inputControl.Tick();
-        cameraController.Tick();
+		buildingsManager.Tick();
     }
 }

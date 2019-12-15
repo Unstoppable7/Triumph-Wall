@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static RaycastHit RayPicking(Vector2 mousePos)
+    public static RaycastHit ScreenRayPicking(Vector2 mousePos)
     {
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         RaycastHit hit;
