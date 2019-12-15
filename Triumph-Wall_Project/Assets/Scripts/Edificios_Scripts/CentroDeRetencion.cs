@@ -84,7 +84,72 @@ public class CentroDeRetencion : Edificio
 		throw new System.NotImplementedException();
 	}
 
-	public void PutBuilding(Edificio building)
+	#region Salubrity
+
+	private float CalculateSalubrity ( )
+	{
+		float inmigrantesMaxDormitorios = GetMaxOfIlegalsInDorms();
+		float inmigrantesEnDormitorios = GetNumOfIlegalsInDorms();
+
+		float aforo = inmigrantesEnDormitorios / inmigrantesMaxDormitorios;
+		
+		//MIN -1 MAX 1
+		float result = 0;
+		if (aforo > 1)
+			result -= aforo * factorSuciedad * Time.deltaTime;
+		else
+			result += (1 + (1 - aforo * factorSuciedad * Time.deltaTime));
+
+		return result;
+	}
+
+	private float GetMaxOfIlegalsInDorms ( )
+	{
+		//TODO hacer dormitorios para poder completar esta funcion
+		return 10;
+	}
+	private float GetNumOfIlegalsInDorms ( )
+	{
+		//TODO hacer dormitorios para poder completar esta funcion
+		return 10;
+	}
+
+	#endregion
+
+	#region Control
+	private float CalculateControl ( )
+	{
+		float result = 0;
+		result = 1 - ((currentInmigrantNum - 
+			(currentEmployeeNum * inmigrantesPorGuardia)) /
+			maxInmigrantNum);
+
+		return result;
+	}
+
+	private int CalculateMaxIlegalsInFacility ( )
+	{
+		//TODO: en verdad esto deberia ser 0
+		int result = 1;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetMaxInmigrants();
+		}
+		return result;
+	}
+	private int GetCurrentTotalOfIlegals ( )
+	{
+		int result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetCurrentInmigrants();
+		}
+		return result;
+	}
+	#endregion
+
+	////////////////////////////////////////////MANAGER////////////
+	public void AddBuilding(Edificio building)
 	{
 		edificiosDelRecinto.Add( building );
 		building.SetID( edificiosDelRecinto.Count - 1 );
@@ -125,68 +190,5 @@ public class CentroDeRetencion : Edificio
 	public float GetBuildingEmployeeCost (int indx )
 	{
 		return edificiosDelRecinto[indx].GetTotalEmployeeCost();
-	}
-
-	/// <returns></returns>
-	#region Salubrity
-
-	private float CalculateSalubrity ( )
-	{
-		float inmigrantesMaxDormitorios = GetMaxOfIlegalsInDorms();
-		float inmigrantesEnDormitorios = GetNumOfIlegalsInDorms();
-
-		float aforo = inmigrantesEnDormitorios / inmigrantesMaxDormitorios;
-		
-		//MIN -1 MAX 1
-		float result = 0;
-		if (aforo > 1)
-			result -= aforo * factorSuciedad * Time.deltaTime;
-		else
-			result += (1 + (1 - aforo * factorSuciedad * Time.deltaTime));
-
-		return result;
-	}
-
-	private float GetMaxOfIlegalsInDorms ( )
-	{
-		//TODO hacer dormitorios para poder completar esta funcion
-		return 10;
-	}
-	private float GetNumOfIlegalsInDorms ( )
-	{
-		//TODO hacer dormitorios para poder completar esta funcion
-		return 10;
-	}
-
-#endregion
-
-	private float CalculateControl ( )
-	{
-		float result = 0;
-		result = 1 - ((currentInmigrantNum - 
-			(currentEmployeeNum * inmigrantesPorGuardia)) /
-			maxInmigrantNum);
-
-		return result;
-	}
-
-	private int CalculateMaxIlegalsInFacility ( )
-	{
-		//TODO: en verdad esto deberia ser 0
-		int result = 1;
-		foreach (Edificio building in edificiosDelRecinto)
-		{
-			result += building.GetMaxInmigrants();
-		}
-		return result;
-	}
-	private int GetCurrentTotalOfIlegals ( )
-	{
-		int result = 0;
-		foreach (Edificio building in edificiosDelRecinto)
-		{
-			result += building.GetCurrentInmigrants();
-		}
-		return result;
 	}
 }
