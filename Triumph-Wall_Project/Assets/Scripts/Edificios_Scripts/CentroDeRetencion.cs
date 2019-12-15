@@ -9,7 +9,7 @@ public class CentroDeRetencion : Edificio
 
 	private UIDataTypes.Buildings.UICR_Data myUIData;
 
-	public float salubridad;
+	public float salubridad = 0;
 	public float control = 0;
 	public float factorSuciedad = 1.0f;
 	public int inmigrantesPorGuardia = 5;
@@ -33,9 +33,9 @@ public class CentroDeRetencion : Edificio
 		//getIT from Balance File
 		currentEmployeeNum = 0;
 		maxEmployeeNum = 10;
-
-		maxInmigrantNum = CalculateMaxIlegalsInFacility();
-		currentInmigrantNum = GetCurrentTotalOfIlegals();
+		currentInmigrantNum = GetCurrentIlegals();
+		salubridad = 0;
+		control = 0;
 	}
 
 	public override void Tick ( )
@@ -44,8 +44,11 @@ public class CentroDeRetencion : Edificio
 		{
 			building.Tick();
 		}
-		salubridad = CalculateSalubrity();
+		salubridad += CalculateSalubrity();
+		salubridad = Mathf.Clamp( salubridad, -1, 1 );
+
 		control = CalculateControl();
+		control = Mathf.Clamp( control, 0, 1 );
 		UpdateUIData();
 	}  
 
@@ -96,10 +99,10 @@ public class CentroDeRetencion : Edificio
 		//MIN -1 MAX 1
 		float result = 0;
 		if (aforo > 1)
-			result -= aforo * factorSuciedad * Time.deltaTime;
-		else
-			result += (1 + (1 - aforo * factorSuciedad * Time.deltaTime));
-
+			result = -aforo * factorSuciedad * Time.deltaTime;
+		else if(aforo < 1)
+			result = (1+(1-aforo)) * factorSuciedad * Time.deltaTime;
+		
 		return result;
 	}
 
@@ -111,7 +114,7 @@ public class CentroDeRetencion : Edificio
 	private float GetNumOfIlegalsInDorms ( )
 	{
 		//TODO hacer dormitorios para poder completar esta funcion
-		return 10;
+		return 0;
 	}
 
 	#endregion
@@ -119,25 +122,16 @@ public class CentroDeRetencion : Edificio
 	#region Control
 	private float CalculateControl ( )
 	{
+		currentInmigrantNum = GetCurrentIlegals();
+
 		float result = 0;
-		result = 1 - ((currentInmigrantNum - 
-			(currentEmployeeNum * inmigrantesPorGuardia)) /
-			maxInmigrantNum);
+		result = 1.0f - ((float)(currentInmigrantNum - (currentEmployeeNum * inmigrantesPorGuardia)) /
+			currentInmigrantNum);
 
 		return result;
 	}
 
-	private int CalculateMaxIlegalsInFacility ( )
-	{
-		//TODO: en verdad esto deberia ser 0
-		int result = 1;
-		foreach (Edificio building in edificiosDelRecinto)
-		{
-			result += building.GetMaxInmigrants();
-		}
-		return result;
-	}
-	private int GetCurrentTotalOfIlegals ( )
+	private int GetCurrentIlegals ( )
 	{
 		int result = 0;
 		foreach (Edificio building in edificiosDelRecinto)

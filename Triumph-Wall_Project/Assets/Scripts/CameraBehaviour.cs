@@ -30,6 +30,7 @@ public class CameraBehaviour : MonoBehaviour
     {
         distance -= axis * sensitivityDistance;
         distance = Mathf.Clamp(distance, minFOV, maxFOV);
+
         Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, distance, Time.deltaTime * damping);
     }
 
