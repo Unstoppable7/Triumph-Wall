@@ -84,10 +84,49 @@ public class CentroDeRetencion : Edificio
 		throw new System.NotImplementedException();
 	}
 
-	/// <summary>
-	/// En vez de calcular la salubridad desde aqui podriamos hacerlo desde los dormitorios
-	/// ya que solo afectan a la salubridad los inmigrantes de los dormitorios
-	/// </summary>
+	public void PutBuilding(Edificio building)
+	{
+		edificiosDelRecinto.Add( building );
+		building.SetID( edificiosDelRecinto.Count - 1 );
+	}
+
+	//Method called from buttons
+	public void DoBuildingAction ( B_Actions action, int bIndex )
+	{
+		switch (action)
+		{
+		case B_Actions.UPGRADE:
+			edificiosDelRecinto[bIndex].Upgrade();
+			break;
+		case B_Actions.BUY_EMPLOYEE:
+			edificiosDelRecinto[bIndex].BuyEmployee();
+			break;
+		case B_Actions.FIRE_EMPLOYEE:
+			edificiosDelRecinto[bIndex].FireEmployee();
+			break;
+		case B_Actions.REPAIR:
+			edificiosDelRecinto[bIndex].Repair();
+			break;
+		default:
+			break;
+		}
+	}
+
+	//Method Called by Resource Manager
+	public float TotalCostOfEmployeeInFacility ( )
+	{
+		float result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetTotalEmployeeCost();
+		}
+		return result;
+	}
+	public float GetBuildingEmployeeCost (int indx )
+	{
+		return edificiosDelRecinto[indx].GetTotalEmployeeCost();
+	}
+
 	/// <returns></returns>
 	#region Salubrity
 
