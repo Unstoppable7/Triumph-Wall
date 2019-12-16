@@ -18,7 +18,7 @@ MonoBehaviour:
   m_FrameSettings:
     overrides: 0
     enableShadow: 1
-    enableContactShadows: 1
+    enableContactShadows: 0
     enableShadowMask: 1
     enableSSR: 1
     enableSSAO: 1
@@ -31,7 +31,7 @@ MonoBehaviour:
     diffuseGlobalDimmer: 1
     specularGlobalDimmer: 1
     shaderLitMode: 1
-    enableDepthPrepassWithDeferredRendering: 1
+    enableDepthPrepassWithDeferredRendering: 0
     enableTransparentPrepass: 1
     enableMotionVectors: 1
     enableObjectMotionVectors: 1
@@ -190,7 +190,7 @@ MonoBehaviour:
       maxDecalsOnScreen: 512
     hdShadowInitParams:
       shadowAtlasResolution: 4096
-      maxShadowRequests: 128
+      maxShadowRequests: 256
       shadowMapsDepthBits: 32
       useDynamicViewportRescale: 1
       shadowQuality: 0

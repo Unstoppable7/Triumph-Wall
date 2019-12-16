@@ -1,31 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.HDPipeline;
 
 public class TimerController : MonoBehaviour
 {
+
+	[Header("Clock")]
 	[SerializeField]
 	private bool use24Clock = true;
 	[SerializeField]
 	private TMPro.TextMeshProUGUI clockText;
+	[SerializeField]
+	private float _elapsedTime;
 
 	[Header( "Time" )]
 	[Tooltip( "Day Length in Minutes" )]
 	[SerializeField][Range(0f, 1440.0f)]
 	private float _targetDayLength = 0.5f; //length of day in minutes
 
-	[SerializeField]
-	private float _elapsedTime;
-
+	public static float startDay = 0.24f;
+	public static float endDay = 0.74f;
 	[SerializeField][Range( 0f, 1f )]
 	private float _timeOfDay;
 
+	[Header("Tracking")]
 	[SerializeField]
 	private int _dayNumber = 0; //tracks the days passed
-
 	[SerializeField]
 	private int _yearNumber = 0;
-
 	[SerializeField]
 	private int _yearLength = 100;
 
@@ -39,7 +42,9 @@ public class TimerController : MonoBehaviour
 	[Header( "Sun Light" )]
 	[SerializeField]
 	private Transform dailyRotation;
+	[SerializeField]
 	private Light sun;
+	private HDAdditionalLightData sunData;
 	private float intensity;
 	[SerializeField]
 	private float sunBaseIntensity = 1f;
@@ -55,9 +60,11 @@ public class TimerController : MonoBehaviour
 	[Range( -45f, 45f )]
 	private float maxSeasonalTilt;
 
+	private List<DNModuleBase> moduleList = new List<DNModuleBase>();
+
 	private void Start ( )
 	{
-		sun = dailyRotation.GetComponentInChildren<Light>();
+		sunData = sun.gameObject.GetComponent<HDAdditionalLightData>();
 		NormalTimeCurve();
 	}
 
@@ -72,7 +79,7 @@ public class TimerController : MonoBehaviour
 		AdjustSunRotation();
 		SunIntensity();
 		AdjustSunColor();
-		//UpdateModules(); //will update modules each frame
+		UpdateModules(); //will update modules each frame
 	}
 
 	private void UpdateTimeScale ( )
@@ -129,11 +136,45 @@ public class TimerController : MonoBehaviour
 		intensity = Vector3.Dot( sun.transform.forward, Vector3.down );
 		intensity = Mathf.Clamp01( intensity );
 
-		sun.intensity = intensity * sunVariation + sunBaseIntensity;
-	}
+		//sun.intensity = intensity * sunVariation + sunBaseIntensity;
+		sunData.intensity = intensity * sunVariation + sunBaseIntensity;
 
+		if (_timeOfDay < startDay || _timeOfDay > endDay)
+		{
+			if (sun.shadows == LightShadows.Hard)
+			{
+				sun.shadows = LightShadows.None;
+			}
+		}
+		else
+		{
+			if (sun.shadows == LightShadows.None)
+			{
+				sun.shadows = LightShadows.Hard;
+			}
+		}
+	}
 	private void AdjustSunColor ( )
 	{
 		sun.color = sunColor.Evaluate( intensity );
+	}
+
+	public void AddModule (DNModuleBase module)
+	{
+		moduleList.Add( module );
+	}
+
+	public void RemoveModule (DNModuleBase module)
+	{
+		moduleList.Remove( module );
+	}
+
+	//update each module based on current sun intensity
+	private void UpdateModules ( )
+	{
+		foreach (DNModuleBase module in moduleList)
+		{
+			module.UpdateModule( intensity, _timeOfDay );
+		}
 	}
 }
