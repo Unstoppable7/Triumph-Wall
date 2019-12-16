@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 
-public class TimerController : MonoBehaviour
+public class TimerController : SerializedMonoBehaviour
 {
 
 	[Header("Clock")]
@@ -19,8 +20,10 @@ public class TimerController : MonoBehaviour
 	[SerializeField][Range(0f, 1440.0f)]
 	private float _targetDayLength = 0.5f; //length of day in minutes
 
-	public static float startDay = 0.24f;
-	public static float endDay = 0.74f;
+	[ShowInInspector]
+	public static float startDay = 0.25f;
+	[ShowInInspector]
+	public static float endDay = 0.75f;
 	[SerializeField][Range( 0f, 1f )]
 	private float _timeOfDay;
 
