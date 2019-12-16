@@ -76,5 +76,10 @@ namespace UIDataTypes
 		{
 			public float hola = -1;
 		}
-	}
+        public class UIODI: UIB_Data //oficina deportaçao
+        {
+            public float deportTime = 0;
+            public float numFuncs = 0;
+        }
+    }
 }
