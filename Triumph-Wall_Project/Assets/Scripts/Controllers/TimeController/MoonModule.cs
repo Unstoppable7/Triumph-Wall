@@ -6,12 +6,12 @@ using UnityEngine.Experimental.Rendering.HDPipeline;
 public class MoonModule : DNModuleBase
 {
 	[SerializeField]
-	private Light moon;
-	private HDAdditionalLightData moonData;
+	private Light moon = null;
+	private HDAdditionalLightData moonData = null;
 	[SerializeField]
-	private Gradient moonColor;
+	private Gradient moonColor = null;
 	[SerializeField]
-	private float baseIntensity;
+	private float baseIntensity = 0;
 	private void Start ( )
 	{
 		moonData = moon.gameObject.GetComponent<HDAdditionalLightData>();

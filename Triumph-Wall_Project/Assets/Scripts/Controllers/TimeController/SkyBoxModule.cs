@@ -7,11 +7,11 @@ using UnityEngine.Experimental.Rendering.HDPipeline;
 public class SkyBoxModule : DNModuleBase
 {
 	[SerializeField]
-	private Gradient skyColor;
+	private Gradient skyColor = null;
 	[SerializeField]
-	private Gradient horizonColor;
+	private Gradient horizonColor = null;
 	[SerializeField]
-	private Volume sceneVolumeSettings;
+	private Volume sceneVolumeSettings = null;
 	[SerializeField]
 	private int indexOfSkybox = 2;
 
@@ -19,7 +19,7 @@ public class SkyBoxModule : DNModuleBase
 	{
 		//HDRP
 		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).skyTint.value = skyColor.Evaluate( intensity );
-		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).groundColor.value = skyColor.Evaluate( intensity );
+		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).groundColor.value = horizonColor.Evaluate( intensity );
 		//DRP
 		//RenderSettings.skybox.SetColor( "_SkyTint", skyColor.Evaluate( intensity ) );
 		//RenderSettings.skybox.SetColor( "_GroundColor", horizonColor.Evaluate( intensity ) );

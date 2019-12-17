@@ -1,18 +1,17 @@
 ﻿using Sirenix.OdinInspector;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
+using UnityEngine.Events;
 
 public class TimerController : SerializedMonoBehaviour
 {
-
 	[Header("Clock")]
 	[SerializeField]
 	private bool use24Clock = true;
 	[SerializeField]
-	private TMPro.TextMeshProUGUI clockText;
-	[SerializeField]
+	private TMPro.TextMeshProUGUI clockText = null;
+	[ShowInInspector][DisplayAsString]
 	private float _elapsedTime;
 
 	[Header( "Time" )]
@@ -25,59 +24,70 @@ public class TimerController : SerializedMonoBehaviour
 	[ShowInInspector]
 	public static float endDay = 0.75f;
 	[SerializeField][Range( 0f, 1f )]
-	private float _timeOfDay;
-
-	[Header("Tracking")]
-	[SerializeField]
-	private int _dayNumber = 0; //tracks the days passed
-	[SerializeField]
-	private int _yearNumber = 0;
-	[SerializeField]
-	private int _yearLength = 100;
+	private float _timeOfDay = 0;
 
 	private float _timeScale = 100f;
 	public bool pause = false;
 
 	[SerializeField]
-	private AnimationCurve timeCurve;
-	private float timeCurveNormalization;
+	private AnimationCurve timeCurve = null;
+	private float timeCurveNormalization = 0;
+
+	[Header("Tracking")]
+	[ShowInInspector][DisplayAsString]
+	private int _dayNumber = 1; //tracks the days passed
+	[ShowInInspector][DisplayAsString]
+	private int _monthNumber = 1; //tracks the days passed
+	[ShowInInspector][DisplayAsString]
+	private int _yearNumber = 1;
+
+	[SerializeField][Tooltip("In Days")]
+	private int _monthLenght = 30; //tracks the days passed
+	[SerializeField]
+	[Tooltip( "In Months" )]
+	private int _yearLength = 12; 
 
 	[Header( "Sun Light" )]
 	[SerializeField]
-	private Transform dailyRotation;
+	private Transform dailyRotation = null;
 	[SerializeField]
-	private Light sun;
-	private HDAdditionalLightData sunData;
+	private Light sun = null;
+	private HDAdditionalLightData sunData = null;
 	private float intensity;
 	[SerializeField]
 	private float sunBaseIntensity = 1f;
 	[SerializeField]
 	private float sunVariation = 1.5f;
 	[SerializeField]
-	private Gradient sunColor;
+	private Gradient sunColor = null;
 
 	[Header( "Seasonal Variables" )]
 	[SerializeField]
-	private Transform sunSeasonalRotation;
+	private Transform sunSeasonalRotation = null;
 	[SerializeField]
 	[Range( -45f, 45f )]
-	private float maxSeasonalTilt;
-
+	private float maxSeasonalTilt = 30;
+	
+	[ShowInInspector][ReadOnly]
 	private List<DNModuleBase> moduleList = new List<DNModuleBase>();
 
-	private void Start ( )
+	public UnityEvent daylyEvent = new UnityEvent();
+	public UnityEvent monthlyEvent = new UnityEvent();
+	public UnityEvent anualEvent = new UnityEvent();
+
+	public void SetUP ( )
 	{
 		sunData = sun.gameObject.GetComponent<HDAdditionalLightData>();
 		NormalTimeCurve();
 	}
 
-	private void Update ( )
+	public void Tick ( )
 	{
 		if (!pause)
 		{
 			UpdateTimeScale();
 			UpdateTime();
-			//UpdateClock();
+			UpdateClock();
 		}
 		AdjustSunRotation();
 		SunIntensity();
@@ -97,12 +107,10 @@ public class TimerController : SerializedMonoBehaviour
 		float stepSize = 0.01f;
 		int numberSteps = Mathf.FloorToInt( 1f / stepSize );
 		float curveTotal = 0;
-
 		for (int i = 0; i < numberSteps; i++)
 		{
 			curveTotal += timeCurve.Evaluate( i * stepSize );
 		}
-
 		timeCurveNormalization = curveTotal / numberSteps; //keeps day length at target value
 	}
 
@@ -114,14 +122,49 @@ public class TimerController : SerializedMonoBehaviour
 		if (_timeOfDay > 1) //new day!!
 		{
 			_elapsedTime = 0;
-			_dayNumber++;
 			_timeOfDay -= 1;
 
-			if (_dayNumber > _yearLength) //new year!
+			_dayNumber++;
+
+			if(_dayNumber > _monthLenght)
+			{
+				_monthNumber++;
+				_dayNumber = 1;
+				monthlyEvent.Invoke();
+			}
+
+			if (_monthNumber > _yearLength) //new year!
 			{
 				_yearNumber++;
-				_dayNumber = 0;
+				_monthNumber = 1;
+				anualEvent.Invoke();
 			}
+
+			daylyEvent.Invoke();
+		}
+	}
+
+	private void UpdateClock ( )
+	{
+		float time = _elapsedTime / (_targetDayLength * 60);
+		float hour = Mathf.FloorToInt( time * 24 );
+		float minute = Mathf.FloorToInt( ((time * 24) - hour) * 60 );
+
+		string calendarString = string.Format("{0:00}/{1:00}/{2:00}", _dayNumber, _monthNumber, _yearNumber);
+
+		if (!use24Clock && hour > 12)
+			hour -= 12;
+
+		if(!use24Clock)
+		{
+			if (time > 0.5f)
+				clockText.text = string.Format( "{0:00}:{1:00} pm\n"+ calendarString, hour, minute );
+			else
+				clockText.text = string.Format( "{0:00}:{1:00} am\n"+ calendarString, hour, minute );
+		}
+		else
+		{
+			clockText.text = string.Format( "{0:00}:{1:00}\n"+ calendarString, hour, minute );
 		}
 	}
 
@@ -130,8 +173,12 @@ public class TimerController : SerializedMonoBehaviour
 	{
 		float sunAngle = _timeOfDay * 360f;
 		dailyRotation.transform.localRotation = Quaternion.Euler( new Vector3( 0f, 0f, sunAngle ) );
+		float totaldays = ((_monthNumber - 1) * (_monthLenght) + _dayNumber-1);
+		float maxYearDay = (_monthLenght * _yearLength);
 
-		float seasonalAngle = -maxSeasonalTilt * Mathf.Cos( _dayNumber / _yearLength * 2f * Mathf.PI );
+		float cos = Mathf.Cos((totaldays / maxYearDay) * 2f * Mathf.PI );
+		float seasonalAngle = -maxSeasonalTilt * cos;
+
 		sunSeasonalRotation.localRotation = Quaternion.Euler( new Vector3( seasonalAngle, 0f, 0f ) );
 	}
 	private void SunIntensity ( )
@@ -166,12 +213,10 @@ public class TimerController : SerializedMonoBehaviour
 	{
 		moduleList.Add( module );
 	}
-
 	public void RemoveModule (DNModuleBase module)
 	{
 		moduleList.Remove( module );
 	}
-
 	//update each module based on current sun intensity
 	private void UpdateModules ( )
 	{
