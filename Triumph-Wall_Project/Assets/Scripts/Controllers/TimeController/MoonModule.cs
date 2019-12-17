@@ -12,11 +12,12 @@ public class MoonModule : DNModuleBase
 	private Gradient moonColor = null;
 	[SerializeField]
 	private float baseIntensity = 0;
-	private void Start ( )
+
+	public override void SetUp ( )
 	{
 		moonData = moon.gameObject.GetComponent<HDAdditionalLightData>();
-
 	}
+
 	public override void UpdateModule (float intensity, float timeOfDay)
 	{
 		moon.color = moonColor.Evaluate( 1 - intensity );

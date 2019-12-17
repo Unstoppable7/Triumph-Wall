@@ -7,65 +7,82 @@ using UnityEngine.Events;
 public class TimerController : SerializedMonoBehaviour
 {
 	[Header("Clock")]
+	[FoldoutGroup( "Clock" )]
 	[SerializeField]
 	private bool use24Clock = true;
 	[SerializeField]
+	[FoldoutGroup( "Clock" )]
 	private TMPro.TextMeshProUGUI clockText = null;
 	[ShowInInspector][DisplayAsString]
+	[FoldoutGroup( "Clock" )]
 	private float _elapsedTime;
 
-	[Header( "Time" )]
+	[FoldoutGroup( "Time" )]
 	[ShowInInspector]
 	public static float startDay = 0.25f;
 	[ShowInInspector]
+	[FoldoutGroup( "Time" )]
 	public static float endDay = 0.75f;
 	[Tooltip( "Day Length in Minutes" )]
 	[SerializeField][Range(0f, 1440.0f)]
+	[FoldoutGroup( "Time" )]
 	private float _targetDayLength = 0.5f; //length of day in minutes
 
 	[SerializeField][Range( 0f, 1f )]
+	[FoldoutGroup( "Time" )]
 	private float _timeOfDay = 0;
 
 	private float _timeScale = 100f;
+	[FoldoutGroup( "Time" )]
 	public bool pause = false;
 
 	[SerializeField]
+	[FoldoutGroup( "Time" )]
 	private AnimationCurve timeCurve = null;
 	private float timeCurveNormalization = 0;
 
-	[Header("Tracking")]
+	[FoldoutGroup( "Tracking" )]
 	[ShowInInspector][DisplayAsString]
 	private int _dayNumber = 1; //tracks the days passed
 	[ShowInInspector][DisplayAsString]
+	[FoldoutGroup( "Tracking" )]
 	private int _monthNumber = 1; //tracks the days passed
 	[ShowInInspector][DisplayAsString]
+	[FoldoutGroup( "Tracking" )]
 	private int _yearNumber = 1;
 
 	[SerializeField][Tooltip("In Days")]
+	[FoldoutGroup( "Tracking" )]
 	private int _monthLenght = 30; //tracks the days passed
 	[SerializeField]
 	[Tooltip( "In Months" )]
+	[FoldoutGroup( "Tracking" )]
 	private int _yearLength = 12; 
 
-	[Header( "Sun Light" )]
+	[FoldoutGroup( "Sun Light" )]
 	[SerializeField]
 	private Transform dailyRotation = null;
+	[FoldoutGroup( "Sun Light" )]
 	[SerializeField]
 	private Light sun = null;
 	private HDAdditionalLightData sunData = null;
 	private float intensity;
 	[SerializeField]
+	[FoldoutGroup( "Sun Light" )]
 	private float sunBaseIntensity = 1f;
 	[SerializeField]
+	[FoldoutGroup( "Sun Light" )]
 	private float sunVariation = 1.5f;
 	[SerializeField]
+	[FoldoutGroup( "Sun Light" )]
 	private Gradient sunColor = null;
 
-	[Header( "Seasonal Variables" )]
+	[FoldoutGroup( "Seasonal Variables" )]
 	[SerializeField]
 	private Transform sunSeasonalRotation = null;
 	[SerializeField]
 	[Range( -45f, 45f )]
+	[FoldoutGroup( "Seasonal Variables" )]
 	private float maxSeasonalTilt = 30;
 	
 	[ShowInInspector][ReadOnly]
@@ -81,6 +98,14 @@ public class TimerController : SerializedMonoBehaviour
 	public void SetUP ( )
 	{
 		sunData = sun.gameObject.GetComponent<HDAdditionalLightData>();
+		moduleList.Clear();
+		moduleList.AddRange( GetComponents<DNModuleBase>() );
+
+		foreach(DNModuleBase module in moduleList)
+		{
+			module.SetUp();
+		}
+
 		NormalTimeCurve();
 	}
 
@@ -227,5 +252,19 @@ public class TimerController : SerializedMonoBehaviour
 		{
 			module.UpdateModule( intensity, _timeOfDay );
 		}
+	}
+
+	[SerializeField]
+	[FoldoutGroup( "Set Day and Night Scene" )]
+	[Range(0.0f,1.0f)]
+	private float where = 0;
+
+	[FoldoutGroup( "Set Day and Night Scene" ,-1)]
+	[Button( ButtonSizes.Medium)]
+	private void MakeDay ()
+	{
+		_timeOfDay = where;
+		SetUP();
+		Tick();
 	}
 }

@@ -4127,7 +4127,6 @@ MonoBehaviour:
     SerializationNodes: []
   use24Clock: 1
   clockText: {fileID: 1231478482504914615}
-  _elapsedTime: 0
   _targetDayLength: 0.5
   _timeOfDay: 0
   pause: 0
@@ -4210,21 +4209,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   sunSeasonalRotation: {fileID: 4130286532316221727}
   maxSeasonalTilt: 45
-  daylyEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  monthlyEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  anualEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &683584160307401090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4338,6 +4322,9 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
+  exposure1: -0.5
+  exposure2: 6
+  baseMultiplier: 1
   sceneVolumeSettings: {fileID: 0}
   indexOfSkybox: 2
 --- !u!1 &8396166498147069814

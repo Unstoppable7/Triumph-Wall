@@ -21,6 +21,10 @@ public class SkyBoxModule : DNModuleBase
 	[SerializeField]
 	private int indexOfSkybox = 2;
 
+	public override void SetUp ( )
+	{
+
+	}
 	public override void UpdateModule (float intensity, float timeOfDay)
 	{
 		//HDRP
