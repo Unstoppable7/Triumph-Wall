@@ -12,17 +12,21 @@ public class OficinaDeportacionBehaviour : Edificio
     public int durabilityDays, resetDurabilityDays;
 
     public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
-    public GameObject test;
 
     private UIDataTypes.Buildings.UIODI_Data myUIData;
 
     void Start()
     {
-        immigrantsToDeport.Enqueue(test);
         SetUP();
     }
 
-    public override void SetUP()
+	// Update is called once per frame
+	void Update ( )
+	{
+		Tick();
+	}
+
+	public override void SetUP()
     {
         myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UIODI_Data>();
 
@@ -38,17 +42,10 @@ public class OficinaDeportacionBehaviour : Edificio
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        currentInmigrantNum = immigrantsToDeport.Count;
-        RemoveImmigrant();
-        Tick();
-    }
-
     public override void Tick()
-    {
-        //RemoveImmigrant();
+	{
+		currentInmigrantNum = immigrantsToDeport.Count;
+		RemoveImmigrant();
         UpdateUIData();
     }
 

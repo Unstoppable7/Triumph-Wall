@@ -19,9 +19,16 @@ public class CentroDeRetencion : Edificio
 		myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
 		//TODO initialize buidlings
 		//Oficina
+		edificiosDelRecinto.Add( GetComponentInChildren<OficinaDeportacionBehaviour>() );
 		//Dorms
 		//Enfermeria
 		//Cocina
+		// SetUp all buidling
+		for (int i = 0; i < edificiosDelRecinto.Count; i++)
+		{
+			edificiosDelRecinto[i].SetUP();
+			edificiosDelRecinto[i].SetID(i);
+		}
 		// las funciones de los empleados se usaran desde el editor de rutas
 		myUIData.showBuyEmployeeBtn = false;
 		myUIData.showFireEmployeeBtn = false;

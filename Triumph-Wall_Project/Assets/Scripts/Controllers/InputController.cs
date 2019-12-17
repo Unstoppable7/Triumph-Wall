@@ -19,7 +19,6 @@ public class InputController : MonoBehaviour
 	private Vector2 lmcClickPos;
 	private Vector2 lmcCurrentPos;
 
-	public GameObject CameraMovTest;
 	private Vector2 tClickPos;
 	private Vector2 tCurrentPos;
 
