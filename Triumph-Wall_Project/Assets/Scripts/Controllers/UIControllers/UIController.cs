@@ -21,7 +21,14 @@ public class UIController : SingletonComponent<UIController>
 		edificiosUi.canvas.SetActive( true );
 	}
 
-	public void HideUI ( )
+    public void ShowEdificioUI(UIODI_Data toShow)
+    {
+        //overlapping UI showing = false;
+        edificiosUi.StartShowUI(toShow);
+        edificiosUi.canvas.SetActive(true);
+    }
+
+    public void HideUI ( )
 	{
 		edificiosUi.Hide();
 	}

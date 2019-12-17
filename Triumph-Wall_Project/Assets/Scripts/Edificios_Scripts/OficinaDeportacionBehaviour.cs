@@ -11,39 +11,55 @@ public class OficinaDeportacionBehaviour : Edificio
     public int structureCost, maintenanceCost;
     public int durabilityDays, resetDurabilityDays;
 
-    public Queue<GameObject> immigrantsToDeport;
+    public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
+    public GameObject test;
 
-    private UIDataTypes.Buildings.UIODI myUIData;
+    private UIDataTypes.Buildings.UIODI_Data myUIData;
 
     void Start()
     {
-        
+        immigrantsToDeport.Enqueue(test);
+        SetUP();
     }
 
     public override void SetUP()
     {
-        numFuncs = 1;
-        deportTime = 10.2f; //empieza siendo 10 segundos, restando 0'2 segundos por funcionario, hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
-        resetDeportTime = deportTime;
+        myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UIODI_Data>();
+
+        currentEmployeeNum = 1;
+        maxEmployeeNum = 10;
+
+        currentProgress = 10.2f; //empieza siendo 10 segundos, restando 0'2 segundos por funcionario, hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+        resetDeportTime = currentProgress;
+
+        myUIData.showEmployeeNum = true;
+        myUIData.showProgress = true;
+        myUIData.showInmigrantNum = true;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        currentInmigrantNum = immigrantsToDeport.Count;
+        RemoveImmigrant();
+        Tick();
     }
 
     public override void Tick()
     {
-
+        //RemoveImmigrant();
+        UpdateUIData();
     }
 
     public override void UpdateUIData()
     {
-        myUIData.numFuncs = numFuncs;
-        myUIData.deportTime = deportTime;
-
+        myUIData.processSpeed = resetDeportTime;
+        myUIData.maxEmployeeNum = maxEmployeeNum;
+        myUIData.maxInmigrantNum = maxEmployeeNum;
+        myUIData.currentProgress = currentProgress/ resetDeportTime;
+        myUIData.currentEmployeeNum = currentEmployeeNum;
+        myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();
     }
 
@@ -59,12 +75,13 @@ public class OficinaDeportacionBehaviour : Edificio
 
     void RemoveImmigrant()
     {
-        if(deportTime <=0.0f)
+        if (currentProgress <= 0.0f && immigrantsToDeport.Count > 0)
         {
             immigrantsToDeport.Dequeue();
             deportTime = resetDeportTime;
-            print("deported");
         }
+        else
+            currentProgress -= Time.deltaTime;
     }
 
     public override void Repair()
@@ -85,5 +102,10 @@ public class OficinaDeportacionBehaviour : Edificio
     public override void Upgrade()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void AddOfficial()
+    {
+        currentEmployeeNum++;
     }
 }
