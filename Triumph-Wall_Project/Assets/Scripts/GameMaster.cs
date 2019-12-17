@@ -10,10 +10,11 @@ public class GameMaster : MonoBehaviour
 	private GameState globalState = null;
     private CameraBehaviour cameraController = null;
 	private InputController inputControl = null;
-	private UIController uiController;
+	private UIController uiController = null;
+	private TimerController timerController = null;
 
 	[SceneObjectsOnly][SerializeField]
-	private CentroDeRetencion buildingsManager;
+	private CentroDeRetencion buildingsManager = null;
 
     void Start()
     {
@@ -21,9 +22,12 @@ public class GameMaster : MonoBehaviour
 		inputControl = GetComponent<InputController>();
 		uiController = GetComponent<UIController>();
         cameraController = Camera.main.GetComponent<CameraBehaviour>();
-		//SET
+		timerController = GetComponentInChildren<TimerController>();
+		//SET Controllers
 		inputControl.SetUp(ref globalState);
 		uiController.SetUP();
+		timerController.SetUP();
+		//Set Managers
 		buildingsManager.SetUP();
     }
 
@@ -31,6 +35,8 @@ public class GameMaster : MonoBehaviour
     void Update()
     {
 		inputControl.Tick();
+		timerController.Tick();
+
 		buildingsManager.Tick();
     }
 }
