@@ -15,14 +15,14 @@ public class TimerController : SerializedMonoBehaviour
 	private float _elapsedTime;
 
 	[Header( "Time" )]
-	[Tooltip( "Day Length in Minutes" )]
-	[SerializeField][Range(0f, 1440.0f)]
-	private float _targetDayLength = 0.5f; //length of day in minutes
-
 	[ShowInInspector]
 	public static float startDay = 0.25f;
 	[ShowInInspector]
 	public static float endDay = 0.75f;
+	[Tooltip( "Day Length in Minutes" )]
+	[SerializeField][Range(0f, 1440.0f)]
+	private float _targetDayLength = 0.5f; //length of day in minutes
+
 	[SerializeField][Range( 0f, 1f )]
 	private float _timeOfDay = 0;
 
@@ -71,9 +71,12 @@ public class TimerController : SerializedMonoBehaviour
 	[ShowInInspector][ReadOnly]
 	private List<DNModuleBase> moduleList = new List<DNModuleBase>();
 
-	public UnityEvent daylyEvent = new UnityEvent();
-	public UnityEvent monthlyEvent = new UnityEvent();
-	public UnityEvent anualEvent = new UnityEvent();
+	[ShowInInspector]
+	public static UnityEvent dailyEvent = new UnityEvent();
+	[ShowInInspector]
+	public static UnityEvent monthlyEvent = new UnityEvent();
+	[ShowInInspector]
+	public static UnityEvent anualEvent = new UnityEvent();
 
 	public void SetUP ( )
 	{
@@ -140,7 +143,7 @@ public class TimerController : SerializedMonoBehaviour
 				anualEvent.Invoke();
 			}
 
-			daylyEvent.Invoke();
+			dailyEvent.Invoke();
 		}
 	}
 

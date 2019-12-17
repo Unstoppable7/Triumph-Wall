@@ -16,4 +16,11 @@ public static class Utils
 
         return hit;     
     }
+
+	public static float Remap (float value, float from1, float from2, float to1, float to2)
+	{
+		return (value - from1) / (from2 - from1) * (to2 - to1) + to1;
+	}
+
 }
+
