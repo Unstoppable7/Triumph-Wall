@@ -49,7 +49,8 @@ public class EdificioUIController : MonoBehaviour
 	public Slider controlSlider;
 
 
-	private UnityEvent hideEvent = new UnityEvent();
+
+    private UnityEvent hideEvent = new UnityEvent();
 
 	//Ui Basica de TODOS los edificios
 	//tiene en cuenta las booleanas de UIB_Data para enseñar diferentes elementos
@@ -130,8 +131,26 @@ public class EdificioUIController : MonoBehaviour
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
 
-	//updatea la UI cuando el edificio updatea los valores
-	private void UpdateUI (UICR_Data data)
+    public void StartShowUI(UIODI_Data data)
+    {
+        ShowBaseUI(data);
+        //enseñar Ui especifica
+
+        //eventos de actualizaciond e la UI
+        UnityAction action = delegate { UpdateUI(data); };
+        data.updatedValuesEvent.AddListener(action);
+        //evento  al esconderse esta UI
+        UnityAction action2 = delegate
+        {
+            data.updatedValuesEvent.RemoveListener(action);
+            
+        };
+        hideEvent.AddListener(action2);
+        hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
+    }
+
+    //updatea la UI cuando el edificio updatea los valores
+    private void UpdateUI (UICR_Data data)
 	{
 		ShowBaseUI( data );
 		//enseñar Ui especifica
@@ -139,8 +158,16 @@ public class EdificioUIController : MonoBehaviour
 		controlSlider.value = data.control;
 	}
 
-	//se llama desde el input controller
-	public void Hide ( )
+    private void UpdateUI(UIODI_Data data)
+    {
+        ShowBaseUI(data);
+        //enseñar Ui especifica
+        durabilitySlider.value = data.currentDurability;
+
+    }
+
+    //se llama desde el input controller
+    public void Hide ( )
 	{
 		canvas.SetActive( false );
 		hideEvent.Invoke();
