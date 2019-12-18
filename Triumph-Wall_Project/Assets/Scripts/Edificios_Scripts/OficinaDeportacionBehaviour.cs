@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class OficinaDeportacionBehaviour : Edificio
 {
-    public int numFuncs;
+	
+	private int totalDeported = 0;
+	//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
+	//- Normal
+	//- Herido
+	//- Gravemente Herido
+	private int normalDeported = 0;
+	private int woundedDeported = 0;
+	private int greavousDeported = 0;
+
+	public int numFuncs;
     public float deportTime;
     private float resetDeportTime;
 
@@ -14,17 +24,6 @@ public class OficinaDeportacionBehaviour : Edificio
     public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
 
     private UIDataTypes.Buildings.UIODI_Data myUIData;
-
-    void Start()
-    {
-        SetUP();
-    }
-
-	// Update is called once per frame
-	void Update ( )
-	{
-		Tick();
-	}
 
 	public override void SetUP()
     {
@@ -101,8 +100,34 @@ public class OficinaDeportacionBehaviour : Edificio
         throw new System.NotImplementedException();
     }
 
-    public void AddOfficial()
-    {
-        currentEmployeeNum++;
-    }
+	public override void ResetDay ( )
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void ResetMonth ( )
+	{
+		totalDeported = 0;
+		normalDeported = 0;
+		woundedDeported = 0;
+		greavousDeported = 0;
+	}
+
+	public int GetTotalDeported ( )
+	{
+		return totalDeported;
+	}
+
+	public int GetNormalDeported ( )
+	{
+		return normalDeported;
+	}
+	public int GetWoundedDeported ( )
+	{
+		return woundedDeported;
+	}
+	public int GetGrevousDeported ( )
+	{
+		return greavousDeported;
+	}
 }

@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class CentroDeRetencion : Edificio
 {
+	private OficinaDeportacionBehaviour oficina;
+
 	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
+
+	//TODO change GameObject To Especific inmigrants Objects
+	private List<GameObject> inmigrantsInFacility = new List<GameObject>();
+	//TODO cambiar GameObject por la Clase guardia
+	private List<GameObject> policeMen = new List<GameObject>();
 
 	public int maxEmployeeNumP { set { maxEmployeeNumP = value; } get { return maxEmployeeNum; } }
 
@@ -17,9 +24,13 @@ public class CentroDeRetencion : Edificio
 	public override void SetUP ( )
 	{
 		myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
+		TimerController.dailyEvent.AddListener( ResetDay );
+		TimerController.monthlyEvent.AddListener( ResetMonth );
+
 		//TODO initialize buidlings
 		//Oficina
-		edificiosDelRecinto.Add( GetComponentInChildren<OficinaDeportacionBehaviour>() );
+		oficina = GetComponentInChildren<OficinaDeportacionBehaviour>();
+		edificiosDelRecinto.Add( oficina );
 		//Dorms
 		//Enfermeria
 		//Cocina
@@ -92,6 +103,22 @@ public class CentroDeRetencion : Edificio
 	protected override void StartProcessInmigrant ( )
 	{
 		throw new System.NotImplementedException();
+	}
+
+	public override void ResetDay ( )
+	{
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			building.ResetDay();
+		}
+	}
+
+	public override void ResetMonth ( )
+	{
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			building.ResetMonth();
+		}
 	}
 
 	#region Salubrity
@@ -179,7 +206,7 @@ public class CentroDeRetencion : Edificio
 	}
 
 	//Method Called by Resource Manager
-	public float TotalCostOfEmployeeInFacility ( )
+	private float TotalEmployeeCostInFacility ( )
 	{
 		float result = 0;
 		foreach (Edificio building in edificiosDelRecinto)
@@ -188,8 +215,53 @@ public class CentroDeRetencion : Edificio
 		}
 		return result;
 	}
+
 	public float GetBuildingEmployeeCost (int indx )
 	{
 		return edificiosDelRecinto[indx].GetTotalEmployeeCost();
+	}
+
+	public override int GetCurrentInmigrants ( )
+	{
+		currentInmigrantNum = GetCurrentIlegals();
+		return base.GetCurrentInmigrants();
+	}
+
+	public override float GetTotalEmployeeCost ( )
+	{
+		return TotalEmployeeCostInFacility();
+	}
+	
+	#region OFICINA Especificos
+
+	public int GetTotalDeported ( )
+	{
+		return oficina.GetTotalDeported();
+	}
+	public int GetNormalDeported ( )
+	{
+		return oficina.GetNormalDeported();
+	}
+	public int GetWoundedDeported ( )
+	{
+		return oficina.GetWoundedDeported();
+	}
+	public int GetGrevousDeported ( )
+	{
+		return oficina.GetGrevousDeported();
+	}
+	#endregion
+
+
+	public float GetAverageHappiness ( )
+	{
+		float result = 0;
+		//TODO change this to the inmigrant happiness getter
+		foreach (GameObject inmigrant in inmigrantsInFacility)
+		{
+			result += inmigrant.GetHashCode();
+		}
+		result /= inmigrantsInFacility.Count;
+		return result;
 	}
 }

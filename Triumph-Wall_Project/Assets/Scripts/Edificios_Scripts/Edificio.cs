@@ -64,6 +64,10 @@ public abstract class Edificio : MonoBehaviour
 	public abstract void UpdateUIData ( );
 	public abstract void ShowUI ( );
 
+	public abstract void ResetDay ( );
+	public abstract void ResetMonth ( );
+
+
 	#region GETTERS
 	public virtual int GetID ( ) => managerID;
 	public virtual int GetMaxUpgrades ( ) => maxOfUpgrades;
