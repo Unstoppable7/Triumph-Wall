@@ -80,5 +80,10 @@ namespace UIDataTypes
         {
             
         }
+
+        public class UIDORM_Data : UIB_Data //oficina deportaçao
+        {
+
+        }
     }
 }
