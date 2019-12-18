@@ -403,6 +403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 540185003}
   - component: {fileID: 540185004}
+  - component: {fileID: 540185005}
   m_Layer: 0
   m_Name: Oficina de deportacion
   m_TagString: Untagged
@@ -443,6 +444,19 @@ MonoBehaviour:
   maintenanceCost: 0
   durabilityDays: 0
   resetDurabilityDays: 0
+--- !u!65 &540185005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540185002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.6, y: 2.6, z: 2.6}
+  m_Center: {x: 0, y: 1.2831, z: 0}
 --- !u!1 &547686157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24.2
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1268,15 +1282,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.06
+      value: 3.64
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000003774895
+      value: -0.46602225
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1284,7 +1298,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.884773
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_RootOrder
@@ -1296,7 +1310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -55.553
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2090,12 +2104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 2954668947389696261, guid: d83c93a86f4c0de468e484d0c53c19d9,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 2954668947389696261, guid: d83c93a86f4c0de468e484d0c53c19d9,
         type: 3}
       propertyPath: _timeOfDay
-      value: 0.17030321
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2954668947389696261, guid: d83c93a86f4c0de468e484d0c53c19d9,
         type: 3}
