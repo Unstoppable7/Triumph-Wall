@@ -228,6 +228,49 @@ MonoBehaviour:
   control: 0
   factorSuciedad: 1
   inmigrantesPorGuardia: 5
+--- !u!1 &319324618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319324619}
+  - component: {fileID: 319324620}
+  m_Layer: 0
+  m_Name: Police Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &319324619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319324618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.678465, y: -5.872571, z: 10.640135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &319324620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319324618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39fc50e526194de458249b0e82936a5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &367689269
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,6 +942,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &733990713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733990715}
+  - component: {fileID: 733990714}
+  m_Layer: 0
+  m_Name: Inmigrant Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &733990714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733990713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9621103c7a7df6945bf9e57cd828eb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &733990715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733990713}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.678465, y: -5.872571, z: 10.640135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &927371131 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4618998122868560778, guid: aff9325d9fa28c24fb707571bf8df18d,
@@ -1129,35 +1215,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392905272}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1408213037 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1135016333477703439, guid: d83c93a86f4c0de468e484d0c53c19d9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1135016331643595924}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1408213038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408213037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50dd785f111ae9043816a527c932cfd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  publicOpinionMoneyFactor: 0.467
-  efficiencyMoneyFactor: 0.533
 --- !u!4 &1411286152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 7eba57905351b044781735c994b7b3bb,
@@ -1722,6 +1779,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4738151751599451279, guid: d83c93a86f4c0de468e484d0c53c19d9,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4738151751599451279, guid: d83c93a86f4c0de468e484d0c53c19d9,
+        type: 3}
     - target: {fileID: 1135016333477703439, guid: d83c93a86f4c0de468e484d0c53c19d9,
         type: 3}
       propertyPath: m_Name
@@ -1787,11 +1850,6 @@ PrefabInstance:
       propertyPath: debug
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1135016333477703433, guid: d83c93a86f4c0de468e484d0c53c19d9,
-        type: 3}
-      propertyPath: buildingsManager
-      value: 
-      objectReference: {fileID: 107485535}
     - target: {fileID: 1135016333072305608, guid: d83c93a86f4c0de468e484d0c53c19d9,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -2501,7 +2559,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2954668947389696261, guid: d83c93a86f4c0de468e484d0c53c19d9,
+        type: 3}
     - target: {fileID: 2954668947389696261, guid: d83c93a86f4c0de468e484d0c53c19d9,
         type: 3}
       propertyPath: _timeOfDay

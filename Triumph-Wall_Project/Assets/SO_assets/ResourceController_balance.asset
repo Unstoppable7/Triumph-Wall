@@ -28,8 +28,8 @@ MonoBehaviour:
   greavousDeportedPoPenalty: 0.01
   woundPoPenalty: 0.005
   deathPoPenalty: 0.3
-  governmentMoney: 0
+  governmentMoney: 1000
   woundedMoneyPenalty: 0.005
   deathMoneyPenalty: 0.01
-  publicOpinionMoneyFactor: 0.3
-  efficiencyMoneyFactor: 0.7
+  publicOpinionMoneyFactor: 0.582
+  efficiencyMoneyFactor: 0.418

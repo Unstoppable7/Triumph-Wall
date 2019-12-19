@@ -145,7 +145,13 @@ public class ResourceController : SerializedMonoBehaviour
 		facilityHappiness = crFacility.GetAverageHappiness();//CR
 		employeeTotalCost = crFacility.GetTotalEmployeeCost();//CR
 		arrestedInmigrants = crFacility.GetCurrentInmigrants();//CR
+		
 		//from here 
+		if (totalInmigrantsMonth <= 0)
+		{
+			frontierEfficiency = 0;
+			return;
+		}
 		frontierEfficiency = totalDeported / totalInmigrantsMonth;
 	}
 
