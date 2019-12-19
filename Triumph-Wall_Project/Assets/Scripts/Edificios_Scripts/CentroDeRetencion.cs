@@ -27,7 +27,7 @@ public class CentroDeRetencion : Edificio
 		TimerController.dailyEvent.AddListener( ResetDay );
 		TimerController.monthlyEvent.AddListener( ResetMonth );
 
-		//TODO initialize buidlings
+		//initialize buidlings
 		//Oficina
 		oficina = GetComponentInChildren<OficinaDeportacionBehaviour>();
 		edificiosDelRecinto.Add( oficina );

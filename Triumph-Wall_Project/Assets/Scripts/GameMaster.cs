@@ -7,13 +7,14 @@ using Sirenix.OdinInspector;
 public class GameMaster : MonoBehaviour
 {
 	[SerializeField][Required]
-	private GameState globalState = null;
+	private SO_GameState globalState = null;
     private CameraBehaviour cameraController = null;
 	private InputController inputControl = null;
 	private UIController uiController = null;
 	private TimerController timerController = null;
+	private ResourceController resourceController = null;
 
-	[ShowInInspector][ReadOnly]
+	[SerializeField][ReadOnly]
 	private CentroDeRetencion buildingsManager = null;
 	[ShowInInspector][ReadOnly]
 	private InmigrantManager inmigrantManager = null;
@@ -27,7 +28,8 @@ public class GameMaster : MonoBehaviour
 		uiController = GetComponent<UIController>();
         cameraController = Camera.main.GetComponent<CameraBehaviour>();
 		timerController = GetComponentInChildren<TimerController>();
-
+		resourceController = GetComponentInChildren<ResourceController>();
+		//GET Managers
 		buildingsManager = FindObjectOfType<CentroDeRetencion>();
 		inmigrantManager = FindObjectOfType<InmigrantManager>();
 		policeManager = FindObjectOfType<PoliceManager>();
@@ -36,6 +38,7 @@ public class GameMaster : MonoBehaviour
 		inputControl.SetUp(ref globalState);
 		uiController.SetUP();
 		timerController.SetUP();
+		resourceController.SetUp();
 		//Set Managers
 		buildingsManager.SetUP();
 		inmigrantManager.SetUp();
@@ -48,6 +51,7 @@ public class GameMaster : MonoBehaviour
 		//Update Controllers
 		inputControl.Tick();
 		timerController.Tick();
+		resourceController.Tick();
 		//Update Managers
 		inmigrantManager.Tick();
 		policeManager.Tick();

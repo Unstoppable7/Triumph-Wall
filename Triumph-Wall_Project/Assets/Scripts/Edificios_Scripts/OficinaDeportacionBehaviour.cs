@@ -21,6 +21,7 @@ public class OficinaDeportacionBehaviour : Edificio
     public int structureCost, maintenanceCost;
     public int durabilityDays, resetDurabilityDays;
 
+	//TODO change from GameObject to inmigrant class
     public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
 
     private UIDataTypes.Buildings.UIODI_Data myUIData;

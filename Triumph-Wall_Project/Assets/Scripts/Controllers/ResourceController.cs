@@ -6,13 +6,15 @@ using Sirenix.Serialization;
 
 public class ResourceController : SerializedMonoBehaviour
 {
+	[SerializeField][Required][AssetsOnly]
+	private SO_ResourceController myBalanceFile = null;
+
 	private InmigrantManager inmigrantManager = null;
 	private PoliceManager policeManager = null;
 	private CentroDeRetencion crFacility = null;
-	//Stadisticas
-	[Title("Stats")]
 
-	[Title( "For calculations" ,"Todas estas variables son cogidas desde otros scripts y se usan para enseñar la UI")]
+	[Title( "For calculations" ,
+		"Todas estas variables son cogidas desde otros scripts y se usan para enseñar la UI")]
 	//from inmigrant manager
 	private int totalInmigrantsMonth = 0;
 	private int woundedInmigrants = 0;
@@ -31,7 +33,7 @@ public class ResourceController : SerializedMonoBehaviour
 	private float frontierEfficiency = 0;//totalDeported(CR)/totalInmigrants(Inmigrant Manager)
 	private int daysWithoutCasualties = 0;
 
-	[Title("Opinion Publica")]	
+	[Title( "Opinion Publica" )]
 	//opinion publica depende de
 	// felicidad media (CR)
 	// numero de deportados con heridas (CR)
@@ -40,14 +42,6 @@ public class ResourceController : SerializedMonoBehaviour
 	// numero de muertos (inmigrantManager)
 	private float publicOpinion = 0;
 	//factores positivos para calcular opinion publica
-	private float happinesPoFactor = 0.4f;
-	private float efficiencyPoFactor = 0.4f;
-	private float daysWithoutCasualtiesPoFactor = 0.4f;
-	//facotores negativos
-	private float woundedDeportedPoPenalty = 0.005f;
-	private float greavousDeportedPoPenalty = 0.01f;
-	private float woundPoPenalty = 0.005f; //5 unidades por cada herido
-	private float deathPoPenalty = 0.3f; //300 unidade por cada muerto 
 
 	[Title("Dinero")]
 	private float currentMoney = 0;
@@ -60,37 +54,6 @@ public class ResourceController : SerializedMonoBehaviour
 	// sueldo de los empleados
 	private float finalRewardMoney = 0; //calculated here
 
-	private float governmentMoney = 0;//from Balance File
-	private float woundedMoneyPenalty = 0.005f; //5 euros por cada herido
-	private float deathMoneyPenalty = 0.01f; //10 euros por cada muerto  
-
-	[SerializeField][HideInInspector]
-	private float publicOpinionMoneyFactor = 0.3f;
-	[SerializeField][HideInInspector]
-	private float efficiencyMoneyFactor = 0.7f;
-
-	[PropertyRange( 0, 1 )][ShowInInspector]
-	private float PublicOpinionMoneyFactor
-	{
-		get { return publicOpinionMoneyFactor; }
-		set
-		{
-			publicOpinionMoneyFactor = value;
-			efficiencyMoneyFactor = 1 - publicOpinionMoneyFactor;
-		}
-	}
-
-	[PropertyRange( 0, 1 )][ShowInInspector]
-	private float EfficiencyMoneyFactor
-	{
-		get { return efficiencyMoneyFactor; }
-		set
-		{
-			efficiencyMoneyFactor = value;
-			publicOpinionMoneyFactor = 1 - efficiencyMoneyFactor;
-		}
-	}
-
 	//TODO localizar los empleados por ID y por edificio
 	//desde estas listas se debe poder despedir e ir hasta la lozalizacion
 	//del empleado
@@ -99,16 +62,6 @@ public class ResourceController : SerializedMonoBehaviour
 	List<UIEmployee> uiPolicias = new List<UIEmployee>();
 	//Lista de empleados ordenados por empleo
 	List<UIEmployee> facilityEmployees = new List<UIEmployee>();
-
-	void Start()
-    {
-		SetUp();
-    }
-
-    void Update()
-    {
-		Tick();
-    }
 
 	public void SetUp ( )
 	{
@@ -132,8 +85,11 @@ public class ResourceController : SerializedMonoBehaviour
 			GetAllData();
 			CalculatePublicOpinion();
 			CalculateFinalMoney();
+			UpdateUI();
 		}
 	}
+
+#region MONTHLY
 
 	private void MonthlyActions ( )
 	{
@@ -145,6 +101,9 @@ public class ResourceController : SerializedMonoBehaviour
 		Tick();
 		currentMoney += finalRewardMoney;
 	}
+#endregion
+
+#region DAILY
 
 	private void DailyActions ( )
 	{
@@ -161,6 +120,13 @@ public class ResourceController : SerializedMonoBehaviour
 		{
 			daysWithoutCasualties++;
 		}
+	}
+
+	#endregion
+
+	private void UpdateUI ( )
+	{
+
 	}
 
 	private void GetAllData ( )
@@ -188,19 +154,19 @@ public class ResourceController : SerializedMonoBehaviour
 		// 0 to 1
 		publicOpinion = 0;
 		// felicidad media (CR)
-		publicOpinion += facilityHappiness * happinesPoFactor;
+		publicOpinion += facilityHappiness * myBalanceFile.happinesPoFactor;
 		//eficiencia
-		publicOpinion += frontierEfficiency * efficiencyPoFactor;
+		publicOpinion += frontierEfficiency * myBalanceFile.efficiencyPoFactor;
 		//days witoutCasualty
-		publicOpinion += daysWithoutCasualties * daysWithoutCasualtiesPoFactor;
+		publicOpinion += daysWithoutCasualties * myBalanceFile.daysWithoutCasualtiesPoFactor;
 		// numero de deportados con heridas (CR)
-		publicOpinion -= woundedDeported * woundedDeportedPoPenalty;
+		publicOpinion -= woundedDeported * myBalanceFile.woundedDeportedPoPenalty;
 		// numero de deportados con heridas graves(CR)
-		publicOpinion -= greavousDeported * greavousDeportedPoPenalty;
+		publicOpinion -= greavousDeported * myBalanceFile.greavousDeportedPoPenalty;
 		// numero de heridos (inmigrantManager)
-		publicOpinion -= woundedInmigrants * woundPoPenalty;
+		publicOpinion -= woundedInmigrants * myBalanceFile.woundPoPenalty;
 		// numero de muertos (inmigrantManager)
-		publicOpinion -= deadInmigrants * deathPoPenalty;
+		publicOpinion -= deadInmigrants * myBalanceFile.deathPoPenalty;
 		//clamp it baby
 		publicOpinion = Mathf.Clamp( publicOpinion , -1.0f, 1.0f);
 	}
@@ -214,10 +180,13 @@ public class ResourceController : SerializedMonoBehaviour
 		// numero de muertos
 		// sueldo de los policias
 		// sueldo de los empleados
-		finalRewardMoney = (frontierEfficiency * efficiencyMoneyFactor + publicOpinion * publicOpinionMoneyFactor) * governmentMoney; //calculated here
+		
+		finalRewardMoney = (frontierEfficiency * myBalanceFile.efficiencyMoneyFactor + 
+			publicOpinion * myBalanceFile.publicOpinionMoneyFactor) * 
+			myBalanceFile.governmentMoney;
 
-		finalRewardMoney -= woundedInmigrants * woundedMoneyPenalty;
-		finalRewardMoney -= deadInmigrants * deathMoneyPenalty;
+		finalRewardMoney -= woundedInmigrants * myBalanceFile.woundedMoneyPenalty;
+		finalRewardMoney -= deadInmigrants * myBalanceFile.deathMoneyPenalty;
 
 		finalRewardMoney -= policeTotalCost;
 		finalRewardMoney -= employeeTotalCost;

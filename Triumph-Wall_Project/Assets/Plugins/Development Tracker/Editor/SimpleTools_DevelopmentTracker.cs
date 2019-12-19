@@ -16,7 +16,6 @@ namespace SimpleTools {
 			GameObject[] objects = new GameObject[1];
 			Object obj = AssetDatabase.LoadMainAssetAtPath ("Assets/Plugins/Development Tracker/Editor/DevelopmentAsset.asset");
 			Selection.activeObject = obj;
-
 		}
 
 		int selectedHistory = -1;
