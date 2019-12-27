@@ -2,10 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
+using TMPro;
+using UnityEngine.UI;
 
 public class ResourceController : SerializedMonoBehaviour
 {
+	#region UI
+	[FoldoutGroup("UI")]
+	[SerializeField][FoldoutGroup("UI/medidores")]
+	private Slider efficiencySlider = null;
+	[SerializeField][FoldoutGroup("UI/medidores")]
+	private TextMeshProUGUI efficiencyText = null;
+	[SerializeField][FoldoutGroup("UI/medidores")]
+	private Slider publicOpinionSlider = null;
+	[SerializeField][FoldoutGroup("UI/medidores")]
+	private TextMeshProUGUI publicOpinionText = null;
+
+#endregion
 	[SerializeField][Required][AssetsOnly]
 	private SO_ResourceController myBalanceFile = null;
 
@@ -126,7 +139,10 @@ public class ResourceController : SerializedMonoBehaviour
 
 	private void UpdateUI ( )
 	{
-
+		efficiencySlider.value = frontierEfficiency;
+		efficiencyText.text = string.Format( "{0:P0}", frontierEfficiency );
+		publicOpinionSlider.value = publicOpinion;
+		publicOpinionText.text = string.Format( "{0:P0}", publicOpinion );
 	}
 
 	private void GetAllData ( )
@@ -149,7 +165,7 @@ public class ResourceController : SerializedMonoBehaviour
 		//from here 
 		if (totalInmigrantsMonth <= 0)
 		{
-			frontierEfficiency = 0;
+			frontierEfficiency = 1;
 			return;
 		}
 		frontierEfficiency = totalDeported / totalInmigrantsMonth;
@@ -174,7 +190,7 @@ public class ResourceController : SerializedMonoBehaviour
 		// numero de muertos (inmigrantManager)
 		publicOpinion -= deadInmigrants * myBalanceFile.deathPoPenalty;
 		//clamp it baby
-		publicOpinion = Mathf.Clamp( publicOpinion , -1.0f, 1.0f);
+		publicOpinion = Mathf.Clamp( publicOpinion , 0.0f, 1.0f);
 	}
 
 	private void CalculateFinalMoney ( )

@@ -72,6 +72,7 @@ public class InputController : MonoBehaviour
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					//show its UI
+					UIController.Instance.HideUI();
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
 				}				
 			}

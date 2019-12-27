@@ -12,8 +12,8 @@ public abstract class Edificio : MonoBehaviour
 	protected int managerID = -1;
 	//Upgrading
 	protected bool canBeUpgraded = false;
-	protected int maxOfUpgrades = -1;
-	protected int currentUpgrade = -1;
+	protected int maxOfUpgrades = 0;
+	protected int currentUpgrade = 0;
 	//Durability
 	protected float maxDurability = 100;
 	protected float currentDurability = 50;
@@ -21,16 +21,16 @@ public abstract class Edificio : MonoBehaviour
 	protected bool canBuyEmployee = false;
 	protected bool canFireEmployee = false;
 	//Employees
-	protected float pricePerEmployee = -1;
-	protected int maxEmployeeNum = -1;
-	protected int currentEmployeeNum = -1;
+	protected float pricePerEmployee = 0;
+	protected int maxEmployeeNum = 0;
+	protected int currentEmployeeNum = 0;
 	//processing
 	protected bool canProcess = false;
-	protected float currentProgress = -1;
-	protected float processSpeed = -1;
+	protected float currentProgress = 0;
+	protected float processSpeed = 0;
 	//inmigrants
-	protected int maxInmigrantNum = -1;
-	protected int currentInmigrantNum = -1;
+	protected int maxInmigrantNum = 0;
+	protected int currentInmigrantNum = 0;
 
 	public abstract void SetUP ( ); 
 	public abstract void Tick ( );
@@ -57,8 +57,8 @@ public abstract class Edificio : MonoBehaviour
 		}
 	}
 
-	public virtual void IncrementInmigrants ( ) => currentInmigrantNum++;
-	public virtual void DecrementInmigrants ( ) => currentInmigrantNum--;
+	public virtual void IncrementInmigrants (GameObject inmigrant = null ) => currentInmigrantNum++;
+	public virtual void DecrementInmigrants (GameObject inmigrant = null) => currentInmigrantNum--;
 
 	//Uses instace of UIController
 	public abstract void UpdateUIData ( );
@@ -91,6 +91,9 @@ public abstract class Edificio : MonoBehaviour
 	#endregion
 
 	#region SETTERS
+	protected abstract void SetDataFromObject ( );
+	protected abstract void UpdateDataObject ( );
+
 	public void SetID (int id) => managerID = id;
 #endregion
 }
