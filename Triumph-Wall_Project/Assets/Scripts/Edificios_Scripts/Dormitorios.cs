@@ -35,16 +35,19 @@ public class Dormitorios : Edificio
 
     void AddImmigrant(GameObject immigrant)
     {
-        sleepingPlaces.Enqueue(immigrant);        
+        sleepingPlaces.Enqueue(immigrant);
+        immigrantNum = sleepingPlaces.Count;
     }
 
     void RemoveImmigrant()
     {
         sleepingPlaces.Dequeue();
+        immigrantNum = sleepingPlaces.Count;
     }
 
     public override void SetUP()
     {
+        //TODO hacer que cada dia se gaste un poco la durabilidad
         myUIData.showInmigrantNum = true;
     }
 
@@ -62,7 +65,7 @@ public class Dormitorios : Edificio
 
     public override void Repair()
     {
-
+        currentDurability = maxDurability;
     }
 
     protected override void StartProcessInmigrant()

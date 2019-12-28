@@ -150,13 +150,13 @@ public class CentroDeRetencion : Edificio
 
 	private float GetMaxOfIlegalsInDorms ( )
 	{
-		//TODO hacer dormitorios para poder completar esta funcion
-		return 10;
+
+		return dorms.GetMaxInmigrants();
 	}
 	private float GetNumOfIlegalsInDorms ( )
 	{
-		//TODO hacer dormitorios para poder completar esta funcion
-		return 0;
+
+		return dorms.GetCurrentInmigrants();
 	}
 
 	#endregion

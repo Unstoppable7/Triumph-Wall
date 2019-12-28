@@ -85,16 +85,13 @@ public class Enfermeria_Behaviour : Edificio
     {
         if (currentProgress <= 0.0f && immigrantsToHeal.Count > 0)
         {
-            //TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
-            //- Normal
-            //- Herido
-            //- Gravemente Herido
+         
 
             base.DecrementInmigrants();
             immigrantsToHeal.Dequeue();
             currentProgress = processSpeed;
         }
-        else if (immigrantsToHeal.Count > 0)
+        else if (immigrantsToHeal.Count > 0)    //TODO cambiar el tiempo de procesamiento segun la gravedad de las heridas del immigrante
             currentProgress -= Time.deltaTime;
     }
 
