@@ -8,13 +8,47 @@ public class SO_ResourceController : SerializedScriptableObject
 {
 
 	[Title( "Positive Factors" )]
+	[SerializeField]
+	[HideInInspector]
 	[FoldoutGroup( "Opinion Publica", Order = 0 )]
 	public float happinesPoFactor = 0.4f;
+	[SerializeField]
+	[HideInInspector]
 	[FoldoutGroup( "Opinion Publica", Order = 0 )]
 	public float efficiencyPoFactor = 0.4f;
-	[FoldoutGroup( "Opinion Publica", Order = 0 )]
+	[SerializeField]
+	[FoldoutGroup( "Opinion Publica", Order = 0 )][Range(0,1)]
 	public float daysWithoutCasualtiesPoFactor = 0.4f;
-	//facotores negativos
+
+	[PropertyRange( 0, 1 )]
+	[ShowInInspector]
+	[FoldoutGroup( "Opinion Publica", Order = 0 )]
+	[PropertyOrder( -1 )]
+	private float HappinesPoFactor
+	{
+		get { return happinesPoFactor; }
+		set
+		{
+			happinesPoFactor = value;
+			efficiencyPoFactor = 1 - happinesPoFactor;
+		}
+	}
+	[PropertyRange( 0, 1 )]
+	[ShowInInspector]
+	[FoldoutGroup( "Opinion Publica", Order = 0 )]
+	[PropertyOrder( -1 )]
+	private float EfficiencyPoFactor
+	{
+		get { return efficiencyPoFactor; }
+		set
+		{
+			efficiencyPoFactor = value;
+			happinesPoFactor = 1 - efficiencyPoFactor;
+		}
+	}
+
+
+
 	[Title( "Negative Factors" )]
 	[FoldoutGroup( "Opinion Publica", Order = 0 )]
 	public float woundedDeportedPoPenalty = 0.005f;
@@ -30,6 +64,7 @@ public class SO_ResourceController : SerializedScriptableObject
 	[FoldoutGroup( "Dinero",Order = 0)]
 	[PropertyOrder(-1)]
 	public float governmentMoney = 0;//from Balance File
+
 	[Title("Positive Factors", "Cuanto mas de estas cosas tengas MAS dinerito")]
 	[PropertyRange( 0, 1 )]
 	[ShowInInspector]

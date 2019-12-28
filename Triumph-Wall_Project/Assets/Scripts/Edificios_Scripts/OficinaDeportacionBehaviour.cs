@@ -14,10 +14,10 @@ public class OficinaDeportacionBehaviour : Edificio
     public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
 
 	[SerializeField]
-	private BuildingDataTypes.SO_ODIData myData;
+	private BuildingDataTypes.SO_ODIData myData = null;
 
 	[SerializeField]
-    private UIDataTypes.Buildings.SO_UIODI_Data myUIData;
+    private UIDataTypes.Buildings.SO_UIODI_Data myUIData = null;
 
 	public override void SetUP()
     {

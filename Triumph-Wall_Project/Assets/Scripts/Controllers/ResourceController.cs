@@ -8,15 +8,42 @@ using UnityEngine.UI;
 public class ResourceController : SerializedMonoBehaviour
 {
 	#region UI
-	[FoldoutGroup("UI")]
-	[SerializeField][FoldoutGroup("UI/medidores")]
+	[SerializeField][FoldoutGroup( "UI" )]
+	private GameObject economyMenu = null;
+	[SerializeField][FoldoutGroup("UI/Medidores")]
 	private Slider efficiencySlider = null;
-	[SerializeField][FoldoutGroup("UI/medidores")]
+	[SerializeField][FoldoutGroup("UI/Medidores")]
 	private TextMeshProUGUI efficiencyText = null;
-	[SerializeField][FoldoutGroup("UI/medidores")]
+	[SerializeField][FoldoutGroup("UI/Medidores")]
 	private Slider publicOpinionSlider = null;
-	[SerializeField][FoldoutGroup("UI/medidores")]
+	[SerializeField][FoldoutGroup("UI/Medidores")]
 	private TextMeshProUGUI publicOpinionText = null;
+
+	[SerializeField][FoldoutGroup("UI/Stats")]
+	private TextMeshProUGUI moneyText = null;
+	[SerializeField][FoldoutGroup("UI/Stats")]
+	private TextMeshProUGUI daysText = null;
+	[SerializeField][FoldoutGroup("UI/Stats")]
+	private TextMeshProUGUI policeMenText = null;
+	[SerializeField][FoldoutGroup("UI/Stats")]
+	private TextMeshProUGUI employeesText = null;
+	[SerializeField][FoldoutGroup("UI/Stats")]
+	private TextMeshProUGUI inmigrantsText = null;
+
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI efficiencyMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI publicOpinionMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI policeMenMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI employeeMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI woundedMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI deadMoneyFactorText = null;
+	[SerializeField][FoldoutGroup("UI/Details")]
+	private TextMeshProUGUI rewardMoneyText = null;
 
 #endregion
 	[SerializeField][Required][AssetsOnly]
@@ -33,10 +60,12 @@ public class ResourceController : SerializedMonoBehaviour
 	private int woundedInmigrants = 0;
 	private int deadInmigrants = 0;
 	//from police Manager
+	private int totalPoliceMen = 0;
 	private float policeTotalCost = 0;
 	//from CR
 	private int arrestedInmigrants = 0;//CR
 	private float facilityHappiness = 0;//CR
+	private int totalEmployees = 0;
 	private float employeeTotalCost = 0; //CR
 	private int totalDeported = 0;//CR->office
 	private int normalDeported = 0; //CR->office
@@ -66,6 +95,8 @@ public class ResourceController : SerializedMonoBehaviour
 	// sueldo de los policias
 	// sueldo de los empleados
 	private float finalRewardMoney = 0; //calculated here
+	private float efficiencyRewardMoney = 0; //calculated here
+	private float publicOpinionRewardMoney = 0; //calculated here
 
 	//TODO localizar los empleados por ID y por edificio
 	//desde estas listas se debe poder despedir e ir hasta la lozalizacion
@@ -140,9 +171,32 @@ public class ResourceController : SerializedMonoBehaviour
 	private void UpdateUI ( )
 	{
 		efficiencySlider.value = frontierEfficiency;
-		efficiencyText.text = string.Format( "{0:P0}", frontierEfficiency );
+		efficiencyText.text = string.Format( "{0:0}%", frontierEfficiency*100 );
 		publicOpinionSlider.value = publicOpinion;
-		publicOpinionText.text = string.Format( "{0:P0}", publicOpinion );
+		publicOpinionText.text = string.Format( "{0:0}%", publicOpinion*100 );
+
+		moneyText.text = string.Format( "{0:0}", currentMoney );
+		moneyText.text = string.Format( "{0:0}", currentMoney );
+		daysText.text = daysWithoutCasualties.ToString();
+		policeMenText.text = totalPoliceMen.ToString();
+		employeesText.text = totalEmployees.ToString();
+		inmigrantsText.text = arrestedInmigrants.ToString();
+
+		//positive Factors
+		efficiencyMoneyFactorText.text = string.Format( "+{0:0}", frontierEfficiency * myBalanceFile.efficiencyMoneyFactor * myBalanceFile.governmentMoney );
+		publicOpinionMoneyFactorText.text = string.Format( "+{0:0}", publicOpinion * myBalanceFile.publicOpinionMoneyFactor * myBalanceFile.governmentMoney );
+
+		//negative Factors
+		policeMenMoneyFactorText.text = string.Format( "-{0:0}", policeTotalCost );
+		employeeMoneyFactorText.text = string.Format( "-{0:0}", employeeTotalCost );
+
+		woundedMoneyFactorText.text = string.Format( "-{0:0}", woundedInmigrants * myBalanceFile.woundedMoneyPenalty );
+		deadMoneyFactorText.text = string.Format( "-{0:0}", deadInmigrants * myBalanceFile.deathMoneyPenalty );
+
+		//public Opinion
+
+		rewardMoneyText.text = string.Format( "{0:0}/{1:0}", finalRewardMoney, myBalanceFile.governmentMoney );
+
 	}
 
 	private void GetAllData ( )
@@ -152,6 +206,7 @@ public class ResourceController : SerializedMonoBehaviour
 		woundedInmigrants = inmigrantManager.GetWoundedCasualties();
 		deadInmigrants = inmigrantManager.GetDeathCasualties();
 		//from police Manager
+		totalPoliceMen = policeManager.GetTotalPoliceMen();
 		policeTotalCost = policeManager.GetTotalPoliceMenCost();
 		//from CR
 		totalDeported = crFacility.GetTotalDeported();//CR->office
@@ -159,6 +214,7 @@ public class ResourceController : SerializedMonoBehaviour
 		woundedDeported = crFacility.GetWoundedDeported();//CR->Office
 		greavousDeported = crFacility.GetGrevousDeported();//CR->Office
 		facilityHappiness = crFacility.GetAverageHappiness();//CR
+		totalEmployees = (int)crFacility.GetCurrentEmployeeNum();//CR
 		employeeTotalCost = crFacility.GetTotalEmployeeCost();//CR
 		arrestedInmigrants = crFacility.GetCurrentInmigrants();//CR
 		
@@ -202,10 +258,11 @@ public class ResourceController : SerializedMonoBehaviour
 		// numero de muertos
 		// sueldo de los policias
 		// sueldo de los empleados
-		
-		finalRewardMoney = (frontierEfficiency * myBalanceFile.efficiencyMoneyFactor + 
-			publicOpinion * myBalanceFile.publicOpinionMoneyFactor) * 
-			myBalanceFile.governmentMoney;
+
+		efficiencyRewardMoney = (frontierEfficiency * myBalanceFile.efficiencyMoneyFactor) * myBalanceFile.governmentMoney;
+		publicOpinionRewardMoney = (publicOpinion * myBalanceFile.publicOpinionMoneyFactor) * myBalanceFile.governmentMoney;
+		finalRewardMoney = efficiencyRewardMoney + publicOpinionRewardMoney;
+
 
 		finalRewardMoney -= woundedInmigrants * myBalanceFile.woundedMoneyPenalty;
 		finalRewardMoney -= deadInmigrants * myBalanceFile.deathMoneyPenalty;
@@ -217,5 +274,15 @@ public class ResourceController : SerializedMonoBehaviour
 	public bool CheckIfEnoughMoney(float actionCost)
 	{
 		return currentMoney - actionCost >= 0.00f;
+	}
+
+	public void SwitchEconomyMenu ( )
+	{
+		economyMenu.SetActive( !economyMenu.activeInHierarchy );
+	}
+
+	public void HideEconomyMenu ( )
+	{
+		economyMenu.SetActive( false );
 	}
 }

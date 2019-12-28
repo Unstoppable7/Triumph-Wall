@@ -15,10 +15,10 @@ public class CentroDeRetencion : Edificio
 	public int maxEmployeeNumP { set { maxEmployeeNumP = value; } get { return maxEmployeeNum; } }
 
 	[SerializeField]
-	private BuildingDataTypes.SO_CRData myData;
+	private BuildingDataTypes.SO_CRData myData = null;
 
 	[SerializeField]
-	private UIDataTypes.Buildings.SO_UICR_Data myUIData;
+	private UIDataTypes.Buildings.SO_UICR_Data myUIData = null;
 
 	private float salubridad = 0;
 	private float control = 0;
@@ -210,20 +210,6 @@ public class CentroDeRetencion : Edificio
 	}
 
 	//Method Called by Resource Manager
-	private float TotalEmployeeCostInFacility ( )
-	{
-		float result = 0;
-		foreach (Edificio building in edificiosDelRecinto)
-		{
-			result += building.GetTotalEmployeeCost();
-		}
-		return result;
-	}
-
-	public float GetBuildingEmployeeCost (int indx )
-	{
-		return edificiosDelRecinto[indx].GetTotalEmployeeCost();
-	}
 
 	public override int GetCurrentInmigrants ( )
 	{
@@ -233,9 +219,24 @@ public class CentroDeRetencion : Edificio
 
 	public override float GetTotalEmployeeCost ( )
 	{
-		return TotalEmployeeCostInFacility();
+		float result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetTotalEmployeeCost();
+		}
+		return result;
 	}
-	
+
+	public override float GetCurrentEmployeeNum ( )
+	{
+		float result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetCurrentEmployeeNum();
+		}
+		return result;
+	}
+
 	#region OFICINA Especificos
 
 	public int GetTotalDeported ( )
@@ -259,7 +260,7 @@ public class CentroDeRetencion : Edificio
 	public float GetAverageHappiness ( )
 	{
 		if (inmigrantsInFacility.Count <= 0)
-			return 0;
+			return 1;
 
 		float result = 0;
 		//TODO change this to the inmigrant happiness getter

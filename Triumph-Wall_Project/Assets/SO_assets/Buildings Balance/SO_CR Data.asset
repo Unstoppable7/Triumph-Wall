@@ -38,6 +38,6 @@ MonoBehaviour:
   maxInmigrantNum: 0
   currentInmigrantNum: 0
   salubridad: 1
-  control: NaN
+  control: 1
   factorSuciedad: 1
   inmigrantesPorGuardia: 5
