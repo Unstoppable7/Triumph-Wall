@@ -11856,6 +11856,7 @@ GameObject:
   - component: {fileID: 1506848044842221864}
   - component: {fileID: 37887645308850059}
   - component: {fileID: 542306885348663716}
+  - component: {fileID: 87281356836680071}
   m_Layer: 0
   m_Name: Dormitorios
   m_TagString: Untagged
@@ -11902,7 +11903,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 026743905b1a20f459dd74c4bc2507c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11935,6 +11936,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &87281356836680071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729260637217018630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948fdf89d1d13eb42994ccb26a354edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  structureCost: 0
+  maintenanceCost: 0
+  myUIData: {fileID: 11400000, guid: 1977010503d044d419e29fb9647de723, type: 2}
+  immigrantNum: 5
+  maxImmigrants: 0
 --- !u!1 &8849258937685923013
 GameObject:
   m_ObjectHideFlags: 0

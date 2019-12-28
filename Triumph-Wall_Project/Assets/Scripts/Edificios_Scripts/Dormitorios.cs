@@ -8,7 +8,9 @@ public class Dormitorios : Edificio
     public Queue<GameObject> sleepingPlaces;
 
     public int structureCost, maintenanceCost;
-    private UIDataTypes.Buildings.UIDORM_Data myUIData;
+
+    [SerializeField]
+    private UIDataTypes.Buildings.SO_UIDorm_Data myUIData;
 
     public int immigrantNum = 5, maxImmigrants;
 
@@ -43,8 +45,6 @@ public class Dormitorios : Edificio
 
     public override void SetUP()
     {
-        myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UIDORM_Data>();
-
         myUIData.showInmigrantNum = true;
     }
 
@@ -69,9 +69,29 @@ public class Dormitorios : Edificio
     {
 
     }
-
+       
     public override void Upgrade()
     {
         maxImmigrants += 2;
+    }
+
+    public override void ResetDay()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ResetMonth()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void SetDataFromObject()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void UpdateDataObject()
+    {
+        throw new System.NotImplementedException();
     }
 }

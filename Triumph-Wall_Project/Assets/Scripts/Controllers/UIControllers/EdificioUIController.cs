@@ -151,7 +151,7 @@ public class EdificioUIController : MonoBehaviour
         hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
     }
 
-    public void StartShowUI(UIDORM_Data data)
+    public void StartShowUI(SO_UIDorm_Data data)
     {
         ShowBaseUI(data);
         //enseñar Ui especifica
@@ -178,7 +178,7 @@ public class EdificioUIController : MonoBehaviour
 		controlSlider.value = data.control;
 	}
 
-    private void UpdateUI(UIDORM_Data data)
+    private void UpdateUI(SO_UIDorm_Data data)
     {
         ShowBaseUI(data);
         //enseñar Ui especifica
