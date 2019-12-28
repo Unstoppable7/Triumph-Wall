@@ -21,6 +21,13 @@ public class UIController : SingletonComponent<UIController>
 		edificiosUi.canvas.SetActive( true );
 	}
 
+    public void ShowEdificioUI (SO_UIENF_Data toShow )
+	{
+		//overlapping UI showing = false;
+		edificiosUi.StartShowUI(toShow );
+		edificiosUi.canvas.SetActive( true );
+	}
+
     public void ShowEdificioUI(SO_UIODI_Data toShow)
     {
         //overlapping UI showing = false;

@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4da53f88a304c4090d17aa3ed97c39, type: 3}
+  m_Name: UI_ENF
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  showUpgradeNum: 0
+  showDurabilityBar: 1
+  showEmployeeNum: 1
+  showProgress: 1
+  showInmigrantNum: 1
+  showUpgradeBtn: 0
+  showBuyEmployeeBtn: 1
+  showFireEmployeeBtn: 1
+  managerID: -1
+  canBeUpgraded: 0
+  maxOfUpgrades: -1
+  currentUpgrade: -1
+  maxDurability: 100
+  currentDurability: 50
+  canBuyEmployee: 0
+  canFireEmployee: 0
+  pricePerEmployee: -1
+  maxEmployeeNum: 10
+  currentEmployeeNum: 0
+  currentProgress: 1
+  processSpeed: 10.2
+  maxInmigrantNum: 10
+  currentInmigrantNum: 0
+  updatedValuesEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
