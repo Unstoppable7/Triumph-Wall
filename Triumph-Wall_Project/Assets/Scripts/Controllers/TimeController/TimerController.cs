@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 public class TimerController : SerializedMonoBehaviour
 {
-	[Header("Clock")]
 	[FoldoutGroup( "Clock" )]
 	[SerializeField]
 	private bool use24Clock = true;
@@ -254,13 +253,15 @@ public class TimerController : SerializedMonoBehaviour
 		}
 	}
 
-	[SerializeField]
-	[FoldoutGroup( "Set Day and Night Scene" )]
-	[Range(0.0f,1.0f)]
+	[SerializeField][HideInInspector]
 	private float where = 0;
 
-	[FoldoutGroup( "Set Day and Night Scene" ,-1)]
-	[Button( ButtonSizes.Medium)]
+	[FoldoutGroup( "Set Day and Night Scene", -1 )]
+	[ShowInInspector][PropertyRange( 0.0f, 1.0f )]
+	private float Where { get { return where; } set { where = value; MakeDay(); } }
+
+	//[FoldoutGroup( "Set Day and Night Scene" ,-1)]
+	//[Button( ButtonSizes.Medium)]
 	private void MakeDay ()
 	{
 		_timeOfDay = where;

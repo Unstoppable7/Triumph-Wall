@@ -193,7 +193,8 @@ public class ResourceController : SerializedMonoBehaviour
 		woundedMoneyFactorText.text = string.Format( "-{0:0}", woundedInmigrants * myBalanceFile.woundedMoneyPenalty );
 		deadMoneyFactorText.text = string.Format( "-{0:0}", deadInmigrants * myBalanceFile.deathMoneyPenalty );
 
-		//public Opinion
+		//TODO public Opinion detail VIEW 
+		//si quieres acordarte de lo que tenias que enseñar mira la funcion de calcular public opinion
 
 		rewardMoneyText.text = string.Format( "{0:0}/{1:0}", finalRewardMoney, myBalanceFile.governmentMoney );
 

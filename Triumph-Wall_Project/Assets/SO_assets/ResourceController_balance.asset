@@ -21,9 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  happinesPoFactor: 0.343
-  efficiencyPoFactor: 0.657
-  daysWithoutCasualtiesPoFactor: 0.4
+  happinesPoFactor: 0.38300002
+  efficiencyPoFactor: 0.617
+  daysWithoutCasualtiesPoFactor: 0.1
   woundedDeportedPoPenalty: 0.005
   greavousDeportedPoPenalty: 0.01
   woundPoPenalty: 0.005

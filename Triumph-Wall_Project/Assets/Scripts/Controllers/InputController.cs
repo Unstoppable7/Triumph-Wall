@@ -12,6 +12,7 @@ public class InputController : MonoBehaviour
 
 	private CameraBehaviour cameraController = null;
 
+	[SerializeField]
 	private float borderThickness = 50.0f;
 
 	//mose variables
