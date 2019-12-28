@@ -8,10 +8,11 @@ public class InputController : MonoBehaviour
 {
 	Rewired.Player player = null;
 
-	private GameState currentState;
+	private SO_GameState currentState;
 
 	private CameraBehaviour cameraController = null;
 
+	[SerializeField]
 	private float borderThickness = 50.0f;
 
 	//mose variables
@@ -22,7 +23,7 @@ public class InputController : MonoBehaviour
 	private Vector2 tClickPos;
 	private Vector2 tCurrentPos;
 
-	public void SetUp (ref GameState _currentState )
+	public void SetUp (ref SO_GameState _currentState )
 	{
 		player = ReInput.players.GetPlayer( 0 );
 
@@ -39,13 +40,13 @@ public class InputController : MonoBehaviour
 		}
 		switch (currentState.gameState)
 		{
-		case GameState.GameStates.MANAGMENT:
+		case SO_GameState.GameStates.MANAGMENT:
 			ManagmentState();
 			break;
-		case GameState.GameStates.EDIT_PATH:
+		case SO_GameState.GameStates.EDIT_PATH:
 			EditPathState();
 			break;
-		case GameState.GameStates.CONSTRUCTION:
+		case SO_GameState.GameStates.CONSTRUCTION:
 			ConstructionState();
 			break;
 		default:
@@ -72,6 +73,7 @@ public class InputController : MonoBehaviour
 				if (hit.collider.gameObject.GetComponent<Edificio>())
 				{
 					//show its UI
+					UIController.Instance.HideUI();
 					hit.collider.gameObject.GetComponent<Edificio>().ShowUI();
 				}				
 			}

@@ -107,7 +107,7 @@ public class EdificioUIController : MonoBehaviour
 	}
 
 	//SetUp de la UI de edificio concreto
-	public void StartShowUI(UICR_Data data)
+	public void StartShowUI(SO_UICR_Data data)
 	{
 		ShowBaseUI( data );
 		//enseñar Ui especifica
@@ -117,6 +117,7 @@ public class EdificioUIController : MonoBehaviour
 		controlSlider.gameObject.SetActive( true );
 		controlSlider.value = data.control;
 
+		data.updatedValuesEvent.RemoveAllListeners();
 		//eventos de actualizaciond e la UI
 		UnityAction action = delegate { UpdateUI( data ); };
 		data.updatedValuesEvent.AddListener( action );
@@ -131,13 +132,14 @@ public class EdificioUIController : MonoBehaviour
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
 
-    public void StartShowUI(UIODI_Data data)
+    public void StartShowUI(SO_UIODI_Data data)
     {
         ShowBaseUI(data);
-        //enseñar Ui especifica
+		//enseñar Ui especifica
 
-        //eventos de actualizaciond e la UI
-        UnityAction action = delegate { UpdateUI(data); };
+		//eventos de actualizaciond e la UI
+		data.updatedValuesEvent.RemoveAllListeners();
+		UnityAction action = delegate { UpdateUI(data); };
         data.updatedValuesEvent.AddListener(action);
         //evento  al esconderse esta UI
         UnityAction action2 = delegate
@@ -150,7 +152,7 @@ public class EdificioUIController : MonoBehaviour
     }
 
     //updatea la UI cuando el edificio updatea los valores
-    private void UpdateUI (UICR_Data data)
+    private void UpdateUI (SO_UICR_Data data)
 	{
 		ShowBaseUI( data );
 		//enseñar Ui especifica
@@ -158,7 +160,7 @@ public class EdificioUIController : MonoBehaviour
 		controlSlider.value = data.control;
 	}
 
-    private void UpdateUI(UIODI_Data data)
+    private void UpdateUI(SO_UIODI_Data data)
     {
         ShowBaseUI(data);
         //enseñar Ui especifica

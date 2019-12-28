@@ -14,14 +14,14 @@ public class UIController : SingletonComponent<UIController>
 		edificiosUi = GetComponentInChildren<EdificioUIController>();
 	}
 
-	public void ShowEdificioUI (UICR_Data toShow )
+	public void ShowEdificioUI (SO_UICR_Data toShow )
 	{
 		//overlapping UI showing = false;
 		edificiosUi.StartShowUI(toShow );
 		edificiosUi.canvas.SetActive( true );
 	}
 
-    public void ShowEdificioUI(UIODI_Data toShow)
+    public void ShowEdificioUI(SO_UIODI_Data toShow)
     {
         //overlapping UI showing = false;
         edificiosUi.StartShowUI(toShow);

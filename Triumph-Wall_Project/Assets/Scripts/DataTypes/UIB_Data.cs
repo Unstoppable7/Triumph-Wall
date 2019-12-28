@@ -1,5 +1,5 @@
-﻿
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace UIDataTypes
@@ -41,44 +41,46 @@ namespace UIDataTypes
 
 			///////////BUILDING UI DATA///////////
 			//setted from Factory and from Manager
+			[HideInInspector]
 			public int managerID = -1;
 			//Upgrading
+			[HideInInspector]
 			public bool canBeUpgraded = false;
+			[HideInInspector]
 			public int maxOfUpgrades = -1;
+			[HideInInspector]
 			public int currentUpgrade = -1;
 			//Durability
+			[HideInInspector]
 			public float maxDurability = 100;
+			[HideInInspector]
 			public float currentDurability = 50;
 			//Employees Flags
+			[HideInInspector]
 			public bool canBuyEmployee = false;
+			[HideInInspector]
 			public bool canFireEmployee = false;
 			//Employees
+			[HideInInspector]
 			public float pricePerEmployee = -1;
+			[HideInInspector]
 			public int maxEmployeeNum = -1;
+			[HideInInspector]
 			public int currentEmployeeNum = -1;
 			//processing
+			[HideInInspector]
 			public float currentProgress = -1;
+			[HideInInspector]
 			public float processSpeed = -1;
 			//inmigrants
+			[HideInInspector]
 			public int maxInmigrantNum = -1;
+			[HideInInspector]
 			public int currentInmigrantNum = -1;
 
 			//used in the buidlings to tell the ui to refresh the info
+			[HideInInspector]
 			public UnityEvent updatedValuesEvent = new UnityEvent();
 		}
-
-		public class UICR_Data : UIB_Data
-		{
-			public float salubrity = 0;
-			public float control = 0;
-		}
-		public class UIDorm_Data : UIB_Data
-		{
-			public float hola = -1;
-		}
-        public class UIODI_Data: UIB_Data //oficina deportaçao
-        {
-            
-        }
     }
 }

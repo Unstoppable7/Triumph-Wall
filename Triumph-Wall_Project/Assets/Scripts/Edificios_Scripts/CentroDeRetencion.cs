@@ -3,23 +3,36 @@ using UnityEngine;
 
 public class CentroDeRetencion : Edificio
 {
+	private OficinaDeportacionBehaviour oficina;
+
 	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
+
+	//TODO change GameObject To Especific inmigrants Objects
+	private List<GameObject> inmigrantsInFacility = new List<GameObject>();
+	//TODO cambiar GameObject por la Clase guardia
+	private List<GameObject> policeMen = new List<GameObject>();
 
 	public int maxEmployeeNumP { set { maxEmployeeNumP = value; } get { return maxEmployeeNum; } }
 
-	private UIDataTypes.Buildings.UICR_Data myUIData;
+	[SerializeField]
+	private BuildingDataTypes.SO_CRData myData = null;
 
-	public float salubridad = 0;
-	public float control = 0;
-	public float factorSuciedad = 1.0f;
-	public int inmigrantesPorGuardia = 5;
+	[SerializeField]
+	private UIDataTypes.Buildings.SO_UICR_Data myUIData = null;
+
+	private float salubridad = 0;
+	private float control = 0;
 
 	public override void SetUP ( )
 	{
-		myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
-		//TODO initialize buidlings
+		//myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
+		TimerController.dailyEvent.AddListener( ResetDay );
+		TimerController.monthlyEvent.AddListener( ResetMonth );
+
+		//initialize buidlings
 		//Oficina
-		edificiosDelRecinto.Add( GetComponentInChildren<OficinaDeportacionBehaviour>() );
+		oficina = GetComponentInChildren<OficinaDeportacionBehaviour>();
+		edificiosDelRecinto.Add( oficina );
 		//Dorms
 		//Enfermeria
 		//Cocina
@@ -29,15 +42,10 @@ public class CentroDeRetencion : Edificio
 			edificiosDelRecinto[i].SetUP();
 			edificiosDelRecinto[i].SetID(i);
 		}
-		// las funciones de los empleados se usaran desde el editor de rutas
-		myUIData.showBuyEmployeeBtn = false;
-		myUIData.showFireEmployeeBtn = false;
-		myUIData.showEmployeeNum = true; 
-		//inmigrantes salubridad y control
-		myUIData.showInmigrantNum = true;
-		
+
 		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available
 		//getIT from Balance File
+		SetDataFromObject();
 		currentEmployeeNum = 0;
 		maxEmployeeNum = 10;
 		currentInmigrantNum = GetCurrentIlegals();
@@ -47,6 +55,9 @@ public class CentroDeRetencion : Edificio
 
 	public override void Tick ( )
 	{
+		if(myData.debug)
+			SetDataFromObject();
+
 		foreach ( Edificio building in edificiosDelRecinto)
 		{
 			building.Tick();
@@ -56,6 +67,8 @@ public class CentroDeRetencion : Edificio
 
 		control = CalculateControl();
 		control = Mathf.Clamp( control, 0, 1 );
+
+		UpdateDataObject();
 		UpdateUIData();
 	}  
 
@@ -94,6 +107,22 @@ public class CentroDeRetencion : Edificio
 		throw new System.NotImplementedException();
 	}
 
+	public override void ResetDay ( )
+	{
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			building.ResetDay();
+		}
+	}
+
+	public override void ResetMonth ( )
+	{
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			building.ResetMonth();
+		}
+	}
+
 	#region Salubrity
 
 	private float CalculateSalubrity ( )
@@ -106,9 +135,9 @@ public class CentroDeRetencion : Edificio
 		//MIN -1 MAX 1
 		float result = 0;
 		if (aforo > 1)
-			result = -aforo * factorSuciedad * Time.deltaTime;
+			result = -aforo * myData.factorSuciedad * Time.deltaTime;
 		else if(aforo < 1)
-			result = (1+(1-aforo)) * factorSuciedad * Time.deltaTime;
+			result = (1+(1-aforo)) * myData.factorSuciedad * Time.deltaTime;
 		
 		return result;
 	}
@@ -130,9 +159,11 @@ public class CentroDeRetencion : Edificio
 	private float CalculateControl ( )
 	{
 		currentInmigrantNum = GetCurrentIlegals();
+		if (currentInmigrantNum <= 0)
+			return 1;
 
 		float result = 0;
-		result = 1.0f - ((float)(currentInmigrantNum - (currentEmployeeNum * inmigrantesPorGuardia)) /
+		result = 1.0f - ((float)(currentInmigrantNum - (currentEmployeeNum * myData.inmigrantesPorGuardia)) /
 			currentInmigrantNum);
 
 		return result;
@@ -179,7 +210,14 @@ public class CentroDeRetencion : Edificio
 	}
 
 	//Method Called by Resource Manager
-	public float TotalCostOfEmployeeInFacility ( )
+
+	public override int GetCurrentInmigrants ( )
+	{
+		currentInmigrantNum = GetCurrentIlegals();
+		return base.GetCurrentInmigrants();
+	}
+
+	public override float GetTotalEmployeeCost ( )
 	{
 		float result = 0;
 		foreach (Edificio building in edificiosDelRecinto)
@@ -188,8 +226,79 @@ public class CentroDeRetencion : Edificio
 		}
 		return result;
 	}
-	public float GetBuildingEmployeeCost (int indx )
+
+	public override float GetCurrentEmployeeNum ( )
 	{
-		return edificiosDelRecinto[indx].GetTotalEmployeeCost();
+		float result = 0;
+		foreach (Edificio building in edificiosDelRecinto)
+		{
+			result += building.GetCurrentEmployeeNum();
+		}
+		return result;
+	}
+
+	#region OFICINA Especificos
+
+	public int GetTotalDeported ( )
+	{
+		return oficina.GetTotalDeported();
+	}
+	public int GetNormalDeported ( )
+	{
+		return oficina.GetNormalDeported();
+	}
+	public int GetWoundedDeported ( )
+	{
+		return oficina.GetWoundedDeported();
+	}
+	public int GetGrevousDeported ( )
+	{
+		return oficina.GetGrevousDeported();
+	}
+	#endregion
+
+	public float GetAverageHappiness ( )
+	{
+		if (inmigrantsInFacility.Count <= 0)
+			return 1;
+
+		float result = 0;
+		//TODO change this to the inmigrant happiness getter
+		foreach (GameObject inmigrant in inmigrantsInFacility)
+		{
+			result += inmigrant.GetHashCode();
+		}
+
+		result /= inmigrantsInFacility.Count;
+		return result;
+	}
+
+	protected override void SetDataFromObject ( )
+	{
+		//PARENT CONSTRUCT 
+		//look at the defaul data of Edificio to see whats available
+		//getIT from Balance File
+		pricePerEmployee = myData.pricePerEmployee;
+		maxEmployeeNum = myData.maxEmployeeNum;
+		currentEmployeeNum = myData.currentEmployeeNum;
+
+		maxInmigrantNum = myData.maxInmigrantNum;
+		currentInmigrantNum = GetCurrentIlegals();
+
+		salubridad = myData.salubridad;
+		control = myData.control;
+	}
+
+	protected override void UpdateDataObject ( )
+	{
+		myData.pricePerEmployee = pricePerEmployee;
+		myData.maxEmployeeNum = maxEmployeeNum;
+		myData.currentEmployeeNum = currentEmployeeNum;
+
+		myData.maxInmigrantNum = maxInmigrantNum;
+		myData.currentInmigrantNum = GetCurrentIlegals();
+
+		myData.salubridad = salubridad;
+		myData.control = control;
 	}
 }
