@@ -10,7 +10,7 @@ public class Dormitorios : Edificio
     public int structureCost, maintenanceCost;
 
     [SerializeField]
-    private UIDataTypes.Buildings.SO_UIDorm_Data myUIData;
+    private UIDataTypes.Buildings.SO_UIDorm_Data myUIData = null;
 
     public int immigrantNum = 5, maxImmigrants;
 

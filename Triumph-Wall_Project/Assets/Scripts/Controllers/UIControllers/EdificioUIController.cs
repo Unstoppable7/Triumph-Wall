@@ -58,6 +58,7 @@ public class EdificioUIController : MonoBehaviour
 	{
 		if (baseData.showDurabilityBar)
 		{
+			durabilitySlider.gameObject.SetActive( true );
 			durabilitySlider.value = baseData.currentDurability / baseData.maxDurability;
 		}
 		else
@@ -67,8 +68,8 @@ public class EdificioUIController : MonoBehaviour
 
 		if (baseData.showUpgradeNum)
 		{
+			upgradesObject.SetActive( true );
 			upgradesText.text = string.Format( "{0:00}/{1:00}", baseData.currentUpgrade, baseData.maxOfUpgrades );
-
 		}
 		else
 		{
@@ -77,6 +78,8 @@ public class EdificioUIController : MonoBehaviour
 
 		if (baseData.showEmployeeNum)
 		{
+
+			emplyeeObject.SetActive( true );
 			employeeText.text = string.Format( "{0:00}/{1:00}", baseData.currentEmployeeNum, baseData.maxEmployeeNum );
 		}
 		else
@@ -86,7 +89,7 @@ public class EdificioUIController : MonoBehaviour
 
 		if (baseData.showInmigrantNum)
 		{
-
+			inmigrantsObject.SetActive( true );
 			inmigrantsText.text = string.Format( "{0:00}/{1:00}", baseData.currentInmigrantNum, baseData.maxInmigrantNum );
 		}
 		else
@@ -96,6 +99,8 @@ public class EdificioUIController : MonoBehaviour
 
 		if (baseData.showProgress)
 		{
+			speedObject.SetActive( true );
+			progresSlider.gameObject.SetActive( true );
 			progresSlider.value = baseData.currentProgress;
 			speedText.text = string.Format( "{0:00}", baseData.processSpeed );
 		}
@@ -132,6 +137,24 @@ public class EdificioUIController : MonoBehaviour
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
 
+    public void StartShowUI(SO_UIDorm_Data data)
+    {
+        ShowBaseUI(data);
+        //enseñar Ui especifica
+
+        //eventos de actualizaciond e la UI
+        UnityAction action = delegate { UpdateUI(data); };
+        data.updatedValuesEvent.AddListener(action);
+        //evento  al esconderse esta UI
+        UnityAction action2 = delegate
+        {
+            data.updatedValuesEvent.RemoveListener(action);
+
+        };
+        hideEvent.AddListener(action2);
+        hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
+    }
+
     public void StartShowUI(SO_UIODI_Data data)
     {
         ShowBaseUI(data);
@@ -146,24 +169,6 @@ public class EdificioUIController : MonoBehaviour
         {
             data.updatedValuesEvent.RemoveListener(action);
             
-        };
-        hideEvent.AddListener(action2);
-        hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
-    }
-
-    public void StartShowUI(SO_UIDorm_Data data)
-    {
-        ShowBaseUI(data);
-        //enseñar Ui especifica
-
-        //eventos de actualizaciond e la UI
-        UnityAction action = delegate { UpdateUI(data); };
-        data.updatedValuesEvent.AddListener(action);
-        //evento  al esconderse esta UI
-        UnityAction action2 = delegate
-        {
-            data.updatedValuesEvent.RemoveListener(action);
-
         };
         hideEvent.AddListener(action2);
         hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
