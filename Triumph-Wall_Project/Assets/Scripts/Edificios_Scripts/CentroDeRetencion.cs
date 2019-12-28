@@ -5,6 +5,7 @@ public class CentroDeRetencion : Edificio
 {
 	private OficinaDeportacionBehaviour oficina;
 	private Dormitorios dorms;
+	private Cocina_Behaviour cocina;
 	private Enfermeria_Behaviour enfermeria;
 
 	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
@@ -42,6 +43,9 @@ public class CentroDeRetencion : Edificio
         enfermeria = GetComponentInChildren<Enfermeria_Behaviour>();
         edificiosDelRecinto.Add(enfermeria);
         //Cocina
+        cocina = GetComponentInChildren<Cocina_Behaviour>();
+        edificiosDelRecinto.Add(cocina);
+
         // SetUp all buidling
         for (int i = 0; i < edificiosDelRecinto.Count; i++)
 		{

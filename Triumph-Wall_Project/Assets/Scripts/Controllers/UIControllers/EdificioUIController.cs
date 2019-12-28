@@ -137,6 +137,24 @@ public class EdificioUIController : MonoBehaviour
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
 
+    public void StartShowUI(SO_UICocina_Data data)
+	{
+		ShowBaseUI( data );
+
+
+		data.updatedValuesEvent.RemoveAllListeners();
+		//eventos de actualizaciond e la UI
+		UnityAction action = delegate { UpdateUI( data ); };
+		data.updatedValuesEvent.AddListener( action );
+		//evento  al esconderse esta UI
+		UnityAction action2 = delegate 
+		{
+			data.updatedValuesEvent.RemoveListener( action );
+		};
+		hideEvent.AddListener( action2 );
+		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
+	}
+
     public void StartShowUI(SO_UIDorm_Data data)
     {
         ShowBaseUI(data);
@@ -199,6 +217,12 @@ public class EdificioUIController : MonoBehaviour
 		//enseñar Ui especifica
 		salubritySlider.value = data.salubrity;
 		controlSlider.value = data.control;
+	}
+
+      private void UpdateUI (SO_UICocina_Data data)
+	{
+		ShowBaseUI( data );
+		//enseñar Ui especifica
 	}
 
     private void UpdateUI(SO_UIDorm_Data data)
