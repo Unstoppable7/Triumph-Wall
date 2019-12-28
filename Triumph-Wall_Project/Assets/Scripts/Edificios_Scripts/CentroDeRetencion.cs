@@ -4,6 +4,8 @@ using UnityEngine;
 public class CentroDeRetencion : Edificio
 {
 	private OficinaDeportacionBehaviour oficina;
+	private Dormitorios dorms;
+	private Enfermeria_Behaviour enfermeria;
 
 	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
 
@@ -33,11 +35,15 @@ public class CentroDeRetencion : Edificio
 		//Oficina
 		oficina = GetComponentInChildren<OficinaDeportacionBehaviour>();
 		edificiosDelRecinto.Add( oficina );
-		//Dorms
-		//Enfermeria
-		//Cocina
-		// SetUp all buidling
-		for (int i = 0; i < edificiosDelRecinto.Count; i++)
+        //Dorms
+        dorms = GetComponentInChildren<Dormitorios>();
+        edificiosDelRecinto.Add(dorms);
+        //Enfermeria
+        enfermeria = GetComponentInChildren<Enfermeria_Behaviour>();
+        edificiosDelRecinto.Add(enfermeria);
+        //Cocina
+        // SetUp all buidling
+        for (int i = 0; i < edificiosDelRecinto.Count; i++)
 		{
 			edificiosDelRecinto[i].SetUP();
 			edificiosDelRecinto[i].SetID(i);

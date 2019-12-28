@@ -9080,6 +9080,7 @@ GameObject:
   - component: {fileID: 3942549051206806420}
   - component: {fileID: 5643132258303579704}
   - component: {fileID: 8067549613437929280}
+  - component: {fileID: 2166407475199448849}
   m_Layer: 0
   m_Name: Enfermeria
   m_TagString: Untagged
@@ -9159,6 +9160,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2166407475199448849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3763010615575575615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d757cea421d2db46bdcdf20681da239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myUIData: {fileID: 11400000, guid: 484c88461ffa209499f600b96a166754, type: 2}
 --- !u!1 &3786401538865125219
 GameObject:
   m_ObjectHideFlags: 0
