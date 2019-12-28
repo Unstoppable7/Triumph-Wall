@@ -24,7 +24,7 @@ MonoBehaviour:
   showUpgradeNum: 0
   showDurabilityBar: 1
   showEmployeeNum: 1
-  showProgress: 1
+  showProgress: 0
   showInmigrantNum: 1
   showUpgradeBtn: 0
   showBuyEmployeeBtn: 1
@@ -38,8 +38,8 @@ MonoBehaviour:
   canBuyEmployee: 0
   canFireEmployee: 0
   pricePerEmployee: -1
-  maxEmployeeNum: -1
-  currentEmployeeNum: -1
+  maxEmployeeNum: 10
+  currentEmployeeNum: 1
   currentProgress: -1
   processSpeed: -1
   maxInmigrantNum: 10

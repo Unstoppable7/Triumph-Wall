@@ -27,7 +27,8 @@ public class Cocina_Behaviour : Edificio
     public override void SetUP()
     {
         totalImmigrantsInFrontier = 0;
-
+        currentEmployeeNum = 1;
+        maxEmployeeNum = 10;
         maxInmigrantNum = 10;
         currentInmigrantNum = totalImmigrantsInFrontier;
         Tick();
@@ -40,7 +41,6 @@ public class Cocina_Behaviour : Edificio
 
     public override void Tick()
     {
-
         UpdateUIData();
     }
 
@@ -48,12 +48,14 @@ public class Cocina_Behaviour : Edificio
     {
         myUIData.currentInmigrantNum = currentInmigrantNum; 
         myUIData.maxInmigrantNum = maxInmigrantNum;
+        myUIData.currentEmployeeNum = currentEmployeeNum;
+        myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.updatedValuesEvent.Invoke();
     }
 
     public override void Upgrade()
     {
-        throw new System.NotImplementedException();
+        currentEmployeeNum++;
     }
 
     protected override void SetDataFromObject()
