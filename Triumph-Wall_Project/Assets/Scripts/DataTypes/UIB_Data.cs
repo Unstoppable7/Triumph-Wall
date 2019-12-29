@@ -35,6 +35,7 @@ namespace UIDataTypes
 
             /////////////////////////////BUTTONS
             public bool showUpgradeBtn = false;
+            public bool showRepairBtn = false;
             //employee buttons
             public bool showBuyEmployeeBtn = false;
             public bool showFireEmployeeBtn = false;
