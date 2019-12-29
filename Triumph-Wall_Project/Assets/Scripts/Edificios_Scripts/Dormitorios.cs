@@ -54,7 +54,7 @@ public class Dormitorios : Edificio
         currentDurability = maxDurability;
     }
 
-    protected override void StartProcessInmigrant()
+    protected override void ProcessInmigrant()
 	{
 		throw new System.NotImplementedException();
 	}

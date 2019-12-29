@@ -74,8 +74,7 @@ public class CentroDeRetencion : Edificio
 
 		control = CalculateControl();
 		control = Mathf.Clamp( control, 0, 1 );
-		if (!myData.debug)
-			UpdateDataObject();
+
 		UpdateUIData();
 	}  
 
@@ -121,7 +120,7 @@ public class CentroDeRetencion : Edificio
 		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
 	}
 
-	protected override void StartProcessInmigrant ( )
+	protected override void ProcessInmigrant ( )
 	{
 		throw new System.NotImplementedException();
 	}

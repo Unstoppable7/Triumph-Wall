@@ -33,7 +33,7 @@ public abstract class Edificio : MonoBehaviour
 
 	public abstract void SetUP ( ); 
 	public abstract void Tick ( );
-	protected abstract void StartProcessInmigrant ( );
+	protected abstract void ProcessInmigrant ( );
 
 	//actions
 	public abstract void Upgrade ( );

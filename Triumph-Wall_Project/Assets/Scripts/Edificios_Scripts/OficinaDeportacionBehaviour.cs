@@ -35,16 +35,18 @@ public class OficinaDeportacionBehaviour : Edificio
 		if (myData.debug)
 			SetDataFromObject();
 
-		RemoveImmigrant();
+		ProcessInmigrant();
 
-		if(!myData.debug)
-			UpdateDataObject();
+		//if(!myData.debug)
+		//	UpdateDataObject();
 
         UpdateUIData();
     }
 
     public override void UpdateUIData()
     {
+		myUIData.maxOfUpgrades = maxOfUpgrades;
+		myUIData.currentUpgrade = currentUpgrade;
         myUIData.processSpeed = processSpeed;
         myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.maxInmigrantNum = maxEmployeeNum;
@@ -66,6 +68,7 @@ public class OficinaDeportacionBehaviour : Edificio
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		maxInmigrantNum = currentEmployeeNum;
 	}
 	public override void FireEmployee ( )
 	{
@@ -74,14 +77,19 @@ public class OficinaDeportacionBehaviour : Edificio
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		maxInmigrantNum = currentEmployeeNum;
 	}
 
-	public override void IncrementInmigrants (GameObject immigrant = null)
+	//used by the manager of buildings
+	public override void IncrementInmigrants (GameObject inmigrant = null)
 	{
-		base.IncrementInmigrants();
-		immigrantsToDeport.Enqueue( immigrant );
+		if (currentInmigrantNum + 1 <= maxInmigrantNum)
+		{
+			base.IncrementInmigrants();
+			immigrantsToDeport.Enqueue( inmigrant );
+		}
 	}
-	public override void DecrementInmigrants (GameObject immigrant = null)
+	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
 		base.DecrementInmigrants();
 		//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
@@ -94,14 +102,24 @@ public class OficinaDeportacionBehaviour : Edificio
 			immigrantsToDeport.Dequeue();
 	}
 
-	protected override void StartProcessInmigrant()
+	protected override void ProcessInmigrant()
 	{
-		throw new System.NotImplementedException();
+		if ((currentProgress <= 0.0f && currentInmigrantNum > 0))
+		{
+			DecrementInmigrants();
+			currentProgress = processSpeed;
+		}
+		else if (currentInmigrantNum > 0)
+			currentProgress -= Time.deltaTime;
 	}
 
     public override void Upgrade()
     {
-		maxEmployeeNum++;
+		if(currentUpgrade +1 <= maxOfUpgrades)
+		{
+			maxEmployeeNum++;
+			currentUpgrade++;
+		}
     }
 
 	public override void Repair ( )
@@ -120,18 +138,6 @@ public class OficinaDeportacionBehaviour : Edificio
 		normalDeported = 0;
 		woundedDeported = 0;
 		greavousDeported = 0;
-	}
-
-	private void RemoveImmigrant ( )
-	{
-		if ((currentProgress <= 0.0f && currentInmigrantNum > 0))
-		{
-			DecrementInmigrants();
-
-			currentProgress = processSpeed;
-		}
-		else if(currentInmigrantNum > 0)
-			currentProgress -= Time.deltaTime;
 	}
 
 	public int GetTotalDeported ( )
@@ -158,6 +164,8 @@ public class OficinaDeportacionBehaviour : Edificio
 		woundedDeported = myData.woundedDeported;
 		greavousDeported = myData.greavousDeported;
 
+		maxOfUpgrades = myData.maxOfUpgrades;
+		currentUpgrade = myData.currentUpgrade;
 		processSpeed = myData.processSpeed;
 		maxEmployeeNum = myData.maxEmployeeNum;
 		maxInmigrantNum = myData.maxEmployeeNum;

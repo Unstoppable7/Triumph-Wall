@@ -14,7 +14,6 @@ public class Cocina_Behaviour : Edificio
 		myUIData.managerID = managerID;
         currentEmployeeNum = 0;
         maxEmployeeNum = 10;
-        Tick();
     }
 
     public override void ShowUI()
@@ -64,7 +63,7 @@ public class Cocina_Behaviour : Edificio
 		throw new System.NotImplementedException();
 	}
 
-    protected override void StartProcessInmigrant()
+    protected override void ProcessInmigrant()
     {
         //usare esta funcion para saber cuantos immigrantes hay actualmente
         currentInmigrantNum++; //si current immigrant num es mas grande que max immigrant num se deberan contratar a mas cocineros

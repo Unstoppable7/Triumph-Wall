@@ -16,8 +16,10 @@ public class Enfermeria_Behaviour : Edificio
 		myUIData.managerID = managerID;
 		processSpeed = 10.2f;
 
+		maxOfUpgrades = 10;
+		currentUpgrade = 0;
         currentProgress = processSpeed;
-        maxEmployeeNum = 10;
+        maxEmployeeNum = 1;
         maxInmigrantNum = maxEmployeeNum;
         currentEmployeeNum = 0;
         currentInmigrantNum = 0;
@@ -25,7 +27,7 @@ public class Enfermeria_Behaviour : Edificio
 	public override void Tick ( )
 	{
 		currentInmigrantNum = immigrantsToHeal.Count;
-		RemoveImmigrant();
+		ProcessInmigrant();
 		UpdateUIData();
 	}
 
@@ -36,6 +38,8 @@ public class Enfermeria_Behaviour : Edificio
 
     public override void UpdateUIData()
     {
+		myUIData.maxOfUpgrades = maxOfUpgrades;
+		myUIData.currentUpgrade = currentUpgrade;
         myUIData.processSpeed = processSpeed;
         myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.maxInmigrantNum = maxInmigrantNum;
@@ -46,16 +50,45 @@ public class Enfermeria_Behaviour : Edificio
     }
 	public override void IncrementInmigrants (GameObject inmigrant = null)
 	{
-		base.IncrementInmigrants( );
+		if(currentInmigrantNum + 1 <= maxInmigrantNum)
+		{
+			base.IncrementInmigrants();
+			immigrantsToHeal.Enqueue( inmigrant );
+		}
 	}
 	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
 		base.DecrementInmigrants( );
 		immigrantsToHeal.Dequeue();
 	}
+
+	public override void BuyEmployee ( )
+	{
+		base.BuyEmployee();
+		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		maxInmigrantNum = currentEmployeeNum;
+	}
+	public override void FireEmployee ( )
+	{
+		base.FireEmployee();
+		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		maxInmigrantNum = currentEmployeeNum;
+	}
+
 	public override void Upgrade()
     {
-        throw new System.NotImplementedException();
+        if(currentUpgrade +1 <= maxOfUpgrades)
+		{
+			currentUpgrade++;
+			maxEmployeeNum++;
+			maxInmigrantNum = maxEmployeeNum;
+		}
     }
 	public override void Repair ( )
 	{
@@ -72,10 +105,16 @@ public class Enfermeria_Behaviour : Edificio
 		throw new System.NotImplementedException();
 	}
 
-    protected override void StartProcessInmigrant()
-    {
-        throw new System.NotImplementedException();
-    }
+    protected override void ProcessInmigrant()
+	{
+		if (currentProgress <= 0.0f && immigrantsToHeal.Count > 0)
+		{
+			DecrementInmigrants();
+			currentProgress = processSpeed;
+		}
+		else if (immigrantsToHeal.Count > 0)    //TODO cambiar el tiempo de procesamiento segun la gravedad de las heridas del immigrante
+			currentProgress -= Time.deltaTime;
+	}
 
 	protected override void SetDataFromObject ( )
 	{
@@ -86,15 +125,4 @@ public class Enfermeria_Behaviour : Edificio
     {
 		throw new System.NotImplementedException();
 	}
-
-    private void RemoveImmigrant()
-    {
-        if (currentProgress <= 0.0f && immigrantsToHeal.Count > 0)
-        {
-			DecrementInmigrants();
-			currentProgress = processSpeed;
-        }
-        else if (immigrantsToHeal.Count > 0)    //TODO cambiar el tiempo de procesamiento segun la gravedad de las heridas del immigrante
-            currentProgress -= Time.deltaTime;
-    }
 }
