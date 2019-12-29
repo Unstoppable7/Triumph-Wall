@@ -7,6 +7,8 @@ public class Enfermeria_Behaviour : Edificio
 
     public Queue<GameObject> immigrantsToHeal = new Queue<GameObject>();
 
+	private int processSpeedEmployeeCap = 10;
+
     [SerializeField]
     private UIDataTypes.Buildings.SO_UIENF_Data myUIData = null;
 
@@ -58,8 +60,13 @@ public class Enfermeria_Behaviour : Edificio
 	}
 	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
-		base.DecrementInmigrants( );
-		immigrantsToHeal.Dequeue();
+		for(int i = 0; i < currentEmployeeNum; i++)
+		{
+			if (currentInmigrantNum - 1 < 0) break;
+
+			base.DecrementInmigrants();
+			immigrantsToHeal.Dequeue();
+		}
 	}
 
 	public override void BuyEmployee ( )
@@ -68,7 +75,9 @@ public class Enfermeria_Behaviour : Edificio
 		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
-		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		if(currentEmployeeNum + 1 <= processSpeedEmployeeCap)
+			processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+
 		maxInmigrantNum = currentEmployeeNum;
 	}
 	public override void FireEmployee ( )
@@ -77,7 +86,9 @@ public class Enfermeria_Behaviour : Edificio
 		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
-		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		if (currentEmployeeNum - 1 <= processSpeedEmployeeCap)
+			processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+
 		maxInmigrantNum = currentEmployeeNum;
 	}
 
@@ -87,7 +98,6 @@ public class Enfermeria_Behaviour : Edificio
 		{
 			currentUpgrade++;
 			maxEmployeeNum++;
-			maxInmigrantNum = maxEmployeeNum;
 		}
     }
 	public override void Repair ( )

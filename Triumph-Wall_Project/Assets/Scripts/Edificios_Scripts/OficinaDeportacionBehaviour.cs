@@ -12,6 +12,7 @@ public class OficinaDeportacionBehaviour : Edificio
 
 	//TODO change from GameObject to inmigrant class
     public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
+	private int processSpeedEmployeeCap = 10;
 
 	[SerializeField]
 	private BuildingDataTypes.SO_ODIData myData = null;
@@ -49,7 +50,8 @@ public class OficinaDeportacionBehaviour : Edificio
 		myUIData.currentUpgrade = currentUpgrade;
         myUIData.processSpeed = processSpeed;
         myUIData.maxEmployeeNum = maxEmployeeNum;
-        myUIData.maxInmigrantNum = maxEmployeeNum;
+
+        myUIData.maxInmigrantNum = maxInmigrantNum;
         myUIData.currentProgress = 1 - (currentProgress / processSpeed);
         myUIData.currentEmployeeNum = currentEmployeeNum;
         myUIData.currentInmigrantNum = currentInmigrantNum;
@@ -67,7 +69,9 @@ public class OficinaDeportacionBehaviour : Edificio
 		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
-		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		if (currentEmployeeNum + 1 <= processSpeedEmployeeCap)
+			processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+
 		maxInmigrantNum = currentEmployeeNum;
 	}
 	public override void FireEmployee ( )
@@ -76,9 +80,12 @@ public class OficinaDeportacionBehaviour : Edificio
 		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
-		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+		if (currentEmployeeNum - 1 <= processSpeedEmployeeCap)
+			processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+
 		maxInmigrantNum = currentEmployeeNum;
 	}
+
 
 	//used by the manager of buildings
 	public override void IncrementInmigrants (GameObject inmigrant = null)
@@ -91,15 +98,19 @@ public class OficinaDeportacionBehaviour : Edificio
 	}
 	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
-		base.DecrementInmigrants();
-		//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
-		//- Normal
-		//- Herido
-		//- Gravemente Herido
-		totalDeported++;
+		for (int i = 0; i < currentEmployeeNum; i++)
+		{
+			if (currentInmigrantNum - 1 < 0) break;
+			//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
+			//- Normal
+			//- Herido
+			//- Gravemente Herido
+			totalDeported++;
+			base.DecrementInmigrants();
+			if (immigrantsToDeport.Count > 0)
+				immigrantsToDeport.Dequeue();
+		}
 
-		if (immigrantsToDeport.Count > 0)
-			immigrantsToDeport.Dequeue();
 	}
 
 	protected override void ProcessInmigrant()

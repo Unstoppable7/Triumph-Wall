@@ -27,9 +27,11 @@ MonoBehaviour:
   showProgress: 0
   showInmigrantNum: 1
   showUpgradeBtn: 0
-  showBuyEmployeeBtn: 0
-  showFireEmployeeBtn: 0
+  showRepairBtn: 0
+  showBuyEmployeeBtn: 1
+  showFireEmployeeBtn: 1
   managerID: -1
+  name: Facility
   canBeUpgraded: 0
   maxOfUpgrades: -1
   currentUpgrade: -1
@@ -39,15 +41,15 @@ MonoBehaviour:
   canFireEmployee: 0
   pricePerEmployee: -1
   maxEmployeeNum: 10
-  currentEmployeeNum: 0
+  currentEmployeeNum: 10
   currentProgress: -1
   processSpeed: -1
-  maxInmigrantNum: 0
-  currentInmigrantNum: 0
+  maxInmigrantNum: 50
+  currentInmigrantNum: 23
   updatedValuesEvent:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   salubrity: 1
-  control: NaN
+  control: 1

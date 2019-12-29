@@ -21,30 +21,31 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  showUpgradeNum: 0
+  showUpgradeNum: 1
   showDurabilityBar: 0
   showEmployeeNum: 1
   showProgress: 1
   showInmigrantNum: 1
   showUpgradeBtn: 1
-  showRepairBtn: 1
+  showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
   managerID: 0
+  name: Office
   canBeUpgraded: 0
-  maxOfUpgrades: -1
-  currentUpgrade: -1
+  maxOfUpgrades: 10
+  currentUpgrade: 0
   maxDurability: 100
   currentDurability: 50
   canBuyEmployee: 0
   canFireEmployee: 0
   pricePerEmployee: -1
-  maxEmployeeNum: 10
+  maxEmployeeNum: 1
   currentEmployeeNum: 1
-  currentProgress: 0
+  currentProgress: 0.62545455
   processSpeed: 10.2
-  maxInmigrantNum: 10
-  currentInmigrantNum: 0
+  maxInmigrantNum: 1
+  currentInmigrantNum: 18
   updatedValuesEvent:
     m_PersistentCalls:
       m_Calls: []

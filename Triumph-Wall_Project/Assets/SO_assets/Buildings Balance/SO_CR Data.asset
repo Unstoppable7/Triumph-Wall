@@ -31,12 +31,12 @@ MonoBehaviour:
   canFireEmployee: 0
   pricePerEmployee: 0
   maxEmployeeNum: 10
-  currentEmployeeNum: 0
+  currentEmployeeNum: 10
   canProcess: 0
   currentProgress: 0
   processSpeed: 0
-  maxInmigrantNum: 0
-  currentInmigrantNum: 0
+  maxInmigrantNum: 50
+  currentInmigrantNum: 5
   salubridad: 1
   control: 1
   factorSuciedad: 1
