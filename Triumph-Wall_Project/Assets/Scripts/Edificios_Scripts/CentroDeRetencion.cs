@@ -49,8 +49,8 @@ public class CentroDeRetencion : Edificio
         // SetUp all buidling
         for (int i = 0; i < edificiosDelRecinto.Count; i++)
 		{
-			edificiosDelRecinto[i].SetUP();
 			edificiosDelRecinto[i].SetID(i);
+			edificiosDelRecinto[i].SetUP();
 		}
 
 		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available

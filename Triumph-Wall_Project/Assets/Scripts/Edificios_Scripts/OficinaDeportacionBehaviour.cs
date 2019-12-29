@@ -21,7 +21,7 @@ public class OficinaDeportacionBehaviour : Edificio
 
 	public override void SetUP()
     {
-		processSpeed = 10.2f;
+		myUIData.managerID = managerID;
 		SetDataFromObject();
 		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
@@ -68,15 +68,15 @@ public class OficinaDeportacionBehaviour : Edificio
 		throw new System.NotImplementedException();
 	}
 
-    public override void Repair()
-	{
-		throw new System.NotImplementedException();
-	}
-
     public override void Upgrade()
     {
         throw new System.NotImplementedException();
     }
+
+	public override void Repair ( )
+	{
+		throw new System.NotImplementedException();
+	}
 
 	public override void ResetDay ( )
 	{

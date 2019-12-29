@@ -42,7 +42,7 @@ namespace UIDataTypes
 
             ///////////BUILDING UI DATA///////////
             //setted from Factory and from Manager
-            [HideInInspector]
+            [ShowInInspector][DisplayAsString]
             public int managerID = -1;
             //Upgrading
             [HideInInspector]

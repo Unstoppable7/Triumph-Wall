@@ -12,6 +12,7 @@ public class UIController : SingletonComponent<UIController>
 	public void SetUP ( )
 	{
 		edificiosUi = GetComponentInChildren<EdificioUIController>();
+		edificiosUi.SetUp();
 	}
 
 	public void ShowEdificioUI (SO_UICR_Data toShow )

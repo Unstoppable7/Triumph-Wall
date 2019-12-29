@@ -9,24 +9,12 @@ public class Cocina_Behaviour : Edificio
     private UIDataTypes.Buildings.SO_UICocina_Data myUIData = null;
 
     public int totalImmigrantsInFrontier;
-    public override void Repair()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    public override void ResetDay()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ResetMonth()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public override void SetUP()
-    {
-        totalImmigrantsInFrontier = 0;
+	{
+		myUIData.managerID = managerID;
+		totalImmigrantsInFrontier = 0;
         currentEmployeeNum = 1;
         maxEmployeeNum = 10;
         maxInmigrantNum = 10;
@@ -57,11 +45,20 @@ public class Cocina_Behaviour : Edificio
     {
         currentEmployeeNum++;
     }
+	public override void Repair ( )
+	{
+		throw new System.NotImplementedException();
+	}
 
-    protected override void SetDataFromObject()
-    {
-        throw new System.NotImplementedException();
-    }
+	public override void ResetDay ( )
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void ResetMonth ( )
+	{
+		throw new System.NotImplementedException();
+	}
 
     protected override void StartProcessInmigrant()
     {
@@ -69,6 +66,10 @@ public class Cocina_Behaviour : Edificio
         currentInmigrantNum++; //si current immigrant num es mas grande que max immigrant num se deberan contratar a mas cocineros
     }
 
+	protected override void SetDataFromObject()
+    {
+        throw new System.NotImplementedException();
+    }
     protected override void UpdateDataObject()
     {
         throw new System.NotImplementedException();
