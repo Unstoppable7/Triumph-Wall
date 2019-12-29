@@ -86,7 +86,7 @@ public class ResourceController : SerializedMonoBehaviour
 	//factores positivos para calcular opinion publica
 
 	[Title("Dinero")]
-	private float currentMoney = 0;
+	private static float currentMoney = 0;
 	//money with applied penalties and rewards
 	// eficiencia
 	// opinion publica
@@ -272,7 +272,7 @@ public class ResourceController : SerializedMonoBehaviour
 		finalRewardMoney -= employeeTotalCost;
 	}
 
-	public bool CheckIfEnoughMoney(float actionCost)
+	public static bool CheckIfEnoughMoney(float actionCost)
 	{
 		return currentMoney - actionCost >= 0.00f;
 	}

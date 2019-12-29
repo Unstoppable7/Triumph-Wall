@@ -199,4 +199,13 @@ public class OficinaDeportacionBehaviour : Edificio
 		myData.currentEmployeeNum = currentEmployeeNum;
 		myData.currentInmigrantNum = currentInmigrantNum;
 	}
+	public override float GetUpgradePrice ( )
+	{
+		return myData.priceOfUpgrade;
+	}
+
+	public override float GetRepairPrice ( )
+	{
+		return myData.priceOfRepair;
+	}
 }

@@ -69,15 +69,14 @@ public abstract class Edificio : MonoBehaviour
 
 	#region GETTERS
 	public virtual int GetID ( ) => managerID;
+	public abstract float GetUpgradePrice ( );
 	public virtual int GetMaxUpgrades ( ) => maxOfUpgrades;
 	public virtual int GetCurrentUpgrade ( ) => currentUpgrade;
 
+	public abstract float GetRepairPrice ( );
 	public virtual float GetDurability ( ) => currentDurability / maxDurability;
 
-	public virtual float GetPriceEmployee ( )
-	{
-		return pricePerEmployee;
-	}
+	public virtual float GetPriceEmployee ( ) => pricePerEmployee;
 	public virtual float GetTotalEmployeeCost ( ) => currentEmployeeNum * pricePerEmployee;
 	public virtual float GetMaxEmployee ( ) => maxEmployeeNum;
 	public virtual float GetCurrentEmployeeNum ( ) => currentEmployeeNum;

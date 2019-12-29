@@ -83,4 +83,16 @@ public class Dormitorios : Edificio
     {
         throw new System.NotImplementedException();
     }
+
+	public override float GetUpgradePrice ( )
+	{
+		//TODO from blanacefile SO
+		return 100;
+	}
+
+	public override float GetRepairPrice ( )
+	{
+		//TODO from blanacefile SO
+		return 100;
+	}
 }
