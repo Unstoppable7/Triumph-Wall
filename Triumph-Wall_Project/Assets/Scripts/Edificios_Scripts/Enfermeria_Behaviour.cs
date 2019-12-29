@@ -38,7 +38,7 @@ public class Enfermeria_Behaviour : Edificio
         myUIData.processSpeed = processSpeed;
         myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.maxInmigrantNum = maxInmigrantNum;
-        myUIData.currentProgress = currentProgress / processSpeed;
+        myUIData.currentProgress = 1 - (currentProgress / processSpeed); // para que la slider suba y no baje
         myUIData.currentEmployeeNum = currentEmployeeNum;
         myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();

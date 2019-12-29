@@ -8,17 +8,11 @@ public class Cocina_Behaviour : Edificio
     [SerializeField]
     private UIDataTypes.Buildings.SO_UICocina_Data myUIData = null;
 
-    public int totalImmigrantsInFrontier;
-
-
     public override void SetUP()
 	{
 		myUIData.managerID = managerID;
-		totalImmigrantsInFrontier = 0;
-        currentEmployeeNum = 1;
+        currentEmployeeNum = 0;
         maxEmployeeNum = 10;
-        maxInmigrantNum = 10;
-        currentInmigrantNum = totalImmigrantsInFrontier;
         Tick();
     }
 
@@ -34,8 +28,6 @@ public class Cocina_Behaviour : Edificio
 
     public override void UpdateUIData()
     {
-        myUIData.currentInmigrantNum = currentInmigrantNum; 
-        myUIData.maxInmigrantNum = maxInmigrantNum;
         myUIData.currentEmployeeNum = currentEmployeeNum;
         myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.updatedValuesEvent.Invoke();

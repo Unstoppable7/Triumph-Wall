@@ -191,12 +191,6 @@ public class CentroDeRetencion : Edificio
 	#endregion
 
 	////////////////////////////////////////////MANAGER////////////
-	public void AddBuilding(Edificio building)
-	{
-		edificiosDelRecinto.Add( building );
-		building.SetID( edificiosDelRecinto.Count - 1 );
-	}
-
 	//Method called from buttons
 	public void DoBuildingAction ( B_Actions action, int bIndex )
 	{

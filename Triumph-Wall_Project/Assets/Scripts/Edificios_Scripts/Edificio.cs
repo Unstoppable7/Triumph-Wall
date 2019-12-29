@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class Edificio : MonoBehaviour
 {
-
 	public enum B_Actions { UPGRADE, BUY_EMPLOYEE, FIRE_EMPLOYEE, REPAIR} //used by buttons
 
 	//setted from Manager

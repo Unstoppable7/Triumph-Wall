@@ -34,10 +34,11 @@ public class OficinaDeportacionBehaviour : Edificio
 		if (myData.debug)
 			SetDataFromObject();
 
-		currentInmigrantNum = immigrantsToDeport.Count;
 		RemoveImmigrant();
 
-		UpdateDataObject();
+		if(!myData.debug)
+			UpdateDataObject();
+
         UpdateUIData();
     }
 
@@ -46,7 +47,7 @@ public class OficinaDeportacionBehaviour : Edificio
         myUIData.processSpeed = processSpeed;
         myUIData.maxEmployeeNum = maxEmployeeNum;
         myUIData.maxInmigrantNum = maxEmployeeNum;
-        myUIData.currentProgress = currentProgress / processSpeed;
+        myUIData.currentProgress = 1 - (currentProgress / processSpeed);
         myUIData.currentEmployeeNum = currentEmployeeNum;
         myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();
@@ -93,18 +94,21 @@ public class OficinaDeportacionBehaviour : Edificio
 
 	private void RemoveImmigrant ( )
 	{
-		if (currentProgress <= 0.0f && immigrantsToDeport.Count > 0)
+		if ((currentProgress <= 0.0f && currentInmigrantNum > 0))
 		{
 			//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
 			//- Normal
 			//- Herido
 			//- Gravemente Herido
-			base.DecrementInmigrants();
+			DecrementInmigrants();
 			totalDeported++;
-			immigrantsToDeport.Dequeue();
+
+			if(immigrantsToDeport.Count > 0)
+				immigrantsToDeport.Dequeue();
+
 			currentProgress = processSpeed;
 		}
-		else if(immigrantsToDeport.Count > 0)
+		else if(currentInmigrantNum > 0)
 			currentProgress -= Time.deltaTime;
 	}
 
