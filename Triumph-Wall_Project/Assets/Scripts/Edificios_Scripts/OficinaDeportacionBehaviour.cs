@@ -21,9 +21,10 @@ public class OficinaDeportacionBehaviour : Edificio
 
 	public override void SetUP()
     {
+		myUIData.name = "Office";
 		myUIData.managerID = managerID;
 		SetDataFromObject();
-		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
+		//empieza siendo 10.2 segundos, restando 0'2 segundos por funcionario,
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
 		currentProgress = processSpeed; 
@@ -58,20 +59,49 @@ public class OficinaDeportacionBehaviour : Edificio
         UIController.Instance.ShowEdificioUI(myUIData);
     }
 
-	public override void IncrementInmigrants (GameObject immigrant)
+	public override void BuyEmployee ( )
+	{
+		base.BuyEmployee();
+		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+	}
+	public override void FireEmployee ( )
+	{
+		base.FireEmployee();
+		//empieza siendo 10 segundos, restando 0'2 segundos por funcionario,
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		//hasta un maximo de 10 - (n * 0.2), donde n es el num de funcionarios
+		processSpeed = 10.0f - (currentEmployeeNum * 0.2f);
+	}
+
+	public override void IncrementInmigrants (GameObject immigrant = null)
 	{
 		base.IncrementInmigrants();
 		immigrantsToDeport.Enqueue( immigrant );
 	}
+	public override void DecrementInmigrants (GameObject immigrant = null)
+	{
+		base.DecrementInmigrants();
+		//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
+		//- Normal
+		//- Herido
+		//- Gravemente Herido
+		totalDeported++;
 
-    protected override void StartProcessInmigrant()
+		if (immigrantsToDeport.Count > 0)
+			immigrantsToDeport.Dequeue();
+	}
+
+	protected override void StartProcessInmigrant()
 	{
 		throw new System.NotImplementedException();
 	}
 
     public override void Upgrade()
     {
-        throw new System.NotImplementedException();
+		maxEmployeeNum++;
     }
 
 	public override void Repair ( )
@@ -96,15 +126,7 @@ public class OficinaDeportacionBehaviour : Edificio
 	{
 		if ((currentProgress <= 0.0f && currentInmigrantNum > 0))
 		{
-			//TODO Consultar inmigrante a la hora de deportarlo para saber si esta:
-			//- Normal
-			//- Herido
-			//- Gravemente Herido
 			DecrementInmigrants();
-			totalDeported++;
-
-			if(immigrantsToDeport.Count > 0)
-				immigrantsToDeport.Dequeue();
 
 			currentProgress = processSpeed;
 		}

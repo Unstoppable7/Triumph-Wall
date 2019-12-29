@@ -12,6 +12,7 @@ public class Enfermeria_Behaviour : Edificio
 
     public override void SetUP()
 	{
+		myUIData.name = "Nursing";
 		myUIData.managerID = managerID;
 		processSpeed = 10.2f;
 
@@ -43,8 +44,16 @@ public class Enfermeria_Behaviour : Edificio
         myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();
     }
-
-    public override void Upgrade()
+	public override void IncrementInmigrants (GameObject inmigrant = null)
+	{
+		base.IncrementInmigrants( );
+	}
+	public override void DecrementInmigrants (GameObject inmigrant = null)
+	{
+		base.DecrementInmigrants( );
+		immigrantsToHeal.Dequeue();
+	}
+	public override void Upgrade()
     {
         throw new System.NotImplementedException();
     }
@@ -82,11 +91,8 @@ public class Enfermeria_Behaviour : Edificio
     {
         if (currentProgress <= 0.0f && immigrantsToHeal.Count > 0)
         {
-         
-
-            base.DecrementInmigrants();
-            immigrantsToHeal.Dequeue();
-            currentProgress = processSpeed;
+			DecrementInmigrants();
+			currentProgress = processSpeed;
         }
         else if (immigrantsToHeal.Count > 0)    //TODO cambiar el tiempo de procesamiento segun la gravedad de las heridas del immigrante
             currentProgress -= Time.deltaTime;

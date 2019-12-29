@@ -12,6 +12,10 @@ public class EdificioUIController : MonoBehaviour
 
 	[SceneObjectsOnly] [FoldoutGroup( "Common UI" )]
 	public GameObject canvas;
+	[SceneObjectsOnly][FoldoutGroup( "Common UI" )]
+	public GameObject nameTextObj;
+	[SceneObjectsOnly][FoldoutGroup( "Common UI" )]
+	public TextMeshProUGUI nameText;
 	[FoldoutGroup( "Common UI/Durability" )]
 	[SceneObjectsOnly]
 	public Slider durabilitySlider;
@@ -86,6 +90,8 @@ public class EdificioUIController : MonoBehaviour
 	//tiene en cuenta las booleanas de UIB_Data para enseñar diferentes elementos
 	public void ShowBaseUI (UIB_Data baseData)
 	{
+		nameText.text = baseData.name;
+		nameTextObj.SetActive( true );
 		if (baseData.showDurabilityBar)
 		{
 			durabilitySlider.gameObject.SetActive( true );

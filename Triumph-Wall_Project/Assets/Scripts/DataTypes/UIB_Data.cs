@@ -44,8 +44,10 @@ namespace UIDataTypes
             //setted from Factory and from Manager
             [ShowInInspector][DisplayAsString]
             public int managerID = -1;
-            //Upgrading
-            [HideInInspector]
+			[SerializeField]
+			public new string name = null;
+			//Upgrading
+			[HideInInspector]
             public bool canBeUpgraded = false;
             [HideInInspector]
             public int maxOfUpgrades = -1;

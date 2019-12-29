@@ -10,6 +10,7 @@ public class Cocina_Behaviour : Edificio
 
     public override void SetUP()
 	{
+		myUIData.name = "Dinninng Hall";
 		myUIData.managerID = managerID;
         currentEmployeeNum = 0;
         maxEmployeeNum = 10;
@@ -26,7 +27,18 @@ public class Cocina_Behaviour : Edificio
         UpdateUIData();
     }
 
-    public override void UpdateUIData()
+	public override void BuyEmployee ( )
+	{
+		base.BuyEmployee();
+	}
+
+	public override void FireEmployee ( )
+	{
+		base.FireEmployee();
+
+	}
+
+	public override void UpdateUIData()
     {
         myUIData.currentEmployeeNum = currentEmployeeNum;
         myUIData.maxEmployeeNum = maxEmployeeNum;

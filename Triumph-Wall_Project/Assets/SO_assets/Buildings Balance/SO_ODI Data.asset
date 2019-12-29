@@ -31,13 +31,13 @@ MonoBehaviour:
   canFireEmployee: 0
   pricePerEmployee: 10
   maxEmployeeNum: 10
-  currentEmployeeNum: 0
+  currentEmployeeNum: 1
   canProcess: 0
   currentProgress: 10.2
   processSpeed: 10.2
   maxInmigrantNum: 10
   currentInmigrantNum: 0
-  totalDeported: 0
+  totalDeported: 4
   normalDeported: 0
   woundedDeported: 0
   greavousDeported: 0

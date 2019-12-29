@@ -14,6 +14,7 @@ public class Dormitorios : Edificio
 
 	public override void SetUP ( )
 	{
+		myUIData.name = "House";
 		myUIData.managerID = managerID;
 		maxInmigrantNum = 10;
 		currentInmigrantNum = 5;
@@ -24,13 +25,13 @@ public class Dormitorios : Edificio
 		UpdateUIData();
     }
 
-    void AddImmigrant(GameObject immigrant)
+    public override void IncrementInmigrants(GameObject immigrant)
     {
         sleepingPlaces.Enqueue(immigrant);
         currentInmigrantNum = sleepingPlaces.Count;
     }
 
-    void RemoveImmigrant()
+	public override void DecrementInmigrants(GameObject immigrant)
     {
         sleepingPlaces.Dequeue();
         currentInmigrantNum = sleepingPlaces.Count;
@@ -54,9 +55,9 @@ public class Dormitorios : Edificio
     }
 
     protected override void StartProcessInmigrant()
-    {
-
-    }
+	{
+		throw new System.NotImplementedException();
+	}
        
     public override void Upgrade()
     {
