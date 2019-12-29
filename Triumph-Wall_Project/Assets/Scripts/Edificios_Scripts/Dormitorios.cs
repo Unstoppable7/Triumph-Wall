@@ -5,56 +5,42 @@ using UnityEngine;
 public class Dormitorios : Edificio
 {
 
-    public Queue<GameObject> sleepingPlaces;
+    public Queue<GameObject> sleepingPlaces = new Queue<GameObject>();
 
     public int structureCost, maintenanceCost;
 
     [SerializeField]
     private UIDataTypes.Buildings.SO_UIDorm_Data myUIData = null;
 
-    public int immigrantNum = 5, maxImmigrants;
+	public override void SetUP ( )
+	{
+		myUIData.name = "House";
+		myUIData.managerID = managerID;
+		maxInmigrantNum = 10;
+		currentInmigrantNum = 5;
+	}
 
-    void Start()
-    {
-        sleepingPlaces = new Queue<GameObject>();
-        SetUP();
+	public override void Tick()
+	{
+		UpdateUIData();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        maxImmigrants = 10;
-        currentInmigrantNum = 5;
-        Tick();
-    }
-
-    public override void Tick()
-    {
-        UpdateUIData();
-    }
-
-    void AddImmigrant(GameObject immigrant)
+    public override void IncrementInmigrants(GameObject immigrant)
     {
         sleepingPlaces.Enqueue(immigrant);
-        immigrantNum = sleepingPlaces.Count;
+        currentInmigrantNum = sleepingPlaces.Count;
     }
 
-    void RemoveImmigrant()
+	public override void DecrementInmigrants(GameObject immigrant)
     {
         sleepingPlaces.Dequeue();
-        immigrantNum = sleepingPlaces.Count;
-    }
-
-    public override void SetUP()
-    {
-        //TODO hacer que cada dia se gaste un poco la durabilidad
-        myUIData.showInmigrantNum = true;
+        currentInmigrantNum = sleepingPlaces.Count;
     }
 
     public override void UpdateUIData()
     {
-        myUIData.currentInmigrantNum = immigrantNum;
-        myUIData.maxInmigrantNum = maxImmigrants;
+        myUIData.currentInmigrantNum = currentInmigrantNum;
+        myUIData.maxInmigrantNum = maxInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();
     }
 
@@ -68,14 +54,14 @@ public class Dormitorios : Edificio
         currentDurability = maxDurability;
     }
 
-    protected override void StartProcessInmigrant()
-    {
-
-    }
+    protected override void ProcessInmigrant()
+	{
+		throw new System.NotImplementedException();
+	}
        
     public override void Upgrade()
     {
-        maxImmigrants += 2;
+        maxInmigrantNum += 2;
     }
 
     public override void ResetDay()
@@ -97,4 +83,16 @@ public class Dormitorios : Edificio
     {
         throw new System.NotImplementedException();
     }
+
+	public override float GetUpgradePrice ( )
+	{
+		//TODO from blanacefile SO
+		return 100;
+	}
+
+	public override float GetRepairPrice ( )
+	{
+		//TODO from blanacefile SO
+		return 100;
+	}
 }

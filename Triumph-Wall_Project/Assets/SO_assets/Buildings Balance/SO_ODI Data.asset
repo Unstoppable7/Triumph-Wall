@@ -23,20 +23,20 @@ MonoBehaviour:
     SerializationNodes: []
   debug: 0
   canBeUpgraded: 0
-  maxOfUpgrades: 0
+  maxOfUpgrades: 10
   currentUpgrade: 0
   maxDurability: 100
   currentDurability: 50
   canBuyEmployee: 0
   canFireEmployee: 0
   pricePerEmployee: 10
-  maxEmployeeNum: 10
-  currentEmployeeNum: 0
+  maxEmployeeNum: 1
+  currentEmployeeNum: 1
   canProcess: 0
   currentProgress: 10.2
   processSpeed: 10.2
-  maxInmigrantNum: 10
-  currentInmigrantNum: 0
+  maxInmigrantNum: 1
+  currentInmigrantNum: 20
   totalDeported: 0
   normalDeported: 0
   woundedDeported: 0

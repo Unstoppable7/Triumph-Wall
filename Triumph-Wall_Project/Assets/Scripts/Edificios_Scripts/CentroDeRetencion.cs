@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CentroDeRetencion : Edificio
 {
+	private CentroDeRetencion facility;
 	private OficinaDeportacionBehaviour oficina;
 	private Dormitorios dorms;
 	private Cocina_Behaviour cocina;
@@ -15,8 +16,6 @@ public class CentroDeRetencion : Edificio
 	//TODO cambiar GameObject por la Clase guardia
 	private List<GameObject> policeMen = new List<GameObject>();
 
-	public int maxEmployeeNumP { set { maxEmployeeNumP = value; } get { return maxEmployeeNum; } }
-
 	[SerializeField]
 	private BuildingDataTypes.SO_CRData myData = null;
 
@@ -28,6 +27,9 @@ public class CentroDeRetencion : Edificio
 
 	public override void SetUP ( )
 	{
+		myUIData.name = "Facility";
+		managerID = -1;
+		myUIData.managerID = -1;
 		//myUIData = ScriptableObject.CreateInstance<UIDataTypes.Buildings.UICR_Data>();
 		TimerController.dailyEvent.AddListener( ResetDay );
 		TimerController.monthlyEvent.AddListener( ResetMonth );
@@ -49,18 +51,13 @@ public class CentroDeRetencion : Edificio
         // SetUp all buidling
         for (int i = 0; i < edificiosDelRecinto.Count; i++)
 		{
-			edificiosDelRecinto[i].SetUP();
 			edificiosDelRecinto[i].SetID(i);
+			edificiosDelRecinto[i].SetUP();
 		}
 
 		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available
 		//getIT from Balance File
 		SetDataFromObject();
-		currentEmployeeNum = 0;
-		maxEmployeeNum = 10;
-		currentInmigrantNum = GetCurrentIlegals();
-		salubridad = 0;
-		control = 0;
 	}
 
 	public override void Tick ( )
@@ -68,7 +65,7 @@ public class CentroDeRetencion : Edificio
 		if(myData.debug)
 			SetDataFromObject();
 
-		foreach ( Edificio building in edificiosDelRecinto)
+		foreach (Edificio building in edificiosDelRecinto)
 		{
 			building.Tick();
 		}
@@ -78,7 +75,6 @@ public class CentroDeRetencion : Edificio
 		control = CalculateControl();
 		control = Mathf.Clamp( control, 0, 1 );
 
-		UpdateDataObject();
 		UpdateUIData();
 	}  
 
@@ -86,7 +82,7 @@ public class CentroDeRetencion : Edificio
 	public override void UpdateUIData ( )
 	{
 		myUIData.maxEmployeeNum = maxEmployeeNum;
-		myUIData.currentEmployeeNum = currentInmigrantNum;
+		myUIData.currentEmployeeNum = currentEmployeeNum;
 
 		myUIData.maxInmigrantNum = maxInmigrantNum;
 		myUIData.currentInmigrantNum = currentInmigrantNum;
@@ -112,7 +108,19 @@ public class CentroDeRetencion : Edificio
 		throw new System.NotImplementedException();
 	}
 
-	protected override void StartProcessInmigrant ( )
+	public override void BuyEmployee ( )
+	{
+		base.BuyEmployee();
+		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
+	}
+
+	public override void FireEmployee ( )
+	{
+		base.FireEmployee();
+		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
+	}
+
+	protected override void ProcessInmigrant ( )
 	{
 		throw new System.NotImplementedException();
 	}
@@ -133,97 +141,24 @@ public class CentroDeRetencion : Edificio
 		}
 	}
 
-	#region Salubrity
-
-	private float CalculateSalubrity ( )
+	public override float GetUpgradePrice ( )
 	{
-		float inmigrantesMaxDormitorios = GetMaxOfIlegalsInDorms();
-		float inmigrantesEnDormitorios = GetNumOfIlegalsInDorms();
-
-		float aforo = inmigrantesEnDormitorios / inmigrantesMaxDormitorios;
-		
-		//MIN -1 MAX 1
-		float result = 0;
-		if (aforo > 1)
-			result = -aforo * myData.factorSuciedad * Time.deltaTime;
-		else if(aforo < 1)
-			result = (1+(1-aforo)) * myData.factorSuciedad * Time.deltaTime;
-		
-		return result;
+		return 0.0f;
 	}
 
-	private float GetMaxOfIlegalsInDorms ( )
+	public override float GetRepairPrice ( )
 	{
-
-		return dorms.GetMaxInmigrants();
-	}
-	private float GetNumOfIlegalsInDorms ( )
-	{
-
-		return dorms.GetCurrentInmigrants();
+		return 0.0f;
 	}
 
-	#endregion
-
-	#region Control
-	private float CalculateControl ( )
-	{
-		currentInmigrantNum = GetCurrentIlegals();
-		if (currentInmigrantNum <= 0)
-			return 1;
-
-		float result = 0;
-		result = 1.0f - ((float)(currentInmigrantNum - (currentEmployeeNum * myData.inmigrantesPorGuardia)) /
-			currentInmigrantNum);
-
-		return result;
-	}
-
-	private int GetCurrentIlegals ( )
+	public override int GetCurrentInmigrants ( )
 	{
 		int result = 0;
 		foreach (Edificio building in edificiosDelRecinto)
 		{
 			result += building.GetCurrentInmigrants();
 		}
-		return result;
-	}
-	#endregion
-
-	////////////////////////////////////////////MANAGER////////////
-	public void AddBuilding(Edificio building)
-	{
-		edificiosDelRecinto.Add( building );
-		building.SetID( edificiosDelRecinto.Count - 1 );
-	}
-
-	//Method called from buttons
-	public void DoBuildingAction ( B_Actions action, int bIndex )
-	{
-		switch (action)
-		{
-		case B_Actions.UPGRADE:
-			edificiosDelRecinto[bIndex].Upgrade();
-			break;
-		case B_Actions.BUY_EMPLOYEE:
-			edificiosDelRecinto[bIndex].BuyEmployee();
-			break;
-		case B_Actions.FIRE_EMPLOYEE:
-			edificiosDelRecinto[bIndex].FireEmployee();
-			break;
-		case B_Actions.REPAIR:
-			edificiosDelRecinto[bIndex].Repair();
-			break;
-		default:
-			break;
-		}
-	}
-
-	//Method Called by Resource Manager
-
-	public override int GetCurrentInmigrants ( )
-	{
-		currentInmigrantNum = GetCurrentIlegals();
+		currentInmigrantNum = result;
 		return base.GetCurrentInmigrants();
 	}
 
@@ -247,6 +182,82 @@ public class CentroDeRetencion : Edificio
 		return result;
 	}
 
+	protected override void SetDataFromObject ( )
+	{
+		//PARENT CONSTRUCT 
+		//look at the defaul data of Edificio to see whats available
+		//getIT from Balance File
+		pricePerEmployee = myData.pricePerEmployee;
+		maxEmployeeNum = myData.maxEmployeeNum;
+		currentEmployeeNum = myData.currentEmployeeNum;
+
+		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
+		currentInmigrantNum = GetCurrentInmigrants();
+
+		salubridad = myData.salubridad;
+		control = myData.control;
+	}
+
+	protected override void UpdateDataObject ( )
+	{
+		myData.pricePerEmployee = pricePerEmployee;
+		myData.maxEmployeeNum = maxEmployeeNum;
+		myData.currentEmployeeNum = currentEmployeeNum;
+
+		myData.maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
+		myData.currentInmigrantNum = GetCurrentInmigrants();
+
+		myData.salubridad = salubridad;
+		myData.control = control;
+	}
+	
+	#region Salubrity
+
+	private float CalculateSalubrity ( )
+	{
+		float inmigrantesMaxDormitorios = GetMaxOfIlegalsInDorms();
+		float inmigrantesEnDormitorios = GetNumOfIlegalsInDorms();
+
+		float aforo = inmigrantesEnDormitorios / inmigrantesMaxDormitorios;
+		
+		//MIN -1 MAX 1
+		float result = 0;
+		if (aforo > 1)
+			result = -aforo * myData.factorSuciedad * Time.deltaTime;
+		else if(aforo < 1)
+			result = (1+(1-aforo)) * myData.factorSuciedad * Time.deltaTime;
+		
+		return result;
+	}
+
+	private float GetMaxOfIlegalsInDorms ( )
+	{
+		return dorms.GetMaxInmigrants();
+	}
+	private float GetNumOfIlegalsInDorms ( )
+	{
+
+		return dorms.GetCurrentInmigrants();
+	}
+
+	#endregion
+
+	#region Control
+	private float CalculateControl ( )
+	{
+		currentInmigrantNum = GetCurrentInmigrants();
+		if (currentInmigrantNum <= 0)
+			return 1;
+
+		float result = 0;
+		result = 1.0f - ((float)(currentInmigrantNum - (currentEmployeeNum * myData.inmigrantesPorGuardia)) /
+			currentInmigrantNum);
+
+		return result;
+	}
+	#endregion
+
+	////////////////////////////////////////////MANAGER////////////
 	#region OFICINA Especificos
 
 	public int GetTotalDeported ( )
@@ -266,6 +277,48 @@ public class CentroDeRetencion : Edificio
 		return oficina.GetGrevousDeported();
 	}
 	#endregion
+	
+	//Method called from buttons
+	public void DoBuildingAction (B_Actions action, int bIndex)
+	{
+		float priceOfAction = 0;
+		switch (action)
+		{
+		case B_Actions.UPGRADE:
+			priceOfAction = edificiosDelRecinto[bIndex].GetUpgradePrice();
+			if (ResourceController.CheckIfEnoughMoney( priceOfAction ))
+			{
+				edificiosDelRecinto[bIndex].Upgrade();
+			}
+			break;
+		case B_Actions.BUY_EMPLOYEE:
+			if (bIndex < 0)
+			{
+				BuyEmployee();
+				break;
+			}
+			edificiosDelRecinto[bIndex].BuyEmployee();
+			
+			break;
+		case B_Actions.FIRE_EMPLOYEE:
+			if (bIndex < 0)
+			{
+				FireEmployee();
+				break;
+			}
+			edificiosDelRecinto[bIndex].FireEmployee();
+			break;
+		case B_Actions.REPAIR:
+			priceOfAction = edificiosDelRecinto[bIndex].GetPriceEmployee();
+			if (ResourceController.CheckIfEnoughMoney( priceOfAction ))
+			{
+				edificiosDelRecinto[bIndex].Repair();
+			}
+			break;
+		default:
+			break;
+		}
+	}
 
 	public float GetAverageHappiness ( )
 	{
@@ -281,34 +334,5 @@ public class CentroDeRetencion : Edificio
 
 		result /= inmigrantsInFacility.Count;
 		return result;
-	}
-
-	protected override void SetDataFromObject ( )
-	{
-		//PARENT CONSTRUCT 
-		//look at the defaul data of Edificio to see whats available
-		//getIT from Balance File
-		pricePerEmployee = myData.pricePerEmployee;
-		maxEmployeeNum = myData.maxEmployeeNum;
-		currentEmployeeNum = myData.currentEmployeeNum;
-
-		maxInmigrantNum = myData.maxInmigrantNum;
-		currentInmigrantNum = GetCurrentIlegals();
-
-		salubridad = myData.salubridad;
-		control = myData.control;
-	}
-
-	protected override void UpdateDataObject ( )
-	{
-		myData.pricePerEmployee = pricePerEmployee;
-		myData.maxEmployeeNum = maxEmployeeNum;
-		myData.currentEmployeeNum = currentEmployeeNum;
-
-		myData.maxInmigrantNum = maxInmigrantNum;
-		myData.currentInmigrantNum = GetCurrentIlegals();
-
-		myData.salubridad = salubridad;
-		myData.control = control;
 	}
 }

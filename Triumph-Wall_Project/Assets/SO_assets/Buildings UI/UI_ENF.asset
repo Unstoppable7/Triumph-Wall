@@ -21,15 +21,17 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  showUpgradeNum: 0
-  showDurabilityBar: 1
+  showUpgradeNum: 1
+  showDurabilityBar: 0
   showEmployeeNum: 1
   showProgress: 1
   showInmigrantNum: 1
-  showUpgradeBtn: 0
+  showUpgradeBtn: 1
+  showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
-  managerID: -1
+  managerID: 2
+  name: Nursing
   canBeUpgraded: 0
   maxOfUpgrades: -1
   currentUpgrade: -1
@@ -38,11 +40,11 @@ MonoBehaviour:
   canBuyEmployee: 0
   canFireEmployee: 0
   pricePerEmployee: -1
-  maxEmployeeNum: 10
+  maxEmployeeNum: 1
   currentEmployeeNum: 0
-  currentProgress: 1
+  currentProgress: 0
   processSpeed: 10.2
-  maxInmigrantNum: 10
+  maxInmigrantNum: 1
   currentInmigrantNum: 0
   updatedValuesEvent:
     m_PersistentCalls:

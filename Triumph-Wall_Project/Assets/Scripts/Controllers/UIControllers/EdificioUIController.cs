@@ -10,52 +10,88 @@ using UIDataTypes.Buildings;
 public class EdificioUIController : MonoBehaviour
 {
 
-	[SceneObjectsOnly]
+	[SceneObjectsOnly] [FoldoutGroup( "Common UI" )]
 	public GameObject canvas;
-	[Title( "Durability" )]
+	[SceneObjectsOnly][FoldoutGroup( "Common UI" )]
+	public GameObject nameTextObj;
+	[SceneObjectsOnly][FoldoutGroup( "Common UI" )]
+	public TextMeshProUGUI nameText;
+	[FoldoutGroup( "Common UI/Durability" )]
 	[SceneObjectsOnly]
 	public Slider durabilitySlider;
 
-	[Title("Upgrades")]
+	[FoldoutGroup( "Common UI/Upgrades" )]
 	[SceneObjectsOnly]
 	public GameObject upgradesObject;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Upgrades" )]
 	public TextMeshProUGUI upgradesText;
 
-	[Title("Process")]
+	[FoldoutGroup( "Common UI/Process" )]
 	[SceneObjectsOnly]
 	public Slider progresSlider;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Process" )]
 	public GameObject speedObject;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Process" )]
 	public TextMeshProUGUI speedText;
 
-	[Title( "Emplyees" )]
+	[FoldoutGroup( "Common UI/Employees" )]
 	[SceneObjectsOnly]
 	public GameObject emplyeeObject;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Employees" )]
 	public TextMeshProUGUI employeeText;
 
-	[Title( "Inmigrants" )]
+	[FoldoutGroup( "Common UI/Inmigrants" )]
 	[SceneObjectsOnly]
 	public GameObject inmigrantsObject;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Inmigrants" )]
 	public TextMeshProUGUI inmigrantsText;
 
-	[Title( "Parcela" )]
-	[SceneObjectsOnly]
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public GameObject buttonWrapperObj;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public GameObject upgradeBtnObj;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public Button upgradeBtn;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public GameObject repairBtnObj;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public Button repairBtn;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public GameObject buyBtnObj;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public Button buyBtn;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public GameObject fireBtnObj;
+	[FoldoutGroup( "Common UI/Buttons" )]
+	public Button fireBtn;
+	
+	[FoldoutGroup( "NOTCommon UI")]
+	[FoldoutGroup( "NOTCommon UI/Parcela" )]
+	[SceneObjectsOnly][ShowInInspector]
 	public Slider salubritySlider;
 	[SceneObjectsOnly]
+	[FoldoutGroup( "NOTCommon UI/Parcela" )]
 	public Slider controlSlider;
 
-
-
     private UnityEvent hideEvent = new UnityEvent();
+	private CentroDeRetencion crFacility = null;
+
+	public void SetUp ( )
+	{
+		crFacility = FindObjectOfType<CentroDeRetencion>();
+	}
 
 	//Ui Basica de TODOS los edificios
 	//tiene en cuenta las booleanas de UIB_Data para enseñar diferentes elementos
 	public void ShowBaseUI (UIB_Data baseData)
 	{
+		nameText.text = baseData.name;
+		nameTextObj.SetActive( true );
 		if (baseData.showDurabilityBar)
 		{
 			durabilitySlider.gameObject.SetActive( true );
@@ -108,6 +144,66 @@ public class EdificioUIController : MonoBehaviour
 		{
 			speedObject.SetActive( false );
 			progresSlider.gameObject.SetActive( false );
+		}
+
+		if (baseData.showUpgradeBtn ||baseData.showRepairBtn ||baseData.showFireEmployeeBtn || baseData.showBuyEmployeeBtn)
+		{
+			if (baseData.showUpgradeBtn)
+			{
+				upgradeBtn.onClick.RemoveAllListeners();
+				upgradeBtn.onClick.AddListener(delegate {
+					crFacility.DoBuildingAction( Edificio.B_Actions.UPGRADE, baseData.managerID );
+				} );
+				upgradeBtnObj.SetActive( true );
+			}
+			else
+			{
+				upgradeBtnObj.SetActive( false );
+			}
+
+			if (baseData.showRepairBtn)
+			{
+				repairBtn.onClick.RemoveAllListeners();
+				repairBtn.onClick.AddListener(delegate {
+					crFacility.DoBuildingAction( Edificio.B_Actions.REPAIR, baseData.managerID );
+				} );
+				repairBtnObj.SetActive( true );
+			}
+			else
+			{
+				repairBtnObj.SetActive( false );
+			}
+
+			if (baseData.showBuyEmployeeBtn)
+			{
+				buyBtn.onClick.RemoveAllListeners();
+				buyBtn.onClick.AddListener(delegate {
+					crFacility.DoBuildingAction( Edificio.B_Actions.BUY_EMPLOYEE, baseData.managerID );
+				} );
+				buyBtnObj.SetActive( true );
+			}
+			else
+			{
+				buyBtnObj.SetActive( false );
+			}
+
+			if (baseData.showFireEmployeeBtn)
+			{
+				fireBtn.onClick.RemoveAllListeners();
+				fireBtn.onClick.AddListener(delegate {
+					crFacility.DoBuildingAction( Edificio.B_Actions.FIRE_EMPLOYEE, baseData.managerID );
+				} );
+				fireBtnObj.SetActive( true );
+			}
+			else
+			{
+				fireBtnObj.SetActive( false );
+			}
+			buttonWrapperObj.SetActive( true );
+		}
+		else
+		{
+			buttonWrapperObj.SetActive( false );
 		}
 	}
 
