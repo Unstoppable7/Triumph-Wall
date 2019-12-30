@@ -8,6 +8,7 @@ public class MoveTowards : Action
     public float speed = 10;
     // The transform that the object is moving towards
     public SharedTransform target;
+    public TreeBlackBoard blackBoard;
 
     public override TaskStatus OnUpdate()
     {
