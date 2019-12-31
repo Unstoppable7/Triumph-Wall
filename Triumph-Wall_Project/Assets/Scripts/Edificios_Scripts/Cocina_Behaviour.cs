@@ -4,27 +4,57 @@ using UnityEngine;
 
 public class Cocina_Behaviour : Edificio
 {
-
     [SerializeField]
     private UIDataTypes.Buildings.SO_UICocina_Data myUIData = null;
+
+	//public enum Portions { NOTHING, SMALL, NORMAL, BIG }
+	private int currentPortion = 0;
+	private readonly float[] portionsVals = { 0.0f, 0.2f, 0.33f, 0.5f };
+	private float foodStorage = 0.0f;
+
+	private float foodPerEmployee = 50.0f;
 
     public override void SetUP()
 	{
 		myUIData.name = "Dinninng Hall";
 		myUIData.managerID = managerID;
+		myUIData.notifyDorpdownChange.AddListener( ChangePortion );
+
+		foodStorage = 0;
+		currentPortion = 0;
+
+		currentInmigrantNum = 0;
+		currentUpgrade = 0;
+		maxOfUpgrades = 10;
+
+		pricePerEmployee = 10;
         currentEmployeeNum = 0;
         maxEmployeeNum = 10;
-    }
-
-    public override void ShowUI()
-    {
-        UIController.Instance.ShowEdificioUI(myUIData);
     }
 
     public override void Tick()
     {
         UpdateUIData();
     }
+
+	protected override void UpdateUIData()
+    {
+		myUIData.foodStorage = foodStorage;
+		myUIData.alertFood = CalculateEnoughFood();
+		myUIData.currentPortion = currentPortion;
+
+		myUIData.maxOfUpgrades = maxOfUpgrades;
+		myUIData.currentUpgrade = currentUpgrade;
+		myUIData.currentInmigrantNum = currentInmigrantNum;
+        myUIData.currentEmployeeNum = currentEmployeeNum;
+        myUIData.maxEmployeeNum = maxEmployeeNum;
+        myUIData.updatedValuesEvent.Invoke();
+    }
+
+	public override void ShowUI ( )
+	{
+		UIController.Instance.ShowEdificioUI( myUIData );
+	}
 
 	public override void BuyEmployee ( )
 	{
@@ -36,15 +66,7 @@ public class Cocina_Behaviour : Edificio
 		base.FireEmployee();
 
 	}
-
-	public override void UpdateUIData()
-    {
-        myUIData.currentEmployeeNum = currentEmployeeNum;
-        myUIData.maxEmployeeNum = maxEmployeeNum;
-        myUIData.updatedValuesEvent.Invoke();
-    }
-
-    public override void Upgrade()
+	public override void Upgrade()
     {
         currentEmployeeNum++;
     }
@@ -55,7 +77,7 @@ public class Cocina_Behaviour : Edificio
 
 	public override void ResetDay ( )
 	{
-		throw new System.NotImplementedException();
+		GenetareFood();
 	}
 
 	public override void ResetMonth ( )
@@ -65,8 +87,7 @@ public class Cocina_Behaviour : Edificio
 
     protected override void ProcessInmigrant()
     {
-        //usare esta funcion para saber cuantos immigrantes hay actualmente
-        currentInmigrantNum++; //si current immigrant num es mas grande que max immigrant num se deberan contratar a mas cocineros
+
     }
 
 	protected override void SetDataFromObject()
@@ -88,5 +109,42 @@ public class Cocina_Behaviour : Edificio
 	{
 		//TODO from blanacefile SO
 		return 100;
+	}
+
+	public bool FeedInmigrants ( )
+	{
+		if((foodStorage - currentInmigrantNum * GetPortion()) >=0.00f)
+		{
+			foodStorage -= currentInmigrantNum * GetPortion();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public float GetPortion ( )
+	{
+		return portionsVals[currentPortion];
+	}
+
+	private void ChangePortion(int dropIndx)
+	{
+		currentPortion = dropIndx;
+	}
+	private bool CalculateEnoughFood ( )
+	{
+		return (foodStorage - currentInmigrantNum * portionsVals[currentPortion]) < 0;
+	}
+
+	private void GenetareFood ( )
+	{
+		foodStorage += currentEmployeeNum * foodPerEmployee;
+	}
+
+	public void SetInmigrantsToFeed(int num)
+	{
+		currentInmigrantNum = num;
 	}
 }

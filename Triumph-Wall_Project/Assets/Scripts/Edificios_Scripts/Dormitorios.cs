@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dormitorios : Edificio
 {
 
-    public Queue<GameObject> sleepingPlaces = new Queue<GameObject>();
+    private Queue<GameObject> sleepingPlaces = new Queue<GameObject>();
 
     public int structureCost, maintenanceCost;
 
@@ -17,7 +17,7 @@ public class Dormitorios : Edificio
 		myUIData.name = "House";
 		myUIData.managerID = managerID;
 		maxInmigrantNum = 10;
-		currentInmigrantNum = 5;
+		currentInmigrantNum = 0;
 	}
 
 	public override void Tick()
@@ -37,7 +37,7 @@ public class Dormitorios : Edificio
         currentInmigrantNum = sleepingPlaces.Count;
     }
 
-    public override void UpdateUIData()
+    protected override void UpdateUIData()
     {
         myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.maxInmigrantNum = maxInmigrantNum;
@@ -66,7 +66,6 @@ public class Dormitorios : Edificio
 
     public override void ResetDay()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void ResetMonth()
@@ -94,5 +93,10 @@ public class Dormitorios : Edificio
 	{
 		//TODO from blanacefile SO
 		return 100;
+	}
+
+	public GameObject GetInmigrantToDeport ( )
+	{
+		return sleepingPlaces.Dequeue();
 	}
 }

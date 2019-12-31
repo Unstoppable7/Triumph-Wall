@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class CentroDeRetencion : Edificio
 {
@@ -27,6 +28,9 @@ public class CentroDeRetencion : Edificio
 
 	public override void SetUP ( )
 	{
+		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available
+		//getIT from Balance File
+		SetDataFromObject();
 		myUIData.name = "Facility";
 		managerID = -1;
 		myUIData.managerID = -1;
@@ -38,26 +42,26 @@ public class CentroDeRetencion : Edificio
 		//Oficina
 		oficina = GetComponentInChildren<OficinaDeportacionBehaviour>();
 		edificiosDelRecinto.Add( oficina );
-        //Dorms
-        dorms = GetComponentInChildren<Dormitorios>();
+		oficina.inmigrantDeported.AddListener( DecrementInmigrants );
+		oficina.moreInmigrantsToDeport.AddListener( RequestInmigrantToDeport );
+		//Dorms
+		dorms = GetComponentInChildren<Dormitorios>();
         edificiosDelRecinto.Add(dorms);
         //Enfermeria
         enfermeria = GetComponentInChildren<Enfermeria_Behaviour>();
         edificiosDelRecinto.Add(enfermeria);
-        //Cocina
-        cocina = GetComponentInChildren<Cocina_Behaviour>();
+		enfermeria.inmigrantHealed.AddListener( HealedInmigrant );
+		//Cocina
+		cocina = GetComponentInChildren<Cocina_Behaviour>();
         edificiosDelRecinto.Add(cocina);
+		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
 
-        // SetUp all buidling
-        for (int i = 0; i < edificiosDelRecinto.Count; i++)
+		// SetUp all buidling
+		for (int i = 0; i < edificiosDelRecinto.Count; i++)
 		{
 			edificiosDelRecinto[i].SetID(i);
 			edificiosDelRecinto[i].SetUP();
 		}
-
-		//PARENT CONSTRUCT //look at the defaul data of Edificio to see whats available
-		//getIT from Balance File
-		SetDataFromObject();
 	}
 
 	public override void Tick ( )
@@ -79,7 +83,7 @@ public class CentroDeRetencion : Edificio
 	}  
 
 	//after tick
-	public override void UpdateUIData ( )
+	protected override void UpdateUIData ( )
 	{
 		myUIData.maxEmployeeNum = maxEmployeeNum;
 		myUIData.currentEmployeeNum = currentEmployeeNum;
@@ -98,14 +102,33 @@ public class CentroDeRetencion : Edificio
 		UIController.Instance.ShowEdificioUI( myUIData );
 	}
 
-	public override void Repair ( )
+
+	[Button("Test increment")]
+	public void TestFunc ( )
 	{
-		throw new System.NotImplementedException();
+		SendToDorms( new GameObject() );
+	}
+	//TODO when an Inmigrant Enters (police Manager)
+	public override void IncrementInmigrants (GameObject inmigrant = null)
+	{
+		inmigrantsInFacility.Add( inmigrant );
+		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
+
+		//TODO in agent Manager
+		//	//if(inmigrant.hurt)//goes to enerfemery
+		//	//	if(enermery.isFull())
+		//			//goes to Dorms
+		//		else
+		//			//goes to enfermery
+		//	else
+		//	//goes into the Dorms
 	}
 
-	public override void Upgrade ( )
+	//TODO when an inmigrant Scapes (inmigrant Manager) or its deported
+	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
-		throw new System.NotImplementedException();
+		inmigrantsInFacility.Remove( inmigrant );
+		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
 	}
 
 	public override void BuyEmployee ( )
@@ -120,6 +143,16 @@ public class CentroDeRetencion : Edificio
 		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
 	}
 
+	public override void Repair ( )
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void Upgrade ( )
+	{
+		throw new System.NotImplementedException();
+	}
+
 	protected override void ProcessInmigrant ( )
 	{
 		throw new System.NotImplementedException();
@@ -130,6 +163,11 @@ public class CentroDeRetencion : Edificio
 		foreach (Edificio building in edificiosDelRecinto)
 		{
 			building.ResetDay();
+		}
+
+		if (cocina.FeedInmigrants())
+		{
+			FeedInmigrants(cocina.GetPortion());
 		}
 	}
 
@@ -158,7 +196,7 @@ public class CentroDeRetencion : Edificio
 		{
 			result += building.GetCurrentInmigrants();
 		}
-		currentInmigrantNum = result;
+		currentInmigrantNum = result - cocina.GetCurrentInmigrants();
 		return base.GetCurrentInmigrants();
 	}
 
@@ -192,7 +230,7 @@ public class CentroDeRetencion : Edificio
 		currentEmployeeNum = myData.currentEmployeeNum;
 
 		maxInmigrantNum = (currentEmployeeNum * myData.inmigrantesPorGuardia);
-		currentInmigrantNum = GetCurrentInmigrants();
+		currentInmigrantNum = myData.currentInmigrantNum;
 
 		salubridad = myData.salubridad;
 		control = myData.control;
@@ -276,8 +314,65 @@ public class CentroDeRetencion : Edificio
 	{
 		return oficina.GetGrevousDeported();
 	}
+
+	public void SendToOffice(GameObject inmigrant)
+	{
+		if(oficina.GetCurrentInmigrants()+1 <= oficina.GetMaxInmigrants())
+		{
+			oficina.IncrementInmigrants( inmigrant );
+			IncrementInmigrants( inmigrant );
+		}
+		else
+		{
+			SendToDorms( inmigrant );
+		}
+	}
+
+	private void RequestInmigrantToDeport ( )
+	{
+		//get inmigrant from Dorms
+		//put it on Office
+		SendToOffice( dorms.GetInmigrantToDeport() );
+	}
 	#endregion
-	
+
+	#region DORMITORIOS Especificos
+	public void SendToDorms (GameObject inmigrant )
+	{
+		dorms.IncrementInmigrants( inmigrant );
+		IncrementInmigrants( inmigrant );
+	}
+	#endregion
+
+	#region ENFERMERIA Especificos
+	public void SendToNursery(GameObject inmigrant)
+	{
+		if (enfermeria.GetCurrentInmigrants() + 1 <= enfermeria.GetMaxInmigrants())
+		{
+			enfermeria.IncrementInmigrants( inmigrant );
+			IncrementInmigrants( inmigrant );
+		}
+		else
+		{
+			SendToDorms( inmigrant );
+		}
+	}
+	private void HealedInmigrant(GameObject inmigrant)
+	{
+		SendToOffice( inmigrant );
+	}
+	#endregion
+
+	#region COCINA especificos
+	private void FeedInmigrants (float amountFood )
+	{
+		foreach (GameObject inmigrant in inmigrantsInFacility)
+		{
+			//TODO
+			//inmigrant.comida += (porciónDeComida - porciónNormal);
+		}
+	}
+#endregion
 	//Method called from buttons
 	public void DoBuildingAction (B_Actions action, int bIndex)
 	{
@@ -335,4 +430,5 @@ public class CentroDeRetencion : Edificio
 		result /= inmigrantsInFacility.Count;
 		return result;
 	}
+
 }

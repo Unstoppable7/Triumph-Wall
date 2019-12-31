@@ -31,7 +31,7 @@ public class SkyBoxModule : DNModuleBase
 		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).skyTint.value = skyColor.Evaluate( intensity );
 		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).groundColor.value = horizonColor.Evaluate( intensity );
 
-		float exp = Utils.Remap( intensity, 0.0f, 1.0f, exposure1, exposure2 );
+		float exp = MyUtils.Methods.Remap( intensity, 0.0f, 1.0f, exposure1, exposure2 );
 		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).exposure.value = exp;
 		((ProceduralSky)sceneVolumeSettings.profile.components[indexOfSkybox]).multiplier.value = intensity * baseMultiplier;
 

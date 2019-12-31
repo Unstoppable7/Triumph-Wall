@@ -60,7 +60,7 @@ public abstract class Edificio : MonoBehaviour
 	public virtual void DecrementInmigrants (GameObject inmigrant = null) => currentInmigrantNum--;
 
 	//Uses instace of UIController
-	public abstract void UpdateUIData ( );
+	protected abstract void UpdateUIData();
 	public abstract void ShowUI ( );
 
 	public abstract void ResetDay ( );

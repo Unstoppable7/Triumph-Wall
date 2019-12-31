@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using MyUtils.CustomEvents;
 
 public class OficinaDeportacionBehaviour : Edificio
 {
@@ -11,8 +13,11 @@ public class OficinaDeportacionBehaviour : Edificio
 	private int greavousDeported = 0;
 
 	//TODO change from GameObject to inmigrant class
-    public Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
+    private Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
 	private int processSpeedEmployeeCap = 10;
+
+	public UnityEvent moreInmigrantsToDeport = new UnityEvent();
+	public InmigrantEvent inmigrantDeported = new InmigrantEvent();
 
 	[SerializeField]
 	private BuildingDataTypes.SO_ODIData myData = null;
@@ -38,13 +43,10 @@ public class OficinaDeportacionBehaviour : Edificio
 
 		ProcessInmigrant();
 
-		//if(!myData.debug)
-		//	UpdateDataObject();
-
         UpdateUIData();
     }
 
-    public override void UpdateUIData()
+    protected override void UpdateUIData()
     {
 		myUIData.maxOfUpgrades = maxOfUpgrades;
 		myUIData.currentUpgrade = currentUpgrade;
@@ -90,11 +92,8 @@ public class OficinaDeportacionBehaviour : Edificio
 	//used by the manager of buildings
 	public override void IncrementInmigrants (GameObject inmigrant = null)
 	{
-		if (currentInmigrantNum + 1 <= maxInmigrantNum)
-		{
-			base.IncrementInmigrants();
-			immigrantsToDeport.Enqueue( inmigrant );
-		}
+		base.IncrementInmigrants();
+		immigrantsToDeport.Enqueue( inmigrant );
 	}
 	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
@@ -108,7 +107,9 @@ public class OficinaDeportacionBehaviour : Edificio
 			totalDeported++;
 			base.DecrementInmigrants();
 			if (immigrantsToDeport.Count > 0)
-				immigrantsToDeport.Dequeue();
+				inmigrantDeported.Invoke( immigrantsToDeport.Dequeue() );
+			else
+				inmigrantDeported.Invoke( null );
 		}
 
 	}
@@ -140,7 +141,6 @@ public class OficinaDeportacionBehaviour : Edificio
 
 	public override void ResetDay ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void ResetMonth ( )
@@ -177,12 +177,16 @@ public class OficinaDeportacionBehaviour : Edificio
 
 		maxOfUpgrades = myData.maxOfUpgrades;
 		currentUpgrade = myData.currentUpgrade;
-		processSpeed = myData.processSpeed;
+
+		pricePerEmployee = myData.pricePerEmployee;
 		maxEmployeeNum = myData.maxEmployeeNum;
-		maxInmigrantNum = myData.maxEmployeeNum;
-		currentProgress = myData.currentProgress;
 		currentEmployeeNum = myData.currentEmployeeNum;
+
+		maxInmigrantNum = myData.maxEmployeeNum;
 		currentInmigrantNum = myData.currentInmigrantNum;
+
+		processSpeed = myData.processSpeed;
+		currentProgress = myData.currentProgress;
 	}
 
 	protected override void UpdateDataObject ( )

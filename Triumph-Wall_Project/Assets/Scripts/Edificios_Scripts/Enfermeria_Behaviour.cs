@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyUtils.CustomEvents;
 
 public class Enfermeria_Behaviour : Edificio
 {
 
-    public Queue<GameObject> immigrantsToHeal = new Queue<GameObject>();
+    private Queue<GameObject> immigrantsToHeal = new Queue<GameObject>();
+	public InmigrantEvent inmigrantHealed = new InmigrantEvent();
 
 	private int processSpeedEmployeeCap = 10;
 
@@ -23,6 +25,8 @@ public class Enfermeria_Behaviour : Edificio
         currentProgress = processSpeed;
         maxEmployeeNum = 1;
         maxInmigrantNum = maxEmployeeNum;
+
+		pricePerEmployee = 10;
         currentEmployeeNum = 0;
         currentInmigrantNum = 0;
 	}
@@ -38,7 +42,7 @@ public class Enfermeria_Behaviour : Edificio
         UIController.Instance.ShowEdificioUI(myUIData);
     }
 
-    public override void UpdateUIData()
+    protected override void UpdateUIData()
     {
 		myUIData.maxOfUpgrades = maxOfUpgrades;
 		myUIData.currentUpgrade = currentUpgrade;
@@ -52,20 +56,23 @@ public class Enfermeria_Behaviour : Edificio
     }
 	public override void IncrementInmigrants (GameObject inmigrant = null)
 	{
-		if(currentInmigrantNum + 1 <= maxInmigrantNum)
-		{
-			base.IncrementInmigrants();
-			immigrantsToHeal.Enqueue( inmigrant );
-		}
+		base.IncrementInmigrants();
+		immigrantsToHeal.Enqueue( inmigrant );
 	}
 	public override void DecrementInmigrants (GameObject inmigrant = null)
 	{
 		for(int i = 0; i < currentEmployeeNum; i++)
 		{
 			if (currentInmigrantNum - 1 < 0) break;
-
 			base.DecrementInmigrants();
-			immigrantsToHeal.Dequeue();
+			if(immigrantsToHeal.Count > 0)
+			{
+				inmigrantHealed.Invoke( immigrantsToHeal.Dequeue() );
+			}
+			else
+			{
+				inmigrantHealed.Invoke( null);
+			}
 		}
 	}
 
@@ -107,7 +114,6 @@ public class Enfermeria_Behaviour : Edificio
 
 	public override void ResetDay ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
 	public override void ResetMonth ( )

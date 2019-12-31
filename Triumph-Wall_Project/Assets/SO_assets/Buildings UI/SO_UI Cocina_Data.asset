@@ -20,32 +20,66 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  showUpgradeNum: 0
-  showDurabilityBar: 1
+    SerializationNodes:
+    - Name: notifyDorpdownChange
+      Entry: 7
+      Data: 0|MyUtils.CustomEvents.IntEvent, Assembly-CSharp
+    - Name: m_PersistentCalls
+      Entry: 7
+      Data: 1|UnityEngine.Events.PersistentCallGroup, UnityEngine.CoreModule
+    - Name: m_Calls
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[UnityEngine.Events.PersistentCall,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: m_TypeName
+      Entry: 1
+      Data: MyUtils.CustomEvents.IntEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    - Name: 
+      Entry: 8
+      Data: 
+  showUpgradeNum: 1
+  showDurabilityBar: 0
   showEmployeeNum: 1
   showProgress: 0
   showInmigrantNum: 1
-  showUpgradeBtn: 0
+  showUpgradeBtn: 1
+  showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
-  managerID: -1
+  managerID: 3
+  name: Dinninng Hall
   canBeUpgraded: 0
-  maxOfUpgrades: -1
-  currentUpgrade: -1
+  maxOfUpgrades: 10
+  currentUpgrade: 0
   maxDurability: 100
   currentDurability: 50
   canBuyEmployee: 0
   canFireEmployee: 0
   pricePerEmployee: -1
   maxEmployeeNum: 10
-  currentEmployeeNum: 1
+  currentEmployeeNum: 8
   currentProgress: -1
   processSpeed: -1
   maxInmigrantNum: 10
-  currentInmigrantNum: 0
+  currentInmigrantNum: 18
   updatedValuesEvent:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  alertFood: 1
+  foodStorage: 0
+  currentPortion: 0

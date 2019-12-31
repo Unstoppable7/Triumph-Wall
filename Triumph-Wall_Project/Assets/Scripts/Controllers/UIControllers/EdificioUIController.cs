@@ -78,7 +78,17 @@ public class EdificioUIController : MonoBehaviour
 	[FoldoutGroup( "NOTCommon UI/Parcela" )]
 	public Slider controlSlider;
 
-    private UnityEvent hideEvent = new UnityEvent();
+	[FoldoutGroup( "NOTCommon UI/Cocina" )]
+	[SceneObjectsOnly][ShowInInspector]
+	public GameObject foodAmountObj;
+	[FoldoutGroup( "NOTCommon UI/Cocina" )]
+	[SceneObjectsOnly][ShowInInspector]
+	public TextMeshProUGUI foodAmountText;
+	[FoldoutGroup( "NOTCommon UI/Cocina" )]
+	[SceneObjectsOnly][ShowInInspector]
+	public TMP_Dropdown portionDropDown;
+
+	private UnityEvent hideEvent = new UnityEvent();
 	private CentroDeRetencion crFacility = null;
 
 	public void SetUp ( )
@@ -218,8 +228,8 @@ public class EdificioUIController : MonoBehaviour
 		controlSlider.gameObject.SetActive( true );
 		controlSlider.value = data.control;
 
-		data.updatedValuesEvent.RemoveAllListeners();
 		//eventos de actualizaciond e la UI
+		data.updatedValuesEvent.RemoveAllListeners();
 		UnityAction action = delegate { UpdateUI( data ); };
 		data.updatedValuesEvent.AddListener( action );
 		//evento  al esconderse esta UI
@@ -232,26 +242,55 @@ public class EdificioUIController : MonoBehaviour
 		hideEvent.AddListener( action2 );
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
-
-    public void StartShowUI(SO_UICocina_Data data)
+	private void UpdateUI (SO_UICR_Data data)
 	{
 		ShowBaseUI( data );
+		//enseñar Ui especifica
+		salubritySlider.value = data.salubrity;
+		controlSlider.value = data.control;
+	}
 
+	public void StartShowUI(SO_UICocina_Data data)
+	{
+		ShowBaseUI( data );
+		foodAmountText.text = data.foodStorage.ToString();
+		foodAmountObj.SetActive( true );
+		portionDropDown.value = data.currentPortion;
+		portionDropDown.RefreshShownValue();
+		portionDropDown.onValueChanged.AddListener( data.notifyDorpdownChange.Invoke );
+		portionDropDown.gameObject.SetActive( true );
 
-		data.updatedValuesEvent.RemoveAllListeners();
 		//eventos de actualizaciond e la UI
+		//data.updatedValuesEvent.RemoveAllListeners();
 		UnityAction action = delegate { UpdateUI( data ); };
 		data.updatedValuesEvent.AddListener( action );
 		//evento  al esconderse esta UI
-		UnityAction action2 = delegate 
+		UnityAction action2 = delegate
 		{
+			foodAmountObj.SetActive( false );
+			portionDropDown.gameObject.SetActive( false );
+			portionDropDown.onValueChanged.RemoveAllListeners();
 			data.updatedValuesEvent.RemoveListener( action );
 		};
 		hideEvent.AddListener( action2 );
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );
 	}
+	private void UpdateUI (SO_UICocina_Data data)
+	{
+		ShowBaseUI( data );
+		//enseñar Ui especifica
+		if (data.alertFood)
+		{
+			foodAmountText.color = Color.red;
+		}
+		else
+		{
+			foodAmountText.color = Color.white;
+		}
+		foodAmountText.text = data.foodStorage.ToString();
+	}
 
-    public void StartShowUI(SO_UIDorm_Data data)
+	public void StartShowUI(SO_UIDorm_Data data)
     {
         ShowBaseUI(data);
         //enseñar Ui especifica
@@ -268,8 +307,13 @@ public class EdificioUIController : MonoBehaviour
         hideEvent.AddListener(action2);
         hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
     }
+	private void UpdateUI (SO_UIDorm_Data data)
+	{
+		ShowBaseUI( data );
+		//enseñar Ui especifica
+	}
 
-    public void StartShowUI(SO_UIODI_Data data)
+	public void StartShowUI(SO_UIODI_Data data)
     {
         ShowBaseUI(data);
 		//enseñar Ui especifica
@@ -287,8 +331,14 @@ public class EdificioUIController : MonoBehaviour
         hideEvent.AddListener(action2);
         hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
     }
+	private void UpdateUI (SO_UIODI_Data data)
+	{
+		ShowBaseUI( data );
+		//enseñar Ui especifica
 
-    public void StartShowUI(SO_UIENF_Data data)
+	}
+
+	public void StartShowUI(SO_UIENF_Data data)
     {
         ShowBaseUI(data);
         //enseñar Ui especifica
@@ -305,43 +355,11 @@ public class EdificioUIController : MonoBehaviour
         hideEvent.AddListener(action2);
         hideEvent.AddListener(delegate { hideEvent.RemoveListener(action2); });
     }
-
-    //updatea la UI cuando el edificio updatea los valores
-    private void UpdateUI (SO_UICR_Data data)
-	{
-		ShowBaseUI( data );
-		//enseñar Ui especifica
-		salubritySlider.value = data.salubrity;
-		controlSlider.value = data.control;
-	}
-
-      private void UpdateUI (SO_UICocina_Data data)
+	private void UpdateUI (SO_UIENF_Data data)
 	{
 		ShowBaseUI( data );
 		//enseñar Ui especifica
 	}
-
-    private void UpdateUI(SO_UIDorm_Data data)
-    {
-        ShowBaseUI(data);
-        //enseñar Ui especifica
-        durabilitySlider.value = data.currentDurability;
-    }
-
-    private void UpdateUI(SO_UIENF_Data data)
-    {
-        ShowBaseUI(data);
-        //enseñar Ui especifica
-        durabilitySlider.value = data.currentDurability;
-    }
-    private void UpdateUI(SO_UIODI_Data data)
-    {
-        ShowBaseUI(data);
-        //enseñar Ui especifica
-        durabilitySlider.value = data.currentDurability;
-
-    }
-
     //se llama desde el input controller
     public void Hide ( )
 	{
