@@ -40,6 +40,8 @@ namespace UIDataTypes
             public bool showBuyEmployeeBtn = false;
             public bool showFireEmployeeBtn = false;
 
+			public Sprite employeeSprite = null;
+
             ///////////BUILDING UI DATA///////////
             //setted from Factory and from Manager
             [ShowInInspector][DisplayAsString]

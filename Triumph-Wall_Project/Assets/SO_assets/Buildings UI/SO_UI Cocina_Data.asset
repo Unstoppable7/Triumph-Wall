@@ -59,6 +59,7 @@ MonoBehaviour:
   showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
+  employeeSprite: {fileID: 21300000, guid: bca532598ca4a8b4da71e57dcb3a479a, type: 3}
   managerID: 3
   name: Dinninng Hall
   canBeUpgraded: 0
@@ -70,16 +71,16 @@ MonoBehaviour:
   canFireEmployee: 0
   pricePerEmployee: -1
   maxEmployeeNum: 10
-  currentEmployeeNum: 8
+  currentEmployeeNum: 0
   currentProgress: -1
   processSpeed: -1
   maxInmigrantNum: 10
-  currentInmigrantNum: 18
+  currentInmigrantNum: 16
   updatedValuesEvent:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  alertFood: 1
+  alertFood: 0
   foodStorage: 0
   currentPortion: 0

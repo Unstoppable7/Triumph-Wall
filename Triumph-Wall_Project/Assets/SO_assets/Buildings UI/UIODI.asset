@@ -30,6 +30,7 @@ MonoBehaviour:
   showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
+  employeeSprite: {fileID: 21300000, guid: f528d948698850f48929bcc9aeefc473, type: 3}
   managerID: 0
   name: Office
   canBeUpgraded: 0
@@ -42,10 +43,10 @@ MonoBehaviour:
   pricePerEmployee: -1
   maxEmployeeNum: 1
   currentEmployeeNum: 1
-  currentProgress: 0.62545455
+  currentProgress: 0.96836036
   processSpeed: 10.2
   maxInmigrantNum: 1
-  currentInmigrantNum: 18
+  currentInmigrantNum: 16
   updatedValuesEvent:
     m_PersistentCalls:
       m_Calls: []
