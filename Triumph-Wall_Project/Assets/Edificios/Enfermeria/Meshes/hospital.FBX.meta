@@ -6,6 +6,11 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: 02 - Default
+    2100002: blue
+    2100004: st_red
+    2100006: white_st
+    2100008: clear_window
+    2100010: yellow
     2300000: //RootNode
     3300000: //RootNode
     4300000: build61
