@@ -11,7 +11,6 @@ public class SensorySystem : MonoBehaviour
     float alarmTime = 0.2f;
     [SerializeField]
     LayerMask collisionLayer;
-    [SerializeField]
     bool searchForAgents = true;
 
     [SerializeField][FoldoutGroup("External Sensor")]
@@ -28,6 +27,10 @@ public class SensorySystem : MonoBehaviour
     [SerializeField]
     private float SpecialSensor_Range = 5;
     [Title("Lists")]
+    [ShowInInspector]
+    private List<Agent> enemiesInSight = new List<Agent>();
+    [ShowInInspector]
+    private List<Agent> alliesInSight = new List<Agent>();
     [ShowInInspector]
     private List<Agent> agentsInSight = new List<Agent>();
     [ShowInInspector]
@@ -61,13 +64,13 @@ public class SensorySystem : MonoBehaviour
     void SetUp()
     {
         co_SearchAgents = StartCoroutine("CO_SearchAgents");
-        Reset();
+        _alarmTime = new WaitForSecondsRealtime(alarmTime);
     }
 
     public void Reset()
     {
         _alarmTime = new WaitForSecondsRealtime(alarmTime);
-        collisionLayer = LayerMask.GetMask("Agent");
+        LayerMask.GetMask("Agents");
     }
 
     IEnumerator CO_SearchAgents()
@@ -86,13 +89,16 @@ public class SensorySystem : MonoBehaviour
 
     private void CheckAgentsInsideSphere()
     {
+        agentInSensorRange.Clear();
+        agentsInSight.Clear();
+        enemiesInSight.Clear();
+        alliesInSight.Clear();
+
         collidersInSensorRange = Physics.OverlapSphere(transform.position, ExternalSensor_Range, collisionLayer);
         if (collidersInSensorRange.Length == 0)
         {
             return;
         }
-
-        agentInSensorRange.Clear();
 
         for (int i = 0; i < collidersInSensorRange.Length; i++)
         {
@@ -122,7 +128,7 @@ public class SensorySystem : MonoBehaviour
 
     private void CheckAgentsInSight()
     {
-        agentsInSight.Clear();
+
 		Agent currentAgent;
         Vector3 innerAngleZero = Vector3.Normalize(Quaternion.AngleAxis(InnerSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
         Vector3 externalAngleZero = Vector3.Normalize(Quaternion.AngleAxis(ExternalSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
@@ -138,30 +144,48 @@ public class SensorySystem : MonoBehaviour
             if (distanceToAgent < SpecialSensor_Range)
             {
                 //Se encuentra dentro de la esfera pequeña
-                agentsInSight.Add(currentAgent);
-                agentInSensorRange.RemoveAt(i);
-                i--;
+                AddNewAgentInSight(ref currentAgent, ref i);
             }
             else
             if(Mathf.Acos(Vector3.Dot(this.transform.forward,agentAngle)) <= Mathf.Deg2Rad * (ExternalSensor_FOV * 0.5f))
             {
                 //Se encuentran dentro del FOV exterior
-                agentsInSight.Add(currentAgent);
-                agentInSensorRange.RemoveAt(i);
-                i--;
+                AddNewAgentInSight(ref currentAgent, ref i);
             }
             else
             if(Mathf.Acos(Vector3.Dot(this.transform.forward, agentAngle)) <= Mathf.Deg2Rad * (InnerSensor_FOV * 0.5f)
                 && distanceToAgent < InnerSensor_Range)
             {
                 //Se encuentran dentro del FOV interior y a rango
-                agentsInSight.Add(currentAgent);
-                agentInSensorRange.RemoveAt(i);
-                i--;
+                //agentsInSight.Add(currentAgent);
+                //agentInSensorRange.RemoveAt(i);
+                //i--;
+                AddNewAgentInSight(ref currentAgent, ref i);
             }
         }
 
-        blackBoard.variables["agentsInSight"] = agentsInSight;
+        blackBoard.variables["enemiesInSight"] = enemiesInSight;
+        blackBoard.variables["alliesInSight"] = alliesInSight;
+    }
+
+    private void AddNewAgentInSight(ref Agent agent, ref int index)
+    {
+        agentsInSight.Add(agent);
+        //agentInSensorRange.RemoveAt(index);
+        //index--;
+        CheckAgentIsEnemy(ref agent);
+    }
+
+    private void CheckAgentIsEnemy(ref Agent agent)
+    {
+        if(agent.CompareTag(this.tag))
+        {
+            alliesInSight.Add(agent);
+        }
+        else
+        {
+            enemiesInSight.Add(agent);
+        }
     }
 
     private void OnDrawGizmos()

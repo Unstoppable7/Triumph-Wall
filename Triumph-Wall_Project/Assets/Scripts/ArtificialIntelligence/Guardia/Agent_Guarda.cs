@@ -6,10 +6,15 @@ public class Agent_Guarda : Agent
 {
 
 	private float costOfMan = 10;
+
+    private void Awake()
+    {
+        SetUp();
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
-		SetUp();
     }
 
     // Update is called once per frame
@@ -23,10 +28,10 @@ public class Agent_Guarda : Agent
 
 	protected override void SetUp ( )
 	{
-		BlackBoard bb = this.GetComponent<BlackBoard>();
-		blackBoard = new TreeBlackBoard();
-		blackBoard.Value = bb;
-		behaviourTree.SetVariable( "AgentBB", blackBoard );
+		blackBoard = this.GetComponent<BlackBoard>();
+        blackBoard.variables.Add("enemiesInSight", new List<Agent>());
+        blackBoard.variables.Add("alliesInSight", new List<Agent>());
+        blackBoard.variables.Add("Target", new GameObject());
 	}
 
 	protected override void Tick ( )
