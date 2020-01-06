@@ -42,7 +42,7 @@ public class SensorySystem : MonoBehaviour
 
     private void Awake()
     {
-        if(this.gameObject.GetComponent<BlackBoard>() is null)
+        if(this.gameObject.GetComponent<Agent>() is null)
         {
             Debug.LogError("No Agent attached to:" + this.name);
         }
@@ -123,7 +123,7 @@ public class SensorySystem : MonoBehaviour
     private void CheckAgentsInSight()
     {
         agentsInSight.Clear();
-        Agent currentAgent = new Agent();
+		Agent currentAgent;
         Vector3 innerAngleZero = Vector3.Normalize(Quaternion.AngleAxis(InnerSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
         Vector3 externalAngleZero = Vector3.Normalize(Quaternion.AngleAxis(ExternalSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
         Vector3 agentAngle = Vector3.zero;

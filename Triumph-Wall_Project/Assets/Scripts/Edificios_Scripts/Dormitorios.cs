@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dormitorios : Edificio
 {
 
-    private Queue<GameObject> sleepingPlaces = new Queue<GameObject>();
+    private Queue<Agent_Inmigrant> sleepingPlaces = new Queue<Agent_Inmigrant>();
 
     public int structureCost, maintenanceCost;
 
@@ -25,13 +25,13 @@ public class Dormitorios : Edificio
 		UpdateUIData();
     }
 
-    public override void IncrementInmigrants(GameObject immigrant)
+    public override void IncrementInmigrants(Agent_Inmigrant immigrant)
     {
         sleepingPlaces.Enqueue(immigrant);
         currentInmigrantNum = sleepingPlaces.Count;
     }
 
-	public override void DecrementInmigrants(GameObject immigrant)
+	public override void DecrementInmigrants(Agent_Inmigrant immigrant)
     {
         sleepingPlaces.Dequeue();
         currentInmigrantNum = sleepingPlaces.Count;
@@ -95,7 +95,7 @@ public class Dormitorios : Edificio
 		return 100;
 	}
 
-	public GameObject GetInmigrantToDeport ( )
+	public Agent_Inmigrant GetInmigrantToDeport ( )
 	{
 		return sleepingPlaces.Dequeue();
 	}

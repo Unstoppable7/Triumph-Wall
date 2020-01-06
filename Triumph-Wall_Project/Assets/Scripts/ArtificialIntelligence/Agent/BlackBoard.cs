@@ -7,9 +7,4 @@ using Sirenix.OdinInspector;
 public class BlackBoard : SerializedMonoBehaviour
 {
     public Dictionary<string, object> variables = new Dictionary<string, object>();
-
-    public void Reset()
-    {
-        variables.Clear();
-    }
 }

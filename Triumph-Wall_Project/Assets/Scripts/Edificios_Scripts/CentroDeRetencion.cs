@@ -12,10 +12,8 @@ public class CentroDeRetencion : Edificio
 
 	private List<Edificio> edificiosDelRecinto = new List<Edificio>();
 
-	//TODO change GameObject To Especific inmigrants Objects
-	private List<GameObject> inmigrantsInFacility = new List<GameObject>();
-	//TODO cambiar GameObject por la Clase guardia
-	private List<GameObject> policeMen = new List<GameObject>();
+	private List<Agent_Inmigrant> inmigrantsInFacility = new List<Agent_Inmigrant>();
+	private List<Agent_Guarda> policeMen = new List<Agent_Guarda>();
 
 	[SerializeField]
 	private BuildingDataTypes.SO_CRData myData = null;
@@ -106,15 +104,16 @@ public class CentroDeRetencion : Edificio
 	[Button("Test increment")]
 	public void TestFunc ( )
 	{
-		SendToDorms( new GameObject() );
+		SendToDorms( new Agent_Inmigrant() );
 	}
-	//TODO when an Inmigrant Enters (police Manager)
-	public override void IncrementInmigrants (GameObject inmigrant = null)
+	//when an Inmigrant Enters (police Manager)
+	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		inmigrantsInFacility.Add( inmigrant );
 		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
 
-		//TODO in agent Manager
+		// TODO in agent Manager
+	
 		//	//if(inmigrant.hurt)//goes to enerfemery
 		//	//	if(enermery.isFull())
 		//			//goes to Dorms
@@ -124,8 +123,8 @@ public class CentroDeRetencion : Edificio
 		//	//goes into the Dorms
 	}
 
-	//TODO when an inmigrant Scapes (inmigrant Manager) or its deported
-	public override void DecrementInmigrants (GameObject inmigrant = null)
+	//when an inmigrant Scapes (inmigrant Manager) or its deported
+	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		inmigrantsInFacility.Remove( inmigrant );
 		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
@@ -315,7 +314,7 @@ public class CentroDeRetencion : Edificio
 		return oficina.GetGrevousDeported();
 	}
 
-	public void SendToOffice(GameObject inmigrant)
+	public void SendToOffice(Agent_Inmigrant inmigrant)
 	{
 		if(oficina.GetCurrentInmigrants()+1 <= oficina.GetMaxInmigrants())
 		{
@@ -337,7 +336,7 @@ public class CentroDeRetencion : Edificio
 	#endregion
 
 	#region DORMITORIOS Especificos
-	public void SendToDorms (GameObject inmigrant )
+	public void SendToDorms (Agent_Inmigrant inmigrant )
 	{
 		dorms.IncrementInmigrants( inmigrant );
 		IncrementInmigrants( inmigrant );
@@ -345,7 +344,7 @@ public class CentroDeRetencion : Edificio
 	#endregion
 
 	#region ENFERMERIA Especificos
-	public void SendToNursery(GameObject inmigrant)
+	public void SendToNursery(Agent_Inmigrant inmigrant)
 	{
 		if (enfermeria.GetCurrentInmigrants() + 1 <= enfermeria.GetMaxInmigrants())
 		{
@@ -357,7 +356,7 @@ public class CentroDeRetencion : Edificio
 			SendToDorms( inmigrant );
 		}
 	}
-	private void HealedInmigrant(GameObject inmigrant)
+	private void HealedInmigrant(Agent_Inmigrant inmigrant)
 	{
 		SendToOffice( inmigrant );
 	}
@@ -366,10 +365,9 @@ public class CentroDeRetencion : Edificio
 	#region COCINA especificos
 	private void FeedInmigrants (float amountFood )
 	{
-		foreach (GameObject inmigrant in inmigrantsInFacility)
+		foreach (Agent_Inmigrant inmigrant in inmigrantsInFacility)
 		{
-			//TODO
-			//inmigrant.comida += (porciónDeComida - porciónNormal);
+			inmigrant.AddComida( amountFood - inmigrant.GetNormalPortion() );
 		}
 	}
 #endregion
@@ -421,10 +419,9 @@ public class CentroDeRetencion : Edificio
 			return 1;
 
 		float result = 0;
-		//TODO change this to the inmigrant happiness getter
-		foreach (GameObject inmigrant in inmigrantsInFacility)
+		foreach (Agent_Inmigrant inmigrant in inmigrantsInFacility)
 		{
-			result += inmigrant.GetHashCode();
+			result += inmigrant.Gethappiness();
 		}
 
 		result /= inmigrantsInFacility.Count;

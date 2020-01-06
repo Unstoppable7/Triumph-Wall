@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PoliceManager : MonoBehaviour
 {
-	//TODO cambiar GameObject por la Clase guardia
-	private List<GameObject> policeMen = new List<GameObject>();
+	private List<Agent_Guarda> policeMen = new List<Agent_Guarda>();
 
 	public void SetUp ( )
 	{
@@ -23,7 +22,11 @@ public class PoliceManager : MonoBehaviour
 
 	public float GetTotalPoliceMenCost ( )
 	{
-		//TODO reccorrer cada poli cogiendo lo que cuestan
-		return 0;
+		float totalCost = 0;
+		foreach(Agent_Guarda man in policeMen)
+		{
+			totalCost += man.GetCost();
+		}
+		return totalCost;
 	}
 }

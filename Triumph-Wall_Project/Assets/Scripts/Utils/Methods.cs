@@ -31,7 +31,7 @@ namespace MyUtils
 
 	namespace CustomEvents
 	{
-		public class InmigrantEvent : UnityEvent<GameObject> { }
+		public class InmigrantEvent : UnityEvent<Agent_Inmigrant> { }
 		public class IntEvent : UnityEvent<int> { }
 	}
 }

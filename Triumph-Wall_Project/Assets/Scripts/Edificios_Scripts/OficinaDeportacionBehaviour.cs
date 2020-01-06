@@ -13,7 +13,7 @@ public class OficinaDeportacionBehaviour : Edificio
 	private int greavousDeported = 0;
 
 	//TODO change from GameObject to inmigrant class
-    private Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
+    private Queue<Agent_Inmigrant> immigrantsToDeport = new Queue<Agent_Inmigrant>();
 	private int processSpeedEmployeeCap = 10;
 
 	public UnityEvent moreInmigrantsToDeport = new UnityEvent();
@@ -90,12 +90,12 @@ public class OficinaDeportacionBehaviour : Edificio
 
 
 	//used by the manager of buildings
-	public override void IncrementInmigrants (GameObject inmigrant = null)
+	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		base.IncrementInmigrants();
 		immigrantsToDeport.Enqueue( inmigrant );
 	}
-	public override void DecrementInmigrants (GameObject inmigrant = null)
+	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		for (int i = 0; i < currentEmployeeNum; i++)
 		{

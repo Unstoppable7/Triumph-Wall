@@ -56,8 +56,8 @@ public abstract class Edificio : MonoBehaviour
 		}
 	}
 
-	public virtual void IncrementInmigrants (GameObject inmigrant = null ) => currentInmigrantNum++;
-	public virtual void DecrementInmigrants (GameObject inmigrant = null) => currentInmigrantNum--;
+	public virtual void IncrementInmigrants (Agent_Inmigrant inmigrant = null ) => currentInmigrantNum++;
+	public virtual void DecrementInmigrants (Agent_Inmigrant inmigrant = null) => currentInmigrantNum--;
 
 	//Uses instace of UIController
 	protected abstract void UpdateUIData();
