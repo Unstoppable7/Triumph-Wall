@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FollowPath : Action
+public class FollowPath : Conditional
 {
     public TreeBlackBoard blackBoard;
 	private List<Transform> path = null;
@@ -65,4 +65,11 @@ public class FollowPath : Action
 
 		return TaskStatus.Failure;
     }
+
+	public override void OnEnd ( )
+	{
+		base.OnEnd();
+		navA.isStopped = true;
+		navA.ResetPath();
+	}
 }

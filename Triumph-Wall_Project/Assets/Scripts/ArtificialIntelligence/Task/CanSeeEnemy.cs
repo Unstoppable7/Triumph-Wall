@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanSeeEnemy : Action
+public class CanSeeEnemy : Conditional
 {
     public TreeBlackBoard blackBoard;
 

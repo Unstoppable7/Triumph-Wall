@@ -30,4 +30,13 @@ public class MoveTowards : Action
 		return TaskStatus.Running;
 	}
 
+	
+	public override void OnEnd ( )
+	{
+		base.OnEnd();
+		navA.isStopped = true;
+		navA.ResetPath();
+
+	}
+
 }
