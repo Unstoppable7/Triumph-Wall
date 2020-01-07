@@ -32,6 +32,7 @@ public class Agent_Guarda : Agent
         blackBoard.variables.Add("enemiesInSight", new List<Agent>());
         blackBoard.variables.Add("alliesInSight", new List<Agent>());
         blackBoard.variables.Add("Target", new GameObject());
+        blackBoard.variables.Add("Ruta", new List<Transform>());
 	}
 
 	protected override void Tick ( )
