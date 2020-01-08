@@ -71,6 +71,7 @@ public class CentroDeRetencion : Edificio
 		{
 			building.Tick();
 		}
+
 		salubridad += CalculateSalubrity();
 		salubridad = Mathf.Clamp( salubridad, -1, 1 );
 
@@ -100,36 +101,38 @@ public class CentroDeRetencion : Edificio
 		UIController.Instance.ShowEdificioUI( myUIData );
 	}
 
-
 	[Button("Test increment")]
 	public void TestFunc ( )
 	{
 		SendToDorms( new Agent_Inmigrant() );
+	}
+
+	public void StartProcessInmigrant(Agent_Inmigrant inmigrant)
+	{
+		if (inmigrant.hurt)
+		{
+			SendToNursery( inmigrant );
+		}
+		else
+		{
+			SendToOffice( inmigrant );
+		}
 	}
 	//when an Inmigrant Enters (police Manager)
 	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		inmigrantsInFacility.Add( inmigrant );
 		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
-
-		// TODO in agent Manager
-	
-		//	//if(inmigrant.hurt)//goes to enerfemery
-		//	//	if(enermery.isFull())
-		//			//goes to Dorms
-		//		else
-		//			//goes to enfermery
-		//	else
-		//	//goes into the Dorms
 	}
 
 	//when an inmigrant Scapes (inmigrant Manager) or its deported
 	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		inmigrantsInFacility.Remove( inmigrant );
+		Destroy( inmigrant.gameObject );
 		cocina.SetInmigrantsToFeed( GetCurrentInmigrants() );
 	}
-
+	
 	public override void BuyEmployee ( )
 	{
 		base.BuyEmployee();
@@ -331,12 +334,19 @@ public class CentroDeRetencion : Edificio
 	{
 		//get inmigrant from Dorms
 		//put it on Office
-		SendToOffice( dorms.GetInmigrantToDeport() );
+		if (oficina.GetCurrentInmigrants() + 1 <= oficina.GetMaxInmigrants())
+		{
+			oficina.IncrementInmigrants( dorms.GetInmigrantToDeport() );
+		}
+		else
+		{
+			SendToDorms( dorms.GetInmigrantToDeport() );
+		}
 	}
 	#endregion
 
 	#region DORMITORIOS Especificos
-	public void SendToDorms (Agent_Inmigrant inmigrant )
+	private void SendToDorms (Agent_Inmigrant inmigrant )
 	{
 		dorms.IncrementInmigrants( inmigrant );
 		IncrementInmigrants( inmigrant );
@@ -358,7 +368,14 @@ public class CentroDeRetencion : Edificio
 	}
 	private void HealedInmigrant(Agent_Inmigrant inmigrant)
 	{
-		SendToOffice( inmigrant );
+		if (oficina.GetCurrentInmigrants() + 1 <= oficina.GetMaxInmigrants())
+		{
+			oficina.IncrementInmigrants( inmigrant );
+		}
+		else
+		{
+			dorms.IncrementInmigrants( inmigrant );
+		}
 	}
 	#endregion
 
@@ -371,6 +388,7 @@ public class CentroDeRetencion : Edificio
 		}
 	}
 #endregion
+
 	//Method called from buttons
 	public void DoBuildingAction (B_Actions action, int bIndex)
 	{

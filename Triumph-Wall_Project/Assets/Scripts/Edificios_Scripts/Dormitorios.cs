@@ -70,7 +70,6 @@ public class Dormitorios : Edificio
 
     public override void ResetMonth()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void SetDataFromObject()
@@ -86,17 +85,20 @@ public class Dormitorios : Edificio
 	public override float GetUpgradePrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public override float GetRepairPrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public Agent_Inmigrant GetInmigrantToDeport ( )
 	{
-		return sleepingPlaces.Dequeue();
+		if (sleepingPlaces.Count > 0)
+			return sleepingPlaces.Dequeue();
+		else
+			return null;
 	}
 }

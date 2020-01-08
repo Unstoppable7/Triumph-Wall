@@ -10,9 +10,6 @@ Función:
 
 using UnityEditor;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
-using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 
 public class OpenSceneTool
 {
@@ -38,20 +35,20 @@ public class OpenSceneTool
 	//	tree.DrawMenuTree();
 	//}
 
-	private static void OpenScene(string scene)
-    {
-        if (SceneManager.GetActiveScene().name != scene)
-        {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                EditorSceneManager.OpenScene(sceneFolderPath + scene + sceneFormat);
-            }
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Scene already open!", "La escena ya se encuentra en este momento abierta.", "OK");
-        }
-    }
+	//private static void OpenScene(string scene)
+ //   {
+ //       if (SceneManager.GetActiveScene().name != scene)
+ //       {
+ //           if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+ //           {
+ //               EditorSceneManager.OpenScene(sceneFolderPath + scene + sceneFormat);
+ //           }
+ //       }
+ //       else
+ //       {
+ //           EditorUtility.DisplayDialog("Scene already open!", "La escena ya se encuentra en este momento abierta.", "OK");
+ //       }
+ //   }
 }
 
 /*

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Guard
   - Emigrant
+  - CR_Inmigrant
   layers:
   - Default
   - TransparentFX

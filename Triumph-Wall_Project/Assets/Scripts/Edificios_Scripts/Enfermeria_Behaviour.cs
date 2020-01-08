@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using MyUtils.CustomEvents;
 
@@ -27,7 +26,7 @@ public class Enfermeria_Behaviour : Edificio
         maxInmigrantNum = maxEmployeeNum;
 
 		pricePerEmployee = 10;
-        currentEmployeeNum = 0;
+        currentEmployeeNum = 1;
         currentInmigrantNum = 0;
 	}
 	public override void Tick ( )
@@ -65,6 +64,7 @@ public class Enfermeria_Behaviour : Edificio
 		{
 			if (currentInmigrantNum - 1 < 0) break;
 			base.DecrementInmigrants();
+
 			if(immigrantsToHeal.Count > 0)
 			{
 				inmigrantHealed.Invoke( immigrantsToHeal.Dequeue() );
@@ -118,7 +118,6 @@ public class Enfermeria_Behaviour : Edificio
 
 	public override void ResetMonth ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
     protected override void ProcessInmigrant()
@@ -144,12 +143,12 @@ public class Enfermeria_Behaviour : Edificio
 	public override float GetUpgradePrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public override float GetRepairPrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 }

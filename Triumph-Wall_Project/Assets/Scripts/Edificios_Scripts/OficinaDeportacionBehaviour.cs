@@ -92,8 +92,11 @@ public class OficinaDeportacionBehaviour : Edificio
 	//used by the manager of buildings
 	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
-		base.IncrementInmigrants();
-		immigrantsToDeport.Enqueue( inmigrant );
+		if(inmigrant != null)
+		{
+			base.IncrementInmigrants();
+			immigrantsToDeport.Enqueue( inmigrant );
+		}
 	}
 	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
@@ -123,6 +126,11 @@ public class OficinaDeportacionBehaviour : Edificio
 		}
 		else if (currentInmigrantNum > 0)
 			currentProgress -= Time.deltaTime;
+
+		if (currentInmigrantNum < maxInmigrantNum)
+		{
+			moreInmigrantsToDeport.Invoke();
+		}
 	}
 
     public override void Upgrade()

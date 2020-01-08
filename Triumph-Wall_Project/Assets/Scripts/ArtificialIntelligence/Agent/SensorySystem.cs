@@ -43,7 +43,9 @@ public class SensorySystem : MonoBehaviour
     Coroutine co_SearchAgents;
     WaitForSecondsRealtime _alarmTime;
 
-    private void Awake()
+	private string tagToFilter = "";
+
+	private void Awake()
     {
         if(this.gameObject.GetComponent<Agent>() is null)
         {
@@ -63,8 +65,8 @@ public class SensorySystem : MonoBehaviour
 
     void SetUp()
     {
-        co_SearchAgents = StartCoroutine("CO_SearchAgents");
         _alarmTime = new WaitForSecondsRealtime(alarmTime);
+        co_SearchAgents = StartCoroutine("CO_SearchAgents");
     }
 
     public void Reset()
@@ -73,13 +75,21 @@ public class SensorySystem : MonoBehaviour
         LayerMask.GetMask("Agents");
     }
 
+
     IEnumerator CO_SearchAgents()
     {
         do
-        {
-            SearchAgents();
-            yield return  _alarmTime;
-        } while (searchForAgents);
+		{
+			SearchAgents();
+
+			if (!string.IsNullOrEmpty( tagToFilter ))
+				FiltrateEnemies();
+
+			blackBoard.variables["enemiesInSight"] = enemiesInSight;
+			blackBoard.variables["alliesInSight"] = alliesInSight;
+
+			yield return  _alarmTime;
+		} while (searchForAgents);
     }
 
     private void SearchAgents()
@@ -128,7 +138,6 @@ public class SensorySystem : MonoBehaviour
 
     private void CheckAgentsInSight()
     {
-
 		Agent currentAgent;
         Vector3 innerAngleZero = Vector3.Normalize(Quaternion.AngleAxis(InnerSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
         Vector3 externalAngleZero = Vector3.Normalize(Quaternion.AngleAxis(ExternalSensor_FOV / 2.0f, this.transform.up) * this.transform.forward);
@@ -163,9 +172,6 @@ public class SensorySystem : MonoBehaviour
                 AddNewAgentInSight(ref currentAgent, ref i);
             }
         }
-
-        blackBoard.variables["enemiesInSight"] = enemiesInSight;
-        blackBoard.variables["alliesInSight"] = alliesInSight;
     }
 
     private void AddNewAgentInSight(ref Agent agent, ref int index)
@@ -187,6 +193,21 @@ public class SensorySystem : MonoBehaviour
             enemiesInSight.Add(agent);
         }
     }
+
+	
+	public void SetTagToFilter (string tag )
+	{
+		tagToFilter = tag;
+	}
+
+	//removes enemies with the tag
+	private void FiltrateEnemies()
+	{
+		enemiesInSight.RemoveAll( x => x.gameObject.tag == tagToFilter );
+		enemiesInSight.RemoveAll( x => x.transform.parent.gameObject != this.gameObject
+		&& x.transform.parent.gameObject.GetComponent<Agent>());
+
+	}
 
     private void OnDrawGizmos()
     {

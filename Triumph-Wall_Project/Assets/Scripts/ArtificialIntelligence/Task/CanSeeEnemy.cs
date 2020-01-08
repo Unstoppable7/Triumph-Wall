@@ -28,7 +28,7 @@ public class CanSeeEnemy : Conditional
                 }
             }
 
-            blackBoard.Value.variables["Target"] = nearestEnemy;
+            blackBoard.Value.variables["Target"] = nearestEnemy.transform;
             return TaskStatus.Success;
         }
 
