@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4da53f88a304c4090d17aa3ed97c39, type: 3}
+  m_Name: UI_ENF
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  showUpgradeNum: 1
+  showDurabilityBar: 0
+  showEmployeeNum: 1
+  showProgress: 1
+  showInmigrantNum: 1
+  showUpgradeBtn: 1
+  showRepairBtn: 0
+  showBuyEmployeeBtn: 1
+  showFireEmployeeBtn: 1
+  employeeSprite: {fileID: 21300000, guid: 567257d6556375d47afd8a5d7a91ba02, type: 3}
+  managerID: 2
+  name: Nursing
+  canBeUpgraded: 0
+  maxOfUpgrades: 10
+  currentUpgrade: 0
+  maxDurability: 100
+  currentDurability: 50
+  canBuyEmployee: 0
+  canFireEmployee: 0
+  pricePerEmployee: -1
+  maxEmployeeNum: 1
+  currentEmployeeNum: 0
+  currentProgress: 0
+  processSpeed: 10.2
+  maxInmigrantNum: 1
+  currentInmigrantNum: 0
+  updatedValuesEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

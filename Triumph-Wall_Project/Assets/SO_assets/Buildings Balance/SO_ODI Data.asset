@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf95c54965d527438a6963a3a1ffb58, type: 3}
+  m_Name: SO_ODI Data
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  debug: 0
+  canBeUpgraded: 0
+  maxOfUpgrades: 10
+  currentUpgrade: 0
+  maxDurability: 100
+  currentDurability: 50
+  canBuyEmployee: 0
+  canFireEmployee: 0
+  pricePerEmployee: 10
+  maxEmployeeNum: 1
+  currentEmployeeNum: 1
+  canProcess: 0
+  currentProgress: 10.2
+  processSpeed: 10.2
+  maxInmigrantNum: 1
+  currentInmigrantNum: 0
+  priceOfUpgrade: 100
+  priceOfRepair: 100
+  totalDeported: 0
+  normalDeported: 0
+  woundedDeported: 0
+  greavousDeported: 0
