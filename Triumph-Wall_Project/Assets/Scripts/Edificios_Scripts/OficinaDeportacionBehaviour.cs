@@ -13,7 +13,7 @@ public class OficinaDeportacionBehaviour : Edificio
 	private int greavousDeported = 0;
 
 	//TODO change from GameObject to inmigrant class
-    private Queue<GameObject> immigrantsToDeport = new Queue<GameObject>();
+    private Queue<Agent_Inmigrant> immigrantsToDeport = new Queue<Agent_Inmigrant>();
 	private int processSpeedEmployeeCap = 10;
 
 	public UnityEvent moreInmigrantsToDeport = new UnityEvent();
@@ -90,12 +90,15 @@ public class OficinaDeportacionBehaviour : Edificio
 
 
 	//used by the manager of buildings
-	public override void IncrementInmigrants (GameObject inmigrant = null)
+	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
-		base.IncrementInmigrants();
-		immigrantsToDeport.Enqueue( inmigrant );
+		if(inmigrant != null)
+		{
+			base.IncrementInmigrants();
+			immigrantsToDeport.Enqueue( inmigrant );
+		}
 	}
-	public override void DecrementInmigrants (GameObject inmigrant = null)
+	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		for (int i = 0; i < currentEmployeeNum; i++)
 		{
@@ -104,10 +107,16 @@ public class OficinaDeportacionBehaviour : Edificio
 			//- Normal
 			//- Herido
 			//- Gravemente Herido
+
 			totalDeported++;
 			base.DecrementInmigrants();
 			if (immigrantsToDeport.Count > 0)
-				inmigrantDeported.Invoke( immigrantsToDeport.Dequeue() );
+			{
+				Agent_Inmigrant toDeport = immigrantsToDeport.Dequeue();
+				if (toDeport.wounded)
+					woundedDeported++;
+				inmigrantDeported.Invoke( toDeport );
+			}
 			else
 				inmigrantDeported.Invoke( null );
 		}
@@ -123,6 +132,11 @@ public class OficinaDeportacionBehaviour : Edificio
 		}
 		else if (currentInmigrantNum > 0)
 			currentProgress -= Time.deltaTime;
+
+		if (currentInmigrantNum < maxInmigrantNum)
+		{
+			moreInmigrantsToDeport.Invoke();
+		}
 	}
 
     public override void Upgrade()

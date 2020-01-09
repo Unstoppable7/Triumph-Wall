@@ -30,11 +30,12 @@ MonoBehaviour:
   showRepairBtn: 0
   showBuyEmployeeBtn: 1
   showFireEmployeeBtn: 1
+  employeeSprite: {fileID: 21300000, guid: 567257d6556375d47afd8a5d7a91ba02, type: 3}
   managerID: 2
   name: Nursing
   canBeUpgraded: 0
-  maxOfUpgrades: -1
-  currentUpgrade: -1
+  maxOfUpgrades: 10
+  currentUpgrade: 0
   maxDurability: 100
   currentDurability: 50
   canBuyEmployee: 0

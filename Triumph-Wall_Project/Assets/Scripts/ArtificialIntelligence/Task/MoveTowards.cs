@@ -1,26 +1,74 @@
-using UnityEngine;
-using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
+using UnityEngine.AI;
+using UnityEngine;
 
 public class MoveTowards : Action
 {
-    // The speed of the object
-    public float speed = 10;
-    // The transform that the object is moving towards
-    public SharedTransform target;
     public TreeBlackBoard blackBoard;
+	public Transform target;
 
-    public override TaskStatus OnUpdate()
-    {
-        // Return a task status of success once we've reached the target
-        if (Vector3.SqrMagnitude(transform.position - target.Value.position) < 0.1f)
-        {
-            return TaskStatus.Success;
-        }
-        // We haven't reached the target yet so keep moving towards it
-        transform.position = Vector3.MoveTowards(transform.position, target.Value.position, speed * Time.deltaTime);
-        Debug.Log(transform.position);
-        transform.position = new Vector3(transform.position.x + Time.deltaTime, transform.position.y, transform.position.z);
-        return TaskStatus.Running;
-    }
+	private bool refreshTarget = false;
+	private NavMeshAgent navA = null;
+	public override void OnStart ( )
+	{
+		base.OnStart();
+
+		if(target == null)
+		{
+			target = (Transform)blackBoard.Value.variables["Target"];
+			refreshTarget = true;
+		}
+
+		navA = this.GetComponent<NavMeshAgent>();
+		navA.SetDestination( target.position );
+
+	}
+	public override TaskStatus OnUpdate( )
+	{
+		if (!navA.pathPending)
+		{
+			if (navA.remainingDistance <= navA.stoppingDistance)
+			{
+				if (!navA.hasPath || navA.velocity.sqrMagnitude == 0f)
+				{
+					NavMeshAgent navTarget = target.gameObject.GetComponent<NavMeshAgent>();
+					if (navTarget)
+						navTarget.enabled = false;
+
+					return TaskStatus.Success;
+				}
+			}
+		}
+		if (refreshTarget && target.position != navA.destination && navA.remainingDistance > navA.stoppingDistance)
+		{
+			navA.SetDestination( target.position );
+		}
+		return TaskStatus.Running;
+	}
+
+	
+	public override void OnEnd ( )
+	{
+		base.OnEnd();
+		navA.isStopped = true;
+		navA.ResetPath();
+		if (refreshTarget)
+		{
+			refreshTarget = false;
+			target = null;
+		}
+	}
+
+	public override void OnCollisionEnter (Collision collision)
+	{
+		base.OnCollisionEnter( collision );
+
+	}
+
+	public override void OnTriggerEnter (Collider other)
+	{
+		base.OnTriggerEnter( other );
+
+	}
+
 }

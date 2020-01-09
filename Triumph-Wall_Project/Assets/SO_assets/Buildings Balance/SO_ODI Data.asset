@@ -36,7 +36,9 @@ MonoBehaviour:
   currentProgress: 10.2
   processSpeed: 10.2
   maxInmigrantNum: 1
-  currentInmigrantNum: 20
+  currentInmigrantNum: 0
+  priceOfUpgrade: 100
+  priceOfRepair: 100
   totalDeported: 0
   normalDeported: 0
   woundedDeported: 0

@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using MyUtils.CustomEvents;
 
 public class Enfermeria_Behaviour : Edificio
 {
 
-    private Queue<GameObject> immigrantsToHeal = new Queue<GameObject>();
+    private Queue<Agent_Inmigrant> immigrantsToHeal = new Queue<Agent_Inmigrant>();
 	public InmigrantEvent inmigrantHealed = new InmigrantEvent();
 
 	private int processSpeedEmployeeCap = 10;
@@ -27,7 +26,7 @@ public class Enfermeria_Behaviour : Edificio
         maxInmigrantNum = maxEmployeeNum;
 
 		pricePerEmployee = 10;
-        currentEmployeeNum = 0;
+        currentEmployeeNum = 1;
         currentInmigrantNum = 0;
 	}
 	public override void Tick ( )
@@ -54,17 +53,18 @@ public class Enfermeria_Behaviour : Edificio
         myUIData.currentInmigrantNum = currentInmigrantNum;
         myUIData.updatedValuesEvent.Invoke();
     }
-	public override void IncrementInmigrants (GameObject inmigrant = null)
+	public override void IncrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		base.IncrementInmigrants();
 		immigrantsToHeal.Enqueue( inmigrant );
 	}
-	public override void DecrementInmigrants (GameObject inmigrant = null)
+	public override void DecrementInmigrants (Agent_Inmigrant inmigrant = null)
 	{
 		for(int i = 0; i < currentEmployeeNum; i++)
 		{
 			if (currentInmigrantNum - 1 < 0) break;
 			base.DecrementInmigrants();
+
 			if(immigrantsToHeal.Count > 0)
 			{
 				inmigrantHealed.Invoke( immigrantsToHeal.Dequeue() );
@@ -118,7 +118,6 @@ public class Enfermeria_Behaviour : Edificio
 
 	public override void ResetMonth ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
     protected override void ProcessInmigrant()
@@ -144,12 +143,12 @@ public class Enfermeria_Behaviour : Edificio
 	public override float GetUpgradePrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public override float GetRepairPrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 }

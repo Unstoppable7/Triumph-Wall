@@ -18,6 +18,9 @@ public class EdificioUIController : MonoBehaviour
 	public TextMeshProUGUI nameText;
 	[FoldoutGroup( "Common UI/Durability" )]
 	[SceneObjectsOnly]
+	public GameObject durabilityObj;
+	[FoldoutGroup( "Common UI/Durability" )]
+	[SceneObjectsOnly]
 	public Slider durabilitySlider;
 
 	[FoldoutGroup( "Common UI/Upgrades" )]
@@ -27,6 +30,9 @@ public class EdificioUIController : MonoBehaviour
 	[FoldoutGroup( "Common UI/Upgrades" )]
 	public TextMeshProUGUI upgradesText;
 
+	[FoldoutGroup( "Common UI/Process" )]
+	[SceneObjectsOnly]
+	public GameObject progresObj;
 	[FoldoutGroup( "Common UI/Process" )]
 	[SceneObjectsOnly]
 	public Slider progresSlider;
@@ -40,6 +46,9 @@ public class EdificioUIController : MonoBehaviour
 	[FoldoutGroup( "Common UI/Employees" )]
 	[SceneObjectsOnly]
 	public GameObject emplyeeObject;
+	[FoldoutGroup( "Common UI/Employees" )]
+	[SceneObjectsOnly]
+	public Image emplyeeImg;
 	[SceneObjectsOnly]
 	[FoldoutGroup( "Common UI/Employees" )]
 	public TextMeshProUGUI employeeText;
@@ -72,8 +81,14 @@ public class EdificioUIController : MonoBehaviour
 	
 	[FoldoutGroup( "NOTCommon UI")]
 	[FoldoutGroup( "NOTCommon UI/Parcela" )]
-	[SceneObjectsOnly][ShowInInspector]
+	[SceneObjectsOnly]
+	public GameObject salubrityObj;
+	[FoldoutGroup( "NOTCommon UI/Parcela" )]
+	[SceneObjectsOnly]
 	public Slider salubritySlider;
+	[SceneObjectsOnly]
+	[FoldoutGroup( "NOTCommon UI/Parcela" )]
+	public GameObject controlObj;
 	[SceneObjectsOnly]
 	[FoldoutGroup( "NOTCommon UI/Parcela" )]
 	public Slider controlSlider;
@@ -104,12 +119,12 @@ public class EdificioUIController : MonoBehaviour
 		nameTextObj.SetActive( true );
 		if (baseData.showDurabilityBar)
 		{
-			durabilitySlider.gameObject.SetActive( true );
+			durabilityObj.SetActive( true );
 			durabilitySlider.value = baseData.currentDurability / baseData.maxDurability;
 		}
 		else
 		{
-			durabilitySlider.gameObject.SetActive( false );
+			durabilityObj.SetActive( false );
 		}
 
 		if (baseData.showUpgradeNum)
@@ -124,7 +139,7 @@ public class EdificioUIController : MonoBehaviour
 
 		if (baseData.showEmployeeNum)
 		{
-
+			emplyeeImg.sprite = baseData.employeeSprite;
 			emplyeeObject.SetActive( true );
 			employeeText.text = string.Format( "{0:00}/{1:00}", baseData.currentEmployeeNum, baseData.maxEmployeeNum );
 		}
@@ -146,14 +161,14 @@ public class EdificioUIController : MonoBehaviour
 		if (baseData.showProgress)
 		{
 			speedObject.SetActive( true );
-			progresSlider.gameObject.SetActive( true );
+			progresObj.SetActive( true );
 			progresSlider.value = baseData.currentProgress;
 			speedText.text = string.Format( "{0:00}", baseData.processSpeed );
 		}
 		else
 		{
 			speedObject.SetActive( false );
-			progresSlider.gameObject.SetActive( false );
+			progresObj.SetActive( false );
 		}
 
 		if (baseData.showUpgradeBtn ||baseData.showRepairBtn ||baseData.showFireEmployeeBtn || baseData.showBuyEmployeeBtn)
@@ -222,10 +237,10 @@ public class EdificioUIController : MonoBehaviour
 	{
 		ShowBaseUI( data );
 		//enseñar Ui especifica
-		salubritySlider.gameObject.SetActive( true );
+		salubrityObj.SetActive( true );
 		salubritySlider.value = data.salubrity;
 
-		controlSlider.gameObject.SetActive( true );
+		controlObj.SetActive( true );
 		controlSlider.value = data.control;
 
 		//eventos de actualizaciond e la UI
@@ -236,8 +251,8 @@ public class EdificioUIController : MonoBehaviour
 		UnityAction action2 = delegate 
 		{
 			data.updatedValuesEvent.RemoveListener( action );
-			salubritySlider.gameObject.SetActive( false );
-			controlSlider.gameObject.SetActive( false );
+			salubrityObj.SetActive( false );
+			controlObj.SetActive( false );
 		};
 		hideEvent.AddListener( action2 );
 		hideEvent.AddListener( delegate { hideEvent.RemoveListener( action2 ); } );

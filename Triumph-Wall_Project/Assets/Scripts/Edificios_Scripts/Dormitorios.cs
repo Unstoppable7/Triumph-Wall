@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dormitorios : Edificio
 {
 
-    private Queue<GameObject> sleepingPlaces = new Queue<GameObject>();
+    private Queue<Agent_Inmigrant> sleepingPlaces = new Queue<Agent_Inmigrant>();
 
     public int structureCost, maintenanceCost;
 
@@ -25,13 +25,13 @@ public class Dormitorios : Edificio
 		UpdateUIData();
     }
 
-    public override void IncrementInmigrants(GameObject immigrant)
+    public override void IncrementInmigrants(Agent_Inmigrant immigrant)
     {
         sleepingPlaces.Enqueue(immigrant);
         currentInmigrantNum = sleepingPlaces.Count;
     }
 
-	public override void DecrementInmigrants(GameObject immigrant)
+	public override void DecrementInmigrants(Agent_Inmigrant immigrant)
     {
         sleepingPlaces.Dequeue();
         currentInmigrantNum = sleepingPlaces.Count;
@@ -70,7 +70,6 @@ public class Dormitorios : Edificio
 
     public override void ResetMonth()
     {
-        throw new System.NotImplementedException();
     }
 
     protected override void SetDataFromObject()
@@ -86,17 +85,20 @@ public class Dormitorios : Edificio
 	public override float GetUpgradePrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public override float GetRepairPrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
-	public GameObject GetInmigrantToDeport ( )
+	public Agent_Inmigrant GetInmigrantToDeport ( )
 	{
-		return sleepingPlaces.Dequeue();
+		if (sleepingPlaces.Count > 0)
+			return sleepingPlaces.Dequeue();
+		else
+			return null;
 	}
 }

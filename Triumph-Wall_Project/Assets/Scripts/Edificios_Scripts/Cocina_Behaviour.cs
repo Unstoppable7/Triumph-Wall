@@ -68,8 +68,12 @@ public class Cocina_Behaviour : Edificio
 	}
 	public override void Upgrade()
     {
-        currentEmployeeNum++;
-    }
+		if (currentUpgrade + 1 <= maxOfUpgrades)
+		{
+			maxEmployeeNum++;
+			currentUpgrade++;
+		}
+	}
 	public override void Repair ( )
 	{
 		throw new System.NotImplementedException();
@@ -82,7 +86,6 @@ public class Cocina_Behaviour : Edificio
 
 	public override void ResetMonth ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
     protected override void ProcessInmigrant()
@@ -102,13 +105,13 @@ public class Cocina_Behaviour : Edificio
 	public override float GetUpgradePrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public override float GetRepairPrice ( )
 	{
 		//TODO from blanacefile SO
-		return 100;
+		return 10;
 	}
 
 	public bool FeedInmigrants ( )
