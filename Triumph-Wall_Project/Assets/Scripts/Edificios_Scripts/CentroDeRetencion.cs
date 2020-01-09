@@ -78,6 +78,11 @@ public class CentroDeRetencion : Edificio
 		control = CalculateControl();
 		control = Mathf.Clamp( control, 0, 1 );
 
+		foreach (Agent_Inmigrant inmigrant in inmigrantsInFacility)
+		{
+			inmigrant.CalculateHappines( salubridad );
+		}
+
 		UpdateUIData();
 	}  
 

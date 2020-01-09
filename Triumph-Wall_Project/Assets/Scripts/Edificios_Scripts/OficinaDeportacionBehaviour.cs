@@ -107,10 +107,16 @@ public class OficinaDeportacionBehaviour : Edificio
 			//- Normal
 			//- Herido
 			//- Gravemente Herido
+
 			totalDeported++;
 			base.DecrementInmigrants();
 			if (immigrantsToDeport.Count > 0)
-				inmigrantDeported.Invoke( immigrantsToDeport.Dequeue() );
+			{
+				Agent_Inmigrant toDeport = immigrantsToDeport.Dequeue();
+				if (toDeport.wounded)
+					woundedDeported++;
+				inmigrantDeported.Invoke( toDeport );
+			}
 			else
 				inmigrantDeported.Invoke( null );
 		}

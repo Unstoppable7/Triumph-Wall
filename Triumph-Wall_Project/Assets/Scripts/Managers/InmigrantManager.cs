@@ -40,16 +40,17 @@ public class InmigrantManager: MonoBehaviour
 		{
 			GameObject newInmigrant = Instantiate( inmigrantPrefab, transform );
 
-			//switch (Random.Range( 0, 2 ))
-			//{
-			//case 0:
-			//	newInmigrant.GetComponent<Agent_Inmigrant>().hurt = false;
-			//	break;
-			//case 1:
-			//	newInmigrant.GetComponent<Agent_Inmigrant>().hurt = true;
-			//	break;
-			//}
-			newInmigrant.GetComponent<Agent_Inmigrant>().hurt = true;
+			switch (Random.Range( 0, 2 ))
+			{
+			case 0:
+				newInmigrant.GetComponent<Agent_Inmigrant>().hurt = false;
+				newInmigrant.GetComponent<Agent_Inmigrant>().wounded = false;
+				break;
+			case 1:
+				newInmigrant.GetComponent<Agent_Inmigrant>().hurt = true;
+				newInmigrant.GetComponent<Agent_Inmigrant>().wounded = true;
+				break;
+			}
 			newInmigrant.transform.position = spawnPositions[Random.Range(0, spawnPositions.Count-1)].position;
 			inmigrantsRunning.Add( newInmigrant.GetComponent<Agent_Inmigrant>() );
 			yield return new WaitForSeconds( timeOfSpawning );

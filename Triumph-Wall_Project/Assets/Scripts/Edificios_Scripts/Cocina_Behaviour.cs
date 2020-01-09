@@ -86,7 +86,6 @@ public class Cocina_Behaviour : Edificio
 
 	public override void ResetMonth ( )
 	{
-		throw new System.NotImplementedException();
 	}
 
     protected override void ProcessInmigrant()

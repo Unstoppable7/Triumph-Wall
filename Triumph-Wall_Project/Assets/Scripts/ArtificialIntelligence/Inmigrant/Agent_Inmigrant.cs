@@ -11,10 +11,17 @@ public class Agent_Inmigrant : Agent
 	public float normalPortion = 0.1f;
 
 	public bool hurt = false;
+	public bool wounded = false;
 
 	public void AddComida(float food)
 	{
 		comida += food;
+		comida = Mathf.Clamp01( comida );
+	}
+
+	public void CalculateHappines(float salubirdad)
+	{
+		happiness = comida * 0.7f + salubirdad * 0.3f;
 	}
 
 	public float GetNormalPortion ( ) => normalPortion;
