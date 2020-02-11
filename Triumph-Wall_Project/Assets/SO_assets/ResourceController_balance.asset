@@ -31,5 +31,5 @@ MonoBehaviour:
   governmentMoney: 1000
   woundedMoneyPenalty: 0.005
   deathMoneyPenalty: 0.01
-  publicOpinionMoneyFactor: 0.582
-  efficiencyMoneyFactor: 0.418
+  publicOpinionMoneyFactor: 0.385
+  efficiencyMoneyFactor: 0.615

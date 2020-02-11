@@ -1,11 +1,13 @@
 using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine.AI;
 using UnityEngine;
+using BehaviorDesigner.Runtime;
 
 public class MoveTowards : Action
 {
     public TreeBlackBoard blackBoard;
 	public Transform target;
+	public SharedTransform we;
 
 	private bool refreshTarget = false;
 	private NavMeshAgent navA = null;

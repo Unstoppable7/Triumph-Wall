@@ -1,5 +1,5 @@
 ﻿using BehaviorDesigner.Runtime;
-
+using UnityEngine;
 [System.Serializable]
 public class TreeBlackBoard : SharedVariable<BlackBoard>
 {
